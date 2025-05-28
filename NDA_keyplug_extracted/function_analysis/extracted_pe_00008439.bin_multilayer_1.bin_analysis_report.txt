@@ -1,0 +1,37 @@
+KEYPLUG Function Analysis Report
+==============================
+
+File: NDA_keyplug_extracted/accelerated_analysis/extracted_pe_00008439.bin_multilayer_1.bin
+Size: 14691 bytes
+MD5: a97d355e5d260a8835f86b79057c5120
+SHA256: 80882e9028900ac633106569d0cd10fdccb19cdfd79ebb685332d791b1b067f3
+
+Function Analysis Summary
+------------------------
+Total functions identified: 5
+High risk functions: 0
+Medium risk functions: 0
+Low risk functions: 5
+
+Behavior Summary
+---------------
+- File Operations: No
+- Registry Operations: No
+- Process Operations: No
+- Memory Operations: No
+- Network Operations: No
+- Crypto Operations: No
+- Code Injection: No
+- Command Execution: No
+- Persistence: No
+- Anti Analysis: No
+
+
+High Risk Functions
+------------------
+No high risk functions identified
+
+
+Medium Risk Functions
+--------------------
+No medium risk functions identified

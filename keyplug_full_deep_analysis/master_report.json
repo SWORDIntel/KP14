@@ -1,0 +1,672 @@
+{
+  "analysis_time": "2025-05-28 15:10:32",
+  "total_files": 30,
+  "successful": 30,
+  "failed": 0,
+  "openvino_acceleration": true,
+  "preferred_device": "NPU",
+  "cpu_cores": 22,
+  "processing_time": 21.989842414855957,
+  "file_results": [
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_8.bin",
+      "analysis_time": "2025-05-28 15:10:20",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_8.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_10.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_10.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_5.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_5.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_5.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_5.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_6.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_6.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_7.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_7.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_8.bin",
+      "analysis_time": "2025-05-28 15:10:21",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_8.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_10.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_10.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_1.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_1.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_3.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_3.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_3.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_3.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_1.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_1.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_2.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_2.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_4.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_4.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_10.bin",
+      "analysis_time": "2025-05-28 15:10:22",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_10.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_6.bin",
+      "analysis_time": "2025-05-28 15:10:23",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_6.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_7.bin",
+      "analysis_time": "2025-05-28 15:10:23",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_7.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_2.bin",
+      "analysis_time": "2025-05-28 15:10:23",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_2.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_00008439.bin_multilayer_9.bin",
+      "analysis_time": "2025-05-28 15:10:23",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_00008439.bin_multilayer_9.bin",
+          "size": 14691,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_4.bin",
+      "analysis_time": "2025-05-28 15:10:23",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_4.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_000083e3.bin_multilayer_9.bin",
+      "analysis_time": "2025-05-28 15:10:25",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_000083e3.bin_multilayer_9.bin",
+          "size": 86,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_1.bin",
+      "analysis_time": "2025-05-28 15:10:27",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_1.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_2.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_2.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_9.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_9.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_7.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_7.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_5.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_5.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_8.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_8.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_3.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_3.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_6.bin",
+      "analysis_time": "2025-05-28 15:10:29",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_6.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    },
+    {
+      "file": "extracted_pe_0000bd9c.bin_multilayer_4.bin",
+      "analysis_time": "2025-05-28 15:10:32",
+      "openvino_acceleration": true,
+      "preferred_device": "NPU",
+      "cpu_cores": 22,
+      "layers": [
+        {
+          "name": "extracted_pe_0000bd9c.bin_multilayer_4.bin",
+          "size": 13855,
+          "findings": {}
+        }
+      ],
+      "summary": {
+        "total_layers": 1,
+        "potential_c2_endpoints": 0,
+        "potential_injection_points": 0,
+        "api_hashing_algorithms": 0,
+        "encoded_strings": 0,
+        "decoder_functions": 0
+      }
+    }
+  ]
+}

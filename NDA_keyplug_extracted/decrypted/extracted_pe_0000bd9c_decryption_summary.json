@@ -1,0 +1,97 @@
+{
+  "file_name": "NDA_keyplug_extracted/executables/extracted_pe_0000bd9c.bin",
+  "file_size": 13855,
+  "original_entropy": 0.8936457336288453,
+  "decryption_results": [
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 0,
+      "length": 13855,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 864,
+      "length": 12991,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 3933,
+      "length": 9922,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 10496,
+      "length": 3359,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 10880,
+      "length": 2975,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 33763,
+      "length": -19908,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 33849,
+      "length": -19994,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "00",
+      "offset": 48540,
+      "length": -34685,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "11fd579bf410bff36b1c400acf6c0a37"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 864,
+      "length": 12991,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "7678e8e229673c6ea0b71efdc896f8c0"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 3933,
+      "length": 9922,
+      "file_type": "DOS/PE Executable",
+      "entropy": 0.8936457336288453,
+      "md5": "7b34f277dadaa8ff2ab3eb67b610c011"
+    }
+  ]
+}

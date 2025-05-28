@@ -1,0 +1,22 @@
+KEYPLUG Comprehensive Analysis Report
+====================================
+
+Sample: extracted_pe_0000bd9c.bin_multilayer_1.bin
+Analysis Time: 2025-05-28 16:37:37
+OpenVINO Acceleration: Enabled - NPU
+
+Extracted Layers: 0
+
+Behavior Analysis
+-----------------
+No significant behavior detected
+
+Source Code Extraction
+---------------------
+No source code extracted
+
+Cross-Sample Correlations
+------------------------
+No significant cross-sample correlations found
+
+Analysis complete! Check the analysis directory for detailed results.

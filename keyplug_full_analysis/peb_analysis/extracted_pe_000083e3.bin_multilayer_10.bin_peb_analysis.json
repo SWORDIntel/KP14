@@ -1,0 +1,14 @@
+{
+  "file_path": "extracted_pe/extracted_pe_000083e3.bin_multilayer_10.bin",
+  "file_size": 86,
+  "raw_peb_matches": [],
+  "detailed_matches": [],
+  "function_analysis": [],
+  "summary": {
+    "total_peb_patterns": 0,
+    "total_functions": 0,
+    "functions_with_peb": 0,
+    "peb_with_context": 0,
+    "likely_api_resolution": 0
+  }
+}

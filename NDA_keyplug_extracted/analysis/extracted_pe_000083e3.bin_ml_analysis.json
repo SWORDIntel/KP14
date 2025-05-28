@@ -1,0 +1,54 @@
+{
+  "file_info": {
+    "file_path": "NDA_keyplug_extracted/executables/extracted_pe_000083e3.bin",
+    "file_size": 86,
+    "md5": "5f8bb874d926b8334ca9279d49cb5df2",
+    "sha256": "15a60539d5a803d1e726f8dffb3dba3386a8bd96701bc3fd2ece8f12c3ed74c0",
+    "entropy": 0.7614881997125248
+  },
+  "visualization": "NDA_keyplug_extracted/analysis/extracted_pe_000083e3.bin_visualization.png",
+  "ml_analysis": {
+    "detection": {
+      "score": 0.8137858396550297,
+      "is_malicious": true
+    },
+    "classification": {
+      "family_scores": {
+        "trojan": 0.0,
+        "ransomware": 0.0,
+        "backdoor": 0.0,
+        "keylogger": 0.0,
+        "spyware": 0.0,
+        "rootkit": 0.0,
+        "botnet": 0.0,
+        "worm": 0.0
+      },
+      "top_family": "unknown"
+    },
+    "features": {
+      "entropy": 0.7614881997125248,
+      "file_size": 86,
+      "has_pe_header": false,
+      "num_strings": 2,
+      "api_references": 0,
+      "network_apis": 0,
+      "file_apis": 0,
+      "registry_apis": 0,
+      "process_apis": 0,
+      "crypto_apis": 0
+    }
+  },
+  "strings": {
+    "count": 2,
+    "ascii_samples": [
+      "uM;Fb",
+      "*}OF"
+    ],
+    "unicode_samples": []
+  },
+  "api_references": {},
+  "pe_info": {
+    "is_valid_pe": false,
+    "has_mz": true
+  }
+}

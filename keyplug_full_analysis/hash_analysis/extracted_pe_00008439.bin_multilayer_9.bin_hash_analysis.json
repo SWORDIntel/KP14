@@ -1,0 +1,24 @@
+{
+  "file_path": "extracted_pe/extracted_pe_00008439.bin_multilayer_9.bin",
+  "file_size": 14691,
+  "hash_algorithms": [
+    {
+      "offset": 4705,
+      "size": 51,
+      "patterns": [
+        "CMP EAX, imm32 - hash comparison",
+        "XOR EAX, EAX - hash initialization",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 3
+    }
+  ],
+  "api_hashes": [],
+  "processing_time": 0.03186845779418945,
+  "summary": {
+    "total_hash_algorithms": 1,
+    "total_api_hashes": 0
+  }
+}

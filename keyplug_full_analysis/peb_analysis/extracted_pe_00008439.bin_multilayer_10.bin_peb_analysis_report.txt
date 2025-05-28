@@ -1,0 +1,17 @@
+KEYPLUG PEB Traversal Analysis Report
+===================================
+
+File: extracted_pe/extracted_pe_00008439.bin_multilayer_10.bin
+Size: 14691 bytes
+
+Summary
+-------
+Total PEB access patterns found: 0
+Total functions identified: 3
+Functions with PEB traversal: 0
+PEB accesses with context: 0
+Likely API resolution techniques: 0
+
+PEB Traversal Details
+--------------------
+No detailed PEB traversal analysis found in functions.

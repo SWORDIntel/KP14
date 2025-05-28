@@ -1,0 +1,8 @@
+{
+  "layers": "xor(05) -> xor(a2800a28)",
+  "score": 8,
+  "file_size": 86,
+  "md5": "b5fe96af89445c3f098d015a3d132aa0",
+  "strings": [],
+  "function_markers": []
+}

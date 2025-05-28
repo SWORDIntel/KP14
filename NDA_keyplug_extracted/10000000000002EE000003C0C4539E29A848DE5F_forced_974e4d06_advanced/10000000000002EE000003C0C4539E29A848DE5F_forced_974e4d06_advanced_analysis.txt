@@ -1,0 +1,90 @@
+Advanced Analysis Report for 10000000000002EE000003C0C4539E29A848DE5F_forced_974e4d06.bin
+==================================================
+
+File Information:
+  Size: 62395 bytes
+  MD5: 974e4d068fcc8eadc4090c353e29b74d
+  Entropy: 7.97
+
+File Signatures:
+  DOS/PE Executable:
+    Offset: 0x83E3
+    Offset: 0x8439
+    Offset: 0xBD9C
+
+Custom Patterns:
+  No custom patterns found
+
+Interesting Sections:
+  Section #1:
+    Range: 0x5E00 - 0x5F80
+    Entropy Change: 7.02 -> 5.53
+  Section #2:
+    Range: 0x5E80 - 0x6000
+    Entropy Change: 5.53 -> 3.81
+  Section #3:
+    Range: 0x5F00 - 0x6080
+    Entropy Change: 3.81 -> 5.02
+  Section #4:
+    Range: 0x5F80 - 0x6100
+    Entropy Change: 5.02 -> 6.85
+  Section #5:
+    Range: 0xE580 - 0xE700
+    Entropy Change: 7.07 -> 5.91
+  Section #6:
+    Range: 0xE600 - 0xE780
+    Entropy Change: 5.91 -> 3.04
+  Section #7:
+    Range: 0xE680 - 0xE800
+    Entropy Change: 3.04 -> 2.00
+  Section #8:
+    Range: 0xE780 - 0xE900
+    Entropy Change: 2.00 -> 3.49
+  Section #9:
+    Range: 0xE800 - 0xE980
+    Entropy Change: 3.49 -> 6.13
+  Section #10:
+    Range: 0xF180 - 0xF300
+    Entropy Change: 6.93 -> 5.37
+
+Multi-Stage Decryption Results:
+  Result #1:
+    Stage: 1
+    Method: xor
+    Key: 9e
+    Output File: stage1_xor_9e.bin
+    Signatures Found:
+      DOS/PE Executable: 1 occurrences
+
+  Result #2:
+    Stage: 1
+    Method: xor
+    Key: d3
+    Output File: stage1_xor_d3.bin
+    Signatures Found:
+      DOS/PE Executable: 1 occurrences
+
+  Result #3:
+    Stage: 2
+    Method: xor
+    Key: 0a61200d
+    Output File: stage2_xor_0a61200d.bin
+    Signatures Found:
+      DOS/PE Executable: 1 occurrences
+
+  Result #4:
+    Stage: 2
+    Method: xor
+    Key: 410d200d
+    Output File: stage2_xor_410d200d.bin
+    Signatures Found:
+      DOS/PE Executable: 3 occurrences
+
+  Result #5:
+    Stage: 2
+    Method: xor
+    Key: 4100200d
+    Output File: stage2_xor_4100200d.bin
+    Signatures Found:
+      DOS/PE Executable: 2 occurrences
+

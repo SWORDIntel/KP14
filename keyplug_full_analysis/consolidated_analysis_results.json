@@ -1,0 +1,7 @@
+{
+  "analysis_time": "2025-05-28 15:01:35",
+  "file_count": 30,
+  "file_results": [],
+  "openvino_acceleration": true,
+  "cpu_cores": 22
+}

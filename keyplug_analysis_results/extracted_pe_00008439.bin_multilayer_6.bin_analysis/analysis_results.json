@@ -1,0 +1,10 @@
+{
+  "sample": "extracted_pe_00008439.bin_multilayer_6.bin",
+  "analysis_time": "2025-05-28 16:37:37",
+  "openvino_acceleration": true,
+  "preferred_device": "NPU",
+  "layers": [],
+  "behavior": {},
+  "source_code": {},
+  "cross_correlations": []
+}

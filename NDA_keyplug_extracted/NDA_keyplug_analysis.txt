@@ -1,0 +1,73 @@
+KEYPLUG Analysis Report for NDA.odg
+============================================================
+
+File Information:
+  Name: NDA.odg
+  Size: 527733 bytes
+  MD5: 2a35d010ec259eebb9e4cf2a6086214a
+
+Found 3 hidden payloads
+
+Payload #1
+----------------------------------------
+
+Source:
+  JPEG File: 10000000000002EE000003B123F0F4409249C826.jpg
+  JPEG MD5: 9f6dbfafbd464b029b9de5033b2df2fe
+  Location: Pictures/10000000000002EE000003B123F0F4409249C826.jpg
+  Detection Method: forced_heuristic
+
+Payload Details:
+  Payload File: 10000000000002EE000003B123F0F4409249C826_forced_55826cb8.bin
+  Size: 51626 bytes
+  MD5: 55826cb86985579551f0c2ddab345289
+  SHA1: 9c864faa6c0d41893b64ea2a9e48fb690385377b
+  SHA256: 2e0817aa468587b78176ab43c8edd06ce44a24007a2c36bf69e23c52f3829ebf
+  Entropy: 7.82
+
+Network Indicators:
+  Domains: o.nW
+
+
+Payload #2
+----------------------------------------
+
+Source:
+  JPEG File: 10000000000002EE000003C0C4539E29A848DE5F.jpg
+  JPEG MD5: 9d201b8c1c6b75987cd25d9f18119f2d
+  Location: Pictures/10000000000002EE000003C0C4539E29A848DE5F.jpg
+  Detection Method: forced_heuristic
+
+Payload Details:
+  Payload File: 10000000000002EE000003C0C4539E29A848DE5F_forced_974e4d06.bin
+  Size: 62395 bytes
+  MD5: 974e4d068fcc8eadc4090c353e29b74d
+  SHA1: 5f2646ea30593f6a9643e9df429084a431bc2d14
+  SHA256: bb61e1394f878db6bb52c8bb53a59614133c423c65395dcf14eeeae020da93f6
+  Entropy: 7.97
+
+Network Indicators:
+  Domains: j.Sin, n.dF, g.IPB
+
+
+Payload #3
+----------------------------------------
+
+Source:
+  JPEG File: 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+  JPEG MD5: 7cdda16f0ddc8d785352834c31a3d25a
+  Location: Pictures/10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+  Detection Method: forced_heuristic
+
+Payload Details:
+  Payload File: 10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_f601cd5e.bin
+  Size: 30063 bytes
+  MD5: f601cd5e48f91ada41b4c06047ee21eb
+  SHA1: cb1a5a7298c28bec109754105bd3891a2045e97a
+  SHA256: db7ac689e45b4d76dec94c27fe1b8781069235b4084d2e473bb0456d638fd1b9
+  Entropy: 7.95
+
+Network Indicators:
+  Domains: m5.n.Rfvyf, 5Ko.Wx
+
+

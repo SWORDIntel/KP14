@@ -1,0 +1,19 @@
+{
+  "patterns": {
+    "peb_traversal": [],
+    "api_hashing": [],
+    "string_encoding": [],
+    "decoder_functions": [],
+    "api_sequences": [],
+    "c2_patterns": [],
+    "injection_patterns": [],
+    "evasion_techniques": []
+  },
+  "metadata": {
+    "creation_time": "2025-05-28 16:35:27",
+    "last_updated": "2025-05-28 16:35:27",
+    "pattern_count": 0,
+    "openvino_acceleration": true,
+    "preferred_device": "NPU"
+  }
+}

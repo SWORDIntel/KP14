@@ -1,0 +1,12 @@
+Analysis Report for NDA.odg
+==================================================
+
+File Information:
+  Name: NDA.odg
+  Size: 527733 bytes
+  MD5: 2a35d010ec259eebb9e4cf2a6086214a
+  SHA256: 369137040993ce2a4d6b01679d9338a3f9886f0e359c62b96e3e6ea478c35da5
+
+Structure Analysis:
+  Container Format: OpenDocument Drawing (ZIP)
+  Is Polyglot: False

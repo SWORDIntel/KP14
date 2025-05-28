@@ -1,0 +1,79 @@
+{
+  "file": "NDA_keyplug_extracted/executables/extracted_pe_000083e3.bin",
+  "file_size": 86,
+  "total_combinations_tried": 54,
+  "results": [
+    {
+      "layers": "xor(12)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_1.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_1_analysis.json"
+    },
+    {
+      "layers": "xor(05) -> xor(fb7153d9)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_2.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_2_analysis.json"
+    },
+    {
+      "layers": "xor(0d)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_3.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_3_analysis.json"
+    },
+    {
+      "layers": "xor(04)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_4.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_4_analysis.json"
+    },
+    {
+      "layers": "xor(03) -> xor(fb7153d9)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_5.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_5_analysis.json"
+    },
+    {
+      "layers": "xor(b63c1e94)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_6.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_6_analysis.json"
+    },
+    {
+      "layers": "xor(0c)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_7.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_7_analysis.json"
+    },
+    {
+      "layers": "xor(01) -> xor(b63c1e94) -> rotate_xor(d3)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_8.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_8_analysis.json"
+    },
+    {
+      "layers": "xor(01) -> xor(b63c1e94)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_9.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_9_analysis.json"
+    },
+    {
+      "layers": "xor(05) -> xor(a2800a28)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_10.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_10_analysis.json"
+    },
+    {
+      "layers": "xor(10)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_11.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_11_analysis.json"
+    },
+    {
+      "layers": "xor(fb7153d9)",
+      "score": 8,
+      "output_file": "extracted_pe_000083e3.bin_multilayer_12.bin",
+      "analysis_file": "extracted_pe_000083e3.bin_multilayer_12_analysis.json"
+    }
+  ]
+}

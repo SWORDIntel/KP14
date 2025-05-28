@@ -1,0 +1,45 @@
+KEYPLUG API Hash Algorithm Analysis Report
+=========================================
+
+File: extracted_pe/extracted_pe_00008439.bin_multilayer_4.bin
+Size: 14691 bytes
+Processing Time: 0.02 seconds
+
+Summary
+-------
+Total API hashing algorithms found: 3
+Total API hashes identified: 0
+
+Hash Algorithms Detected
+----------------------
+
+[1] Algorithm at offset 0xaab
+    Type: custom
+    Confidence: 1.00
+    Size: 20 bytes
+    Patterns:
+      - CMP EAX, imm32 - hash comparison
+      - XOR EAX, ECX - character xor
+      - INC ESI - increment string pointer
+
+[2] Algorithm at offset 0xc4e
+    Type: custom
+    Confidence: 1.00
+    Size: 132 bytes
+    Patterns:
+      - INC ESI - increment string pointer
+      - INC EDI - increment string pointer
+      - CMP EAX, imm32 - hash comparison
+      - CMP EAX, imm32 - hash comparison
+      - XOR EAX, EAX - hash initialization
+
+[3] Algorithm at offset 0x35d4
+    Type: custom
+    Confidence: 1.00
+    Size: 48 bytes
+    Patterns:
+      - CMP EAX, imm32 - hash comparison
+      - CMP EAX, imm32 - hash comparison
+      - ADD EAX, EDX - character addition
+
+No API hashes identified.

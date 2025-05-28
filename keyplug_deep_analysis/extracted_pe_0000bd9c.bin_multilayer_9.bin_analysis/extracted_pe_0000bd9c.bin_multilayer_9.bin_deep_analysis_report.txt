@@ -1,0 +1,24 @@
+KEYPLUG Deep Analysis Report for extracted_pe_0000bd9c.bin_multilayer_9.bin
+=============================================================================
+
+Analysis Time: 2025-05-28 15:09:20
+OpenVINO Acceleration: Enabled - NPU
+CPU Cores Utilized: 22
+
+Summary
+-------
+Total Layers Extracted: 1
+Potential C2 Endpoints: 0
+Potential Injection Points: 0
+API Hashing Algorithms: 0
+Encoded Strings: 0
+Decoder Functions: 0
+
+Layer Analysis
+-------------
+
+Layer: extracted_pe_0000bd9c.bin_multilayer_9.bin
+Size: 13855 bytes
+
+
+Detailed analysis reports for each component are available in their respective directories.

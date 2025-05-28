@@ -1,0 +1,22 @@
+{
+  "file_path": "NDA_keyplug_extracted/accelerated_analysis/extracted_pe_0000bd9c.bin_multilayer_1.bin",
+  "file_size": 13855,
+  "md5": "69812f10fb2a66f24c0b025e7cf0bbfe",
+  "sha256": "495934693fb8a8ff5c9732c9094a0d25b785879003a750c1b358b89915ed0fa1",
+  "functions_count": 5,
+  "high_risk_functions": 0,
+  "medium_risk_functions": 0,
+  "low_risk_functions": 5,
+  "behavior_summary": {
+    "file_operations": false,
+    "registry_operations": false,
+    "process_operations": false,
+    "memory_operations": false,
+    "network_operations": false,
+    "crypto_operations": false,
+    "code_injection": false,
+    "command_execution": false,
+    "persistence": false,
+    "anti_analysis": false
+  }
+}

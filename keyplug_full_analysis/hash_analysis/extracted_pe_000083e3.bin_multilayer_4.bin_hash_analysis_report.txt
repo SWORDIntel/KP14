@@ -1,0 +1,16 @@
+KEYPLUG API Hash Algorithm Analysis Report
+=========================================
+
+File: extracted_pe/extracted_pe_000083e3.bin_multilayer_4.bin
+Size: 86 bytes
+Processing Time: 0.00 seconds
+
+Summary
+-------
+Total API hashing algorithms found: 0
+Total API hashes identified: 0
+
+No API hashing algorithms detected.
+
+
+No API hashes identified.

@@ -1,0 +1,8 @@
+{
+  "layers": "xor(01) -> xor(b63c1e94) -> rotate_xor(d3)",
+  "score": 8,
+  "file_size": 86,
+  "md5": "acbf9a8d1b37c87da67981a9388e791d",
+  "strings": [],
+  "function_markers": []
+}

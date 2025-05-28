@@ -1,0 +1,22 @@
+KEYPLUG Consolidated Analysis Report
+==================================
+
+Analysis Time: 2025-05-28 15:01:35
+Files Analyzed: 0
+OpenVINO Acceleration: Enabled
+Preferred Device: CPU
+CPU Cores Utilized: 22
+
+Summary of Findings
+-----------------
+Total PEB Traversal Instances: 0
+Total API Hash Algorithms: 0
+Total API Hashes Identified: 0
+Total Encoded Strings: 0
+Total Decoder Functions: 0
+
+Per-File Analysis Results
+------------------------
+
+
+Detailed analysis reports for each component are available in their respective directories.

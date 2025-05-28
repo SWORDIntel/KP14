@@ -1,0 +1,80 @@
+{
+  "layers": "xor(9ed3a5)",
+  "score": 22,
+  "file_size": 14691,
+  "md5": "a97d355e5d260a8835f86b79057c5120",
+  "strings": [
+    "&-*^",
+    "^\"s1",
+    "&l+*",
+    "(eTS[",
+    "cuG~:s@",
+    "5|3H",
+    "JxqH",
+    "}zw)\\ n'p",
+    "is>\"+/4`",
+    "1lw#",
+    "#C3/X",
+    "F@w2[",
+    "~/Xr",
+    "_;K;r",
+    "vgb`)",
+    "^,t;",
+    "\\1uL",
+    "oS3n",
+    "s1>Qv",
+    "&eby",
+    "bIaR9:",
+    "G5;s",
+    ":Y,h",
+    "wc{Q",
+    "TM!l:kU(T",
+    ".I;1y",
+    "f1GaK",
+    "Yr[Ih;w",
+    "TD&<",
+    "hUx\\",
+    "Sk;~",
+    "!4wYn)",
+    "::vw",
+    "i@0N",
+    "294Na",
+    "9.H<",
+    "&JbV",
+    "u+o#",
+    "$dvr",
+    "eZ?$",
+    "36=\"",
+    "GE_[",
+    "X)tz",
+    "VZEO",
+    "Rgn#",
+    "U_X!s",
+    "m/`&",
+    "SB{#",
+    ":Xs'd",
+    "Vyj^"
+  ],
+  "function_markers": [
+    {
+      "offset": 4894,
+      "prologue": "4056"
+    },
+    {
+      "offset": 6735,
+      "prologue": "4053"
+    },
+    {
+      "offset": 10119,
+      "prologue": "83ec"
+    },
+    {
+      "offset": 12419,
+      "prologue": "4053"
+    },
+    {
+      "offset": 12946,
+      "prologue": "81ec"
+    }
+  ]
+}

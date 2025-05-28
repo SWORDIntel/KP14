@@ -1,0 +1,407 @@
+{
+  "file": "NDA_keyplug_extracted/executables/extracted_pe_00008439.bin",
+  "file_size": 14691,
+  "total_combinations_tried": 95,
+  "results": [
+    {
+      "key": "d3+a2800a28+fb7153d9",
+      "score": 9,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+a2800a28+fb7153d9.bin"
+    },
+    {
+      "key": "9e+9ed3a5+a2800a28",
+      "score": 9,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+9ed3a5+a2800a28.bin"
+    },
+    {
+      "key": "pattern_shift_3",
+      "score": 9,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_pattern_shift_3.bin"
+    },
+    {
+      "key": "a5+b63c1e94+fb7153d9",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+b63c1e94+fb7153d9.bin"
+    },
+    {
+      "key": "a5+b63c1e94",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+b63c1e94.bin"
+    },
+    {
+      "key": "a2800a28",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a2800a28.bin"
+    },
+    {
+      "key": "a5+a2800a28",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+a2800a28.bin"
+    },
+    {
+      "key": "9e",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e.bin"
+    },
+    {
+      "key": "d3+b63c1e94",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+b63c1e94.bin"
+    },
+    {
+      "key": "a2800a28+fb7153d9",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a2800a28+fb7153d9.bin"
+    },
+    {
+      "key": "d3+b63c1e94+fb7153d9",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+b63c1e94+fb7153d9.bin"
+    },
+    {
+      "key": "a5+a2800a28+b63c1e94",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+a2800a28+b63c1e94.bin"
+    },
+    {
+      "key": "a2800a28+b63c1e94",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a2800a28+b63c1e94.bin"
+    },
+    {
+      "key": "d3+a2800a28+b63c1e94",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+a2800a28+b63c1e94.bin"
+    },
+    {
+      "key": "9e+a2800a28",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a2800a28.bin"
+    },
+    {
+      "key": "9e+9ed3a5",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+9ed3a5.bin"
+    },
+    {
+      "key": "a2800a28+b63c1e94+fb7153d9",
+      "score": 8,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a2800a28+b63c1e94+fb7153d9.bin"
+    },
+    {
+      "key": "d3+9ed3+9ed3a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+9ed3+9ed3a5.bin"
+    },
+    {
+      "key": "9e+9ed3a5+fb7153d9",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+9ed3a5+fb7153d9.bin"
+    },
+    {
+      "key": "a5+9ed3+9ed3a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+9ed3+9ed3a5.bin"
+    },
+    {
+      "key": "9e+b63c1e94+fb7153d9",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+b63c1e94+fb7153d9.bin"
+    },
+    {
+      "key": "d3+a2800a28",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+a2800a28.bin"
+    },
+    {
+      "key": "9e+9ed3a5+b63c1e94",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+9ed3a5+b63c1e94.bin"
+    },
+    {
+      "key": "9e+d3+a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3+a5.bin"
+    },
+    {
+      "key": "9ed3a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3a5.bin"
+    },
+    {
+      "key": "9ed3+a2800a28+fb7153d9",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3+a2800a28+fb7153d9.bin"
+    },
+    {
+      "key": "9ed3+a2800a28+b63c1e94",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3+a2800a28+b63c1e94.bin"
+    },
+    {
+      "key": "9e+b63c1e94",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+b63c1e94.bin"
+    },
+    {
+      "key": "9e+9ed3+9ed3a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+9ed3+9ed3a5.bin"
+    },
+    {
+      "key": "a5",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5.bin"
+    },
+    {
+      "key": "9ed3a5+b63c1e94+fb7153d9",
+      "score": 7,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3a5+b63c1e94+fb7153d9.bin"
+    },
+    {
+      "key": "a5+a2800a28+fb7153d9",
+      "score": 6,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+a2800a28+fb7153d9.bin"
+    },
+    {
+      "key": "pattern_shift_2",
+      "score": 6,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_pattern_shift_2.bin"
+    },
+    {
+      "key": "9e+a5+9ed3a5",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a5+9ed3a5.bin"
+    },
+    {
+      "key": "9e+a5+a2800a28",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a5+a2800a28.bin"
+    },
+    {
+      "key": "9e+a5+9ed3",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a5+9ed3.bin"
+    },
+    {
+      "key": "9ed3+a2800a28",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3+a2800a28.bin"
+    },
+    {
+      "key": "9ed3+9ed3a5",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9ed3+9ed3a5.bin"
+    },
+    {
+      "key": "9e+a5+b63c1e94",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a5+b63c1e94.bin"
+    },
+    {
+      "key": "d3+a5+b63c1e94",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+a5+b63c1e94.bin"
+    },
+    {
+      "key": "9e+d3",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3.bin"
+    },
+    {
+      "key": "9e+d3+fb7153d9",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3+fb7153d9.bin"
+    },
+    {
+      "key": "9e+a5",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+a5.bin"
+    },
+    {
+      "key": "a5+9ed3a5+a2800a28",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+9ed3a5+a2800a28.bin"
+    },
+    {
+      "key": "a5+9ed3a5+fb7153d9",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+9ed3a5+fb7153d9.bin"
+    },
+    {
+      "key": "9e+d3+b63c1e94",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3+b63c1e94.bin"
+    },
+    {
+      "key": "a5+9ed3a5",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_a5+9ed3a5.bin"
+    },
+    {
+      "key": "d3+a5+9ed3",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_d3+a5+9ed3.bin"
+    },
+    {
+      "key": "9e+d3+a2800a28",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3+a2800a28.bin"
+    },
+    {
+      "key": "9e+d3+9ed3a5",
+      "score": 5,
+      "target": "full_file",
+      "offset": 0,
+      "length": 14691,
+      "output_file": "extracted_pe_00008439.bin_full_file_9e+d3+9ed3a5.bin"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+Analysis Report for 10000000000002EE000003C0C4539E29A848DE5F_forced_974e4d06.bin
+==================================================
+
+File Information:
+  Size: 62395 bytes
+  MD5: 974e4d068fcc8eadc4090c353e29b74d
+  Entropy: 7.97
+
+Extracted 663 strings
+
+Decryption Attempts:
+Attempt #1:
+  Method: known_xor, Key: 9e
+  Output file: decrypted_known_9e_b3785632.bin
+  MD5: b37856324d88eed76728907d9ae45101
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #2:
+  Method: known_xor, Key: d3
+  Output file: decrypted_known_d3_ebe32fe6.bin
+  MD5: ebe32fe690aaa9f17ea189c227c768d6
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #3:
+  Method: known_xor, Key: a5
+  Output file: decrypted_known_a5_1c7dfd1d.bin
+  MD5: 1c7dfd1d864e4e3818cb1df92643cf61
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #4:
+  Method: known_xor, Key: 00
+  Output file: decrypted_known_00_974e4d06.bin
+  MD5: 974e4d068fcc8eadc4090c353e29b74d
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #5:
+  Method: known_xor, Key: ff
+  Output file: decrypted_known_ff_33e438f9.bin
+  MD5: 33e438f98b34350be054ed469096519e
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #6:
+  Method: known_xor, Key: aa
+  Output file: decrypted_known_aa_a0b124ac.bin
+  MD5: a0b124ac3145aa5758cc04193ada6de8
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #7:
+  Method: known_xor, Key: 55
+  Output file: decrypted_known_55_3470b08b.bin
+  MD5: 3470b08b4786f2364cac36a525c7d5e0
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #8:
+  Method: known_xor, Key: 0a61200d
+  Output file: decrypted_known_0a61200d_987d7321.bin
+  MD5: 987d73210b798745f72735f88a62d99a
+  Entropy: 7.99
+  Is PE: False
+  Is Script: False
+
+Attempt #9:
+  Method: known_xor, Key: 410d200d
+  Output file: decrypted_known_410d200d_0e817ddc.bin
+  MD5: 0e817ddc30943376e8589b471c9c79d7
+  Entropy: 7.98
+  Is PE: False
+  Is Script: False
+
+Attempt #10:
+  Method: known_xor, Key: 4100200d
+  Output file: decrypted_known_4100200d_1c51c1af.bin
+  MD5: 1c51c1af1987d6ceb4d0c896659b1dea
+  Entropy: 7.99
+  Is PE: False
+  Is Script: False
+
+Attempt #11:
+  Method: known_xor, Key: 41414141
+  Output file: decrypted_known_41414141_e4b6529b.bin
+  MD5: e4b6529b8fb7425e0ea8dc51a1ca4af2
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #12:
+  Method: known_xor, Key: 00000000
+  Output file: decrypted_known_00000000_974e4d06.bin
+  MD5: 974e4d068fcc8eadc4090c353e29b74d
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #13:
+  Method: known_xor, Key: ffffffff
+  Output file: decrypted_known_ffffffff_33e438f9.bin
+  MD5: 33e438f98b34350be054ed469096519e
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+
+Attempt #14:
+  Method: known_xor, Key: 12345678
+  Output file: decrypted_known_12345678_d5034df2.bin
+  MD5: d5034df2cf644ece933dbdf893537a25
+  Entropy: 7.99
+  Is PE: False
+  Is Script: False
+
+Attempt #15:
+  Method: known_xor, Key: 87654321
+  Output file: decrypted_known_87654321_9fe97723.bin
+  MD5: 9fe977237da9d711f74bd47a99e1fdc0
+  Entropy: 7.99
+  Is PE: False
+  Is Script: False
+
+Attempt #16:
+  Method: known_xor, Key: deadbeef
+  Output file: decrypted_known_deadbeef_de4ab8ed.bin
+  MD5: de4ab8ed719781fc2fcd03692ebe95c3
+  Entropy: 7.99
+  Is PE: False
+  Is Script: False
+
+Attempt #17:
+  Method: detected_xor, Key: 01
+  Output file: decrypted_detected_01_8f935022.bin
+  MD5: 8f935022e07895d856aa84bac547ce94
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+  Score: 5
+
+Attempt #18:
+  Method: detected_xor, Key: 02
+  Output file: decrypted_detected_02_62dd9d19.bin
+  MD5: 62dd9d1902c89722f334b54173213a6d
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+  Score: 5
+
+Attempt #19:
+  Method: detected_xor, Key: 03
+  Output file: decrypted_detected_03_6726bb8c.bin
+  MD5: 6726bb8cbfe8298a543b862220145938
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+  Score: 5
+
+Attempt #20:
+  Method: detected_xor, Key: 04
+  Output file: decrypted_detected_04_5e2bdae7.bin
+  MD5: 5e2bdae751b5705b12deb6935393517e
+  Entropy: 7.97
+  Is PE: False
+  Is Script: False
+  Score: 5
+

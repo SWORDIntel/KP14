@@ -1,0 +1,175 @@
+KEYPLUG Master Analysis Report
+=============================
+
+Analysis Time: 2025-05-28 15:10:32
+Total Files Analyzed: 30
+Successfully Analyzed: 30
+Failed to Analyze: 0
+OpenVINO Acceleration: Enabled - NPU
+CPU Cores Utilized: 22
+Total Processing Time: 21.99 seconds
+
+Summary of Findings
+-----------------
+Total Layers Extracted: 30
+Potential C2 Endpoints: 0
+Potential Injection Points: 0
+API Hashing Algorithms: 0
+Encoded Strings: 0
+Decoder Functions: 0
+
+Per-File Summary
+--------------
+
+File: extracted_pe_00008439.bin_multilayer_8.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_10.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_5.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_5.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_6.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_7.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_8.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_10.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_1.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_3.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_3.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_1.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_2.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_4.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_10.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_6.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_7.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_2.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_00008439.bin_multilayer_9.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_4.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_000083e3.bin_multilayer_9.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_1.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_2.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_9.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_7.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_5.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_8.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_3.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_6.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+File: extracted_pe_0000bd9c.bin_multilayer_4.bin
+  Layers: 1
+  C2 Endpoints: 0
+  Injection Points: 0
+
+
+Complete! Check individual file reports for detailed analysis results.

@@ -1,0 +1,72 @@
+{
+  "layers": "xor(03) -> xor(b63c1e94) -> rotate_xor(d3)",
+  "score": 16,
+  "file_size": 14691,
+  "md5": "97819518fa95b49db5fc3562a90b901c",
+  "strings": [
+    "taPG",
+    "n\"I+\"",
+    "45;v",
+    "KB3y",
+    "x9tnQ",
+    "Zi-t",
+    "za8=?",
+    "DXkE3",
+    "H$[t",
+    "Q;;>",
+    "-uLO>Cg'",
+    ",fDZ",
+    "-\"H(",
+    "8Om9",
+    "[ylqi",
+    " Jh+",
+    "r!:]",
+    "idR q(",
+    ".v9Rl$",
+    "UqDj",
+    "A~H^",
+    "T5yLY",
+    "nn.O",
+    "?^&-",
+    "E[~w",
+    "XhOM(",
+    "K@04",
+    "x!J1",
+    "c7)i.",
+    "Jz&V",
+    "bNUMB",
+    "9X*`1Ls",
+    "tw /",
+    "Rlr))+l&",
+    ",nV%",
+    "/+;?/+;?/+;?/+;?/K",
+    "w!77",
+    "k#QV",
+    "rd3#",
+    "32Q ",
+    "`7F4",
+    ">YkXp",
+    "ZmA}",
+    "aF\\j",
+    "#@n<",
+    "aw'6",
+    "N/|+",
+    ">GV]",
+    "I]xR",
+    "bmJk"
+  ],
+  "function_markers": [
+    {
+      "offset": 9427,
+      "prologue": "4053"
+    },
+    {
+      "offset": 9910,
+      "prologue": "83ec"
+    },
+    {
+      "offset": 14682,
+      "prologue": "4055"
+    }
+  ]
+}

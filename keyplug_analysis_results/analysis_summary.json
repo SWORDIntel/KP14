@@ -1,0 +1,13 @@
+{
+  "analysis_time": "2025-05-28 16:37:47",
+  "openvino_acceleration": true,
+  "preferred_device": "NPU",
+  "total_files": 30,
+  "successful": 30,
+  "failed": 0,
+  "max_depth": 3,
+  "layer_extraction": true,
+  "behavior_analysis": true,
+  "source_extraction": true,
+  "decompiler": "ghidra"
+}

@@ -1,0 +1,9 @@
+{
+  "file": "extracted_pe_000083e3.bin_multilayer_9.bin",
+  "analysis_time": "2025-05-28 15:10:12",
+  "openvino_acceleration": true,
+  "preferred_device": "NPU",
+  "max_depth": 5,
+  "extracted_layers": [],
+  "layer_count": 0
+}

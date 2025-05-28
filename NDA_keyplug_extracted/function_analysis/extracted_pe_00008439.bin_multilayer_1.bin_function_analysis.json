@@ -1,0 +1,172 @@
+[
+  {
+    "start_offset": 4894,
+    "end_offset": 5053,
+    "size": 159,
+    "prologue": {
+      "offset": 4894,
+      "pattern": "4056",
+      "description": "push rsi",
+      "arch": "x64"
+    },
+    "epilogue": {
+      "offset": 5052,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 6735,
+    "end_offset": 7090,
+    "size": 355,
+    "prologue": {
+      "offset": 6735,
+      "pattern": "4053",
+      "description": "push rbx",
+      "arch": "x64"
+    },
+    "epilogue": {
+      "offset": 7089,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 10119,
+    "end_offset": 10788,
+    "size": 669,
+    "prologue": {
+      "offset": 10119,
+      "pattern": "83ec",
+      "description": "sub esp, X",
+      "arch": "x86"
+    },
+    "epilogue": {
+      "offset": 10787,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [
+      {
+        "string": " ;>:D~",
+        "encoding": "ascii"
+      }
+    ],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 12419,
+    "end_offset": 12558,
+    "size": 139,
+    "prologue": {
+      "offset": 12419,
+      "pattern": "4053",
+      "description": "push rbx",
+      "arch": "x64"
+    },
+    "epilogue": {
+      "offset": 12557,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 12946,
+    "end_offset": 13180,
+    "size": 234,
+    "prologue": {
+      "offset": 12946,
+      "pattern": "81ec",
+      "description": "sub esp, XXXX",
+      "arch": "x86"
+    },
+    "epilogue": {
+      "offset": 13179,
+      "pattern": "c2",
+      "description": "ret X"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  }
+]

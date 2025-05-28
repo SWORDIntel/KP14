@@ -1,0 +1,22 @@
+{
+  "file": "extracted_pe_0000bd9c.bin_multilayer_9.bin",
+  "analysis_time": "2025-05-28 15:09:20",
+  "openvino_acceleration": true,
+  "preferred_device": "NPU",
+  "cpu_cores": 22,
+  "layers": [
+    {
+      "name": "extracted_pe_0000bd9c.bin_multilayer_9.bin",
+      "size": 13855,
+      "findings": {}
+    }
+  ],
+  "summary": {
+    "total_layers": 1,
+    "potential_c2_endpoints": 0,
+    "potential_injection_points": 0,
+    "api_hashing_algorithms": 0,
+    "encoded_strings": 0,
+    "decoder_functions": 0
+  }
+}

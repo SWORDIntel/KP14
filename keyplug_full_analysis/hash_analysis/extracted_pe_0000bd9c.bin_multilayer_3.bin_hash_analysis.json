@@ -1,0 +1,38 @@
+{
+  "file_path": "extracted_pe/extracted_pe_0000bd9c.bin_multilayer_3.bin",
+  "file_size": 13855,
+  "hash_algorithms": [
+    {
+      "offset": 11945,
+      "size": 51,
+      "patterns": [
+        "CMP EAX, imm32 - hash comparison",
+        "XOR EAX, EAX - hash initialization",
+        "CMP EAX, imm32 - hash comparison",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 4
+    },
+    {
+      "offset": 12485,
+      "size": 51,
+      "patterns": [
+        "CMP EAX, imm32 - hash comparison",
+        "XOR EAX, EAX - hash initialization",
+        "CMP EAX, imm32 - hash comparison",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 4
+    }
+  ],
+  "api_hashes": [],
+  "processing_time": 0.0309293270111084,
+  "summary": {
+    "total_hash_algorithms": 2,
+    "total_api_hashes": 0
+  }
+}

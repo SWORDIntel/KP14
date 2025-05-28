@@ -1,0 +1,26 @@
+{
+  "file_path": "extracted_pe/extracted_pe_00008439.bin_multilayer_5.bin",
+  "file_size": 14691,
+  "hash_algorithms": [
+    {
+      "offset": 1881,
+      "size": 145,
+      "patterns": [
+        "INC ESI - increment string pointer",
+        "INC ESI - increment string pointer",
+        "INC EDI - increment string pointer",
+        "XOR EDX, EDX - hash initialization",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 5
+    }
+  ],
+  "api_hashes": [],
+  "processing_time": 0.030371904373168945,
+  "summary": {
+    "total_hash_algorithms": 1,
+    "total_api_hashes": 0
+  }
+}

@@ -1,0 +1,172 @@
+[
+  {
+    "start_offset": 355,
+    "end_offset": 373,
+    "size": 18,
+    "prologue": {
+      "offset": 355,
+      "pattern": "4053",
+      "description": "push rbx",
+      "arch": "x64"
+    },
+    "epilogue": {
+      "offset": 372,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 714,
+    "end_offset": 911,
+    "size": 197,
+    "prologue": {
+      "offset": 714,
+      "pattern": "83ec",
+      "description": "sub esp, X",
+      "arch": "x86"
+    },
+    "epilogue": {
+      "offset": 910,
+      "pattern": "c2",
+      "description": "ret X"
+    },
+    "api_calls": [],
+    "strings": [
+      {
+        "string": "+L.1(u8",
+        "encoding": "ascii"
+      },
+      {
+        "string": "}/6{3>",
+        "encoding": "ascii"
+      }
+    ],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 1411,
+    "end_offset": 1428,
+    "size": 17,
+    "prologue": {
+      "offset": 1411,
+      "pattern": "4056",
+      "description": "push rsi",
+      "arch": "x64"
+    },
+    "epilogue": null,
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 1428,
+    "end_offset": 1506,
+    "size": 78,
+    "prologue": {
+      "offset": 1428,
+      "pattern": "81ec",
+      "description": "sub esp, XXXX",
+      "arch": "x86"
+    },
+    "epilogue": {
+      "offset": 1505,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  },
+  {
+    "start_offset": 8614,
+    "end_offset": 8699,
+    "size": 85,
+    "prologue": {
+      "offset": 8614,
+      "pattern": "4057",
+      "description": "push rdi",
+      "arch": "x64"
+    },
+    "epilogue": {
+      "offset": 8698,
+      "pattern": "c3",
+      "description": "ret"
+    },
+    "api_calls": [],
+    "strings": [],
+    "behavior": {
+      "file_operations": false,
+      "registry_operations": false,
+      "process_operations": false,
+      "memory_operations": false,
+      "network_operations": false,
+      "crypto_operations": false,
+      "system_info": false,
+      "gui_operations": false,
+      "code_injection": false,
+      "command_execution": false,
+      "persistence": false,
+      "anti_analysis": false
+    },
+    "risk_score": 0
+  }
+]
