@@ -2,3 +2,5 @@
 *.pyc
 *.bin
 /__pycache__
+
+/net-commander
