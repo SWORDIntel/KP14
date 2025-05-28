@@ -28,6 +28,7 @@ from keyplug_api_sequence_detector import APISequenceDetector
 from keyplug_behavioral_analyzer import BehavioralAnalyzer
 from keyplug_cross_sample_correlator import CrossSampleCorrelator
 from keyplug_openvino_accelerator import OpenVINOAccelerator
+from keyplug_memory_forensics import KeyplugMemoryAnalyzer # Added for memory forensics
 
 # Try to import OpenVINO for hardware acceleration
 try:
@@ -91,13 +92,23 @@ class KEYPLUGAnalyzer:
         self.behavioral_analyzer = BehavioralAnalyzer(use_openvino=self.use_openvino)
         self.cross_correlator = CrossSampleCorrelator(use_openvino=self.use_openvino)
         self.source_extractor = SourceCodeExtractor(use_openvino=self.use_openvino)
-    
+        
+        # Initialize Memory Analyzer
+        if OPENVINO_AVAILABLE:
+            self.memory_analyzer = KeyplugMemoryAnalyzer(ov_core=core, device_name=PREFERRED_DEVICE)
+            print("Memory Forensics Analyzer initialized with OpenVINO.")
+        else:
+            # Assuming KeyplugMemoryAnalyzer can handle ov_core=None
+            self.memory_analyzer = KeyplugMemoryAnalyzer(ov_core=None, device_name="CPU")
+            print("Memory Forensics Analyzer initialized without OpenVINO.")
+
     def analyze_sample(self, sample_path, output_dir, 
                       extract_layers=True, 
                       analyze_behavior=True, 
                       extract_source=True,
                       decompiler="ghidra",
-                      max_depth=MAX_DEPTH):
+                      max_depth=MAX_DEPTH,
+                      memory_dump_path=None): # New parameter for memory dump
         """
         Analyze a single malware sample
         
@@ -134,14 +145,34 @@ class KEYPLUGAnalyzer:
             "layers": [],
             "behavior": {},
             "source_code": {},
-            "cross_correlations": []
+            "cross_correlations": [],
+            "memory_forensics": {"info": "Memory analysis not performed."} # Initialize memory_forensics
         }
         
         try:
+            # Step 0: Optional Memory Forensics (if dump provided)
+            # This is placed early as it might provide context, though it's independent of sample file layers
+            if memory_dump_path and hasattr(self, 'memory_analyzer') and self.memory_analyzer:
+                if os.path.exists(memory_dump_path):
+                    print(f"[*] Starting memory forensics for {memory_dump_path} related to sample {sample_name}...")
+                    try:
+                        mem_results = self.memory_analyzer.analyze_dump(memory_dump_path)
+                        results["memory_forensics"] = mem_results
+                        print(f"[*] Memory forensics complete for {memory_dump_path}.")
+                    except Exception as e:
+                        print(f"Error during memory analysis of {memory_dump_path}: {e}")
+                        results["memory_forensics"] = {"info": f"Error during memory analysis: {e}", "error": True}
+                else:
+                    print(f"Warning: Memory dump file {memory_dump_path} not found. Skipping memory analysis.")
+                    results["memory_forensics"] = {"info": f"Memory dump file {memory_dump_path} not found.", "skipped": True}
+            elif memory_dump_path:
+                 results["memory_forensics"] = {"info": "Memory analyzer not available.", "skipped": True}
+
+
             # Step 1: Extract layers
             layers = []
             if extract_layers:
-                print(f"[1/4] Extracting layers from {sample_name}...")
+                print(f"[1/5] Extracting layers from {sample_name}...") # Updated step numbering
                 layers_dir = os.path.join(sample_output_dir, "layers")
                 
                 if not os.path.exists(layers_dir):
@@ -174,7 +205,7 @@ class KEYPLUGAnalyzer:
             
             # Step 2: Analyze behavior
             if analyze_behavior:
-                print(f"[2/4] Analyzing behavior of {sample_name}...")
+                print(f"[2/5] Analyzing behavior of {sample_name}...") # Updated step numbering
                 behavior_dir = os.path.join(sample_output_dir, "behavior")
                 
                 if not os.path.exists(behavior_dir):
@@ -215,7 +246,7 @@ class KEYPLUGAnalyzer:
             
             # Step 3: Extract source code
             if extract_source:
-                print(f"[3/4] Extracting source code from {sample_name}...")
+                print(f"[3/5] Extracting source code from {sample_name}...") # Updated step numbering
                 source_dir = os.path.join(sample_output_dir, "source_code")
                 
                 if not os.path.exists(source_dir):
@@ -267,7 +298,7 @@ class KEYPLUGAnalyzer:
                 print(f"Source code extraction complete. Results saved to {source_dir}")
             
             # Step 4: Perform cross-sample correlation
-            print(f"[4/4] Performing cross-sample correlation...")
+            print(f"[4/5] Performing cross-sample correlation...") # Updated step numbering
             
             # Get all previously analyzed samples
             analyzed_samples = []
@@ -350,9 +381,56 @@ class KEYPLUGAnalyzer:
             for i, layer in enumerate(results['layers']):
                 f.write(f"  {i+1}. {layer['name']}\n")
             f.write("\n")
-            
+
+            # Memory Forensics (if performed)
+            if "memory_forensics" in results and results["memory_forensics"].get("info") != "Memory analysis not performed.":
+                f.write("Memory Forensics Analysis\n")
+                f.write("-------------------------\n")
+                mem_info = results["memory_forensics"]
+                f.write(f"  Status: {mem_info.get('info', 'N/A')}\n")
+                if mem_info.get("error"):
+                    f.write(f"  Error: {mem_info.get('error_details', 'Unknown error')}\n")
+                elif mem_info.get("skipped"):
+                     f.write(f"  Skipped: Yes\n")
+                else:
+                    # Basic summary of memory findings - can be expanded
+                    if "processes" in mem_info and isinstance(mem_info["processes"], dict):
+                         f.write(f"  Processes Listed: {len(mem_info['processes'].get('processes', []))}\n")
+                         suspicious_procs = mem_info['processes'].get('suspicious_processes_identified', [])
+                         if suspicious_procs:
+                             f.write(f"  Suspicious Processes Identified: {len(suspicious_procs)}\n")
+                             for i, p_susp in enumerate(suspicious_procs[:2]): # Show first 2
+                                 f.write(f"    - PID: {p_susp.get('pid')}, Name: {p_susp.get('name')}, Reason: {p_susp.get('suspicious_reason')}\n")
+                    
+                    if "keyplug_artifacts" in mem_info and isinstance(mem_info["keyplug_artifacts"], dict):
+                        found_artifacts = mem_info['keyplug_artifacts'].get('found_keyplug_artifacts', [])
+                        if found_artifacts:
+                            f.write(f"  KEYPLUG Artifacts Found in Memory: {len(found_artifacts)}\n")
+                            for i, art in enumerate(found_artifacts[:2]): # Show first 2
+                                f.write(f"    - PID: {art.get('pid')}, Process: {art.get('process_name')}, Pattern: {art.get('pattern_name')} at {art.get('absolute_offset')}\n")
+                    
+                    if "module_analysis" in mem_info and isinstance(mem_info["module_analysis"], dict):
+                        suspicious_mods = mem_info['module_analysis'].get('suspicious_modules_summary', [])
+                        if suspicious_mods:
+                            f.write(f"  Suspicious Modules Identified: {len(suspicious_mods)}\n")
+                            for i, m_susp in enumerate(suspicious_mods[:2]): # Show first 2
+                                f.write(f"    - PID: {m_susp.get('pid')}, Module: {m_susp.get('module_path', 'N/A')}, Reason: {m_susp.get('reason')}\n")
+
+                    if "network_info" in mem_info and isinstance(mem_info["network_info"], dict):
+                        connections = mem_info['network_info'].get('connections_and_listeners', [])
+                        if connections:
+                             f.write(f"  Network Connections/Listeners Found: {len(connections)}\n")
+                    
+                    if "api_hooks" in mem_info and isinstance(mem_info["api_hooks"], dict):
+                        hooks = mem_info['api_hooks'].get('detected_hooks', [])
+                        if hooks:
+                            f.write(f"  API Hooks Detected: {len(hooks)}\n")
+                            for i, hook in enumerate(hooks[:2]): # Show first 2
+                                f.write(f"    - PID: {hook.get('pid')}, Victim: {hook.get('victim_module')}, Func: {hook.get('victim_function')}\n")
+                f.write("\n")
+
             # Behavior analysis
-            f.write("Behavior Analysis\n")
+            f.write("Behavior Analysis (Sample File)\n")
             f.write("-----------------\n")
             
             if results['behavior']:
@@ -447,6 +525,7 @@ def main():
     parser.add_argument('--no-source', action='store_true', help='Disable source code extraction')
     parser.add_argument('--decompiler', help='Decompiler to use (ghidra, retdec, ida)', default='ghidra')
     parser.add_argument('--no-openvino', action='store_true', help='Disable OpenVINO acceleration')
+    parser.add_argument('--memory-dump', help='Path to a memory dump file for forensics analysis (optional)')
     args = parser.parse_args()
     
     # Validate arguments
@@ -476,7 +555,8 @@ def main():
             analyze_behavior=not args.no_behavior,
             extract_source=not args.no_source,
             decompiler=args.decompiler,
-            max_depth=args.max_depth
+            max_depth=args.max_depth,
+            memory_dump_path=args.memory_dump # Pass memory dump path
         )
         
         if not results:
@@ -516,7 +596,8 @@ def main():
                     not args.no_behavior,
                     not args.no_source,
                     args.decompiler,
-                    args.max_depth
+                    args.max_depth,
+                    args.memory_dump # Pass memory dump path to each sample analysis in directory
                 ): file_path for file_path in files
             }
             
@@ -544,7 +625,8 @@ def main():
             "layer_extraction": not args.no_layers,
             "behavior_analysis": not args.no_behavior,
             "source_extraction": not args.no_source,
-            "decompiler": args.decompiler
+            "decompiler": args.decompiler,
+            "memory_dump_provided": True if args.memory_dump else False
         }
         
         # Save summary
