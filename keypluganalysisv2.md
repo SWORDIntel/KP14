@@ -149,8 +149,94 @@ processor.register_file(file_path)
 processor.store_file_result(file_name, "ExtractPE", extraction_result)
 
 # Generate consolidated reports
-report_paths = processor.generate_consolidated_report()
+report_paths = processor.generate_reports()
 print(f"Reports generated: {report_paths}")
+```
+
+## Enhanced Type Analysis and Propagation
+
+### Type Propagation System (`type_propagation.py`)
+
+The KEYPLUG Analysis System now features an enhanced type propagation system that significantly improves the accuracy of decompiled code analysis by correctly inferring and propagating types across code elements.
+
+**Key Features:**
+- Advanced AST-based C code analysis using pycparser
+- Comprehensive type propagation mechanisms:
+  - **Assignment Propagation**: Propagates types from right-hand side to left-hand side variables in assignments
+  - **Function Call Return Propagation**: Propagates function return types to assigned variables
+  - **Function Call Argument Propagation**: Propagates parameter types to arguments in function calls
+- Support for generic type upgrading (e.g., `void*` → specific types)
+- Typedef tracking and resolution
+- Integration with external type signature databases
+- Structured return format with detailed type information
+
+**Type Propagation Process:**
+```
+┌───────────────────┐     ┌────────────────────┐     ┌────────────────────┐
+│                   │     │                    │     │                    │
+│ Parse C Code      │────►│ Process AST with   │────►│ Propagate Types    │
+│ using pycparser   │     │ Multiple Visitors  │     │ Through Multiple   │
+│                   │     │                    │     │ Propagation Passes │
+└───────────────────┘     └────────────────────┘     └────────────────────┘
+                                                               │
+┌───────────────────┐     ┌────────────────────┐              │
+│                   │     │                    │              ▼
+│ Return Structured │◄────┤ Merge All Type    │◄─────────────┘
+│ Type Information  │     │ Information        │
+│                   │     │                    │
+└───────────────────┘     └────────────────────┘
+```
+
+### Type Inference Engine (`type_inference.py`)
+
+The Type Inference Engine has been integrated with the TypePropagator to provide more accurate type information for decompiled code.
+
+**Key Features:**
+- Hybrid type inference combining pattern matching and propagation
+- Support for function signature databases to improve type inference
+- Integration with OpenVINO for accelerated pattern recognition
+- Handles Windows API function signatures for better analysis of Windows malware
+- Scoped variable analysis to correctly handle function-local variables
+
+**Example Usage:**
+```python
+from type_inference import TypeInferenceEngine
+
+# Initialize with optional OpenVINO acceleration
+engine = TypeInferenceEngine(use_openvino=True)
+
+# Infer types in decompiled code with signature data
+typed_code = engine.infer_types(
+    decompiled_code="path/to/decompiled.c",
+    signature_data_path="path/to/signatures.json"
+)
+```
+
+### Source Code Extractor (`keyplug_source_extractor.py`)
+
+The Source Code Extractor has been enhanced to leverage the improved type inference capabilities.
+
+**Key Features:**
+- Integration with TypePropagator for accurate type information
+- Support for function signature data to improve analysis
+- OpenVINO acceleration for faster processing
+- Enhanced multi-stage extraction workflow:
+  1. Detect function boundaries
+  2. Decompile binary using selected decompiler
+  3. Infer and propagate types using signature data
+  4. Recover control flow
+  5. Detect compiler idioms
+
+**Command Line Options:**
+```bash
+# Basic extraction
+python keyplug_source_extractor.py -f malware.bin -o output_dir
+
+# With function signatures for improved type inference
+python keyplug_source_extractor.py -f malware.bin -o output_dir --signatures signatures.json
+
+# Batch processing with type inference
+python keyplug_source_extractor.py -d /samples -p "*.exe" --signatures signatures.json
 ```
 
 ## Analysis Modules

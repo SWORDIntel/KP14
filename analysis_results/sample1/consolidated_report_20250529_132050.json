@@ -1,0 +1,57 @@
+{
+  "analysis_timestamp": "20250529_132050",
+  "files_analyzed": [
+    "10000000000002EE000003B123F0F4409249C826.jpg"
+  ],
+  "file_results": {
+    "10000000000002EE000003B123F0F4409249C826.jpg": {
+      "metadata": {
+        "file_path": "NDA_extracted/Pictures/10000000000002EE000003B123F0F4409249C826.jpg",
+        "file_name": "10000000000002EE000003B123F0F4409249C826.jpg",
+        "file_size": 114090,
+        "md5": "9f6dbfafbd464b029b9de5033b2df2fe",
+        "analysis_started": "2025-05-29T13:20:50.561574",
+        "analysis_completed": null
+      },
+      "components": {}
+    }
+  },
+  "global_results": {
+    "KeyplugCrossSampleCorrelator": {
+      "status": "error",
+      "message": "No recognized global method",
+      "metadata": {
+        "processed_at": "2025-05-29T13:20:50.562135"
+      }
+    },
+    "KeyplugPatternDatabase": {
+      "status": "error",
+      "message": "No recognized global method",
+      "metadata": {
+        "processed_at": "2025-05-29T13:20:50.562157"
+      }
+    }
+  },
+  "metadata": {
+    "processor_version": "2.0.0",
+    "report_generated": "2025-05-29T13:20:50.562234",
+    "analysis_context": {
+      "openvino_status": {
+        "available": true,
+        "preferred_device": "NPU"
+      },
+      "file_path": "NDA_extracted/Pictures/10000000000002EE000003B123F0F4409249C826.jpg",
+      "file_name": "10000000000002EE000003B123F0F4409249C826.jpg",
+      "analysis_started": "2025-05-29T13:20:50.561594",
+      "execution_stats": {
+        "start_time": "2025-05-29T13:20:49.973962",
+        "completed_modules": 2,
+        "total_modules": 30,
+        "analyzed_files": 1,
+        "failed_files": 1,
+        "end_time": "2025-05-29T13:20:50.562168"
+      },
+      "total_execution_time": 0.588206
+    }
+  }
+}

@@ -8,9 +8,13 @@ Infer types in decompiled code using OpenVINO acceleration.
 import os
 import sys
 import re
+import json
+import tempfile
 import numpy as np
 import concurrent.futures
 from collections import defaultdict
+from pathlib import Path
+from typing import Dict, Any, Optional
 
 # Try to import OpenVINO for hardware acceleration
 try:
@@ -18,6 +22,14 @@ try:
     OPENVINO_AVAILABLE = True
 except ImportError:
     OPENVINO_AVAILABLE = False
+    
+# Try to import TypePropagator for advanced type propagation
+try:
+    from type_propagation import TypePropagator
+    TYPE_PROPAGATOR_AVAILABLE = True
+except ImportError:
+    TYPE_PROPAGATOR_AVAILABLE = False
+    print("WARNING: TypePropagator not available. Advanced type propagation disabled.")
 
 # Use maximum CPU cores
 MAX_WORKERS = os.cpu_count()
@@ -28,15 +40,22 @@ class TypeInferenceEngine:
     for pattern matching and machine learning-based inference
     """
     
-    def __init__(self, use_openvino=True):
+    def __init__(self, use_openvino=True, logger=None):
         """
         Initialize the type inference engine
         
         Args:
             use_openvino: Whether to use OpenVINO acceleration
+            logger: Logger instance for logging
         """
         self.use_openvino = use_openvino and OPENVINO_AVAILABLE
         self.max_workers = MAX_WORKERS
+        self.logger = logger
+        
+        # Initialize TypePropagator if available
+        self.type_propagator = None
+        if TYPE_PROPAGATOR_AVAILABLE:
+            self.type_propagator = TypePropagator(logger=logger)
         
         # Common Windows API function signatures
         self.win_api_signatures = {
@@ -139,13 +158,14 @@ class TypeInferenceEngine:
         elif "NPU" in devices:
             self.device = "NPU"
     
-    def infer_types(self, decompiled_code, binary_path=None):
+    def infer_types(self, decompiled_code, binary_path=None, signature_data_path=None):
         """
-        Infer types in decompiled code
+        Infer types in decompiled code using both pattern matching and advanced type propagation
         
         Args:
-            decompiled_code: Decompiled code as string
+            decompiled_code: Decompiled code as string or path to decompiled code file
             binary_path: Path to the binary file (optional)
+            signature_data_path: Path to function signature data in JSON format (optional)
             
         Returns:
             Decompiled code with inferred types
@@ -156,20 +176,55 @@ class TypeInferenceEngine:
         
         print("Inferring types in decompiled code...")
         
-        # Extract existing type information
+        # Check if decompiled_code is a string or a file path
+        is_file_path = not decompiled_code.strip().startswith('{')
+        decompiled_code_path = None
+        temp_dir = None
+        
+        # If it's a string but not a file path, create a temporary file
+        if not is_file_path and not os.path.exists(decompiled_code):
+            temp_dir = tempfile.TemporaryDirectory()
+            decompiled_code_path = Path(temp_dir.name) / "decompiled_code.c"
+            with open(decompiled_code_path, 'w') as f:
+                f.write(decompiled_code)
+        else:
+            decompiled_code_path = decompiled_code if is_file_path else decompiled_code
+        
+        # Extract existing type information using pattern matching
         existing_types = self._extract_existing_types(decompiled_code)
         
-        # Infer types using pattern matching
+        # Use advanced type propagation if available
+        propagated_types = {}
+        if self.type_propagator and decompiled_code_path:
+            print("Using advanced type propagation...")
+            propagation_results = self.type_propagator.propagate_types(
+                decompiled_code_path=str(decompiled_code_path),
+                signature_data_path=signature_data_path,
+                existing_types=existing_types
+            )
+            propagated_types = propagation_results.get("inferred_types", {})        
+            print(f"Type propagation identified {len(propagated_types)} types")
+        
+        # Infer types using pattern matching as a fallback
         inferred_types = self._infer_types_from_patterns(decompiled_code, existing_types)
         
         # Infer types from API calls
         api_types = self._infer_types_from_api_calls(decompiled_code)
         
-        # Merge all type information
-        all_types = {**existing_types, **inferred_types, **api_types}
+        # Merge all type information with propagated types taking precedence
+        all_types = {**existing_types, **inferred_types, **api_types, **propagated_types}
+        
+        # If we read from a file, make sure we have the content as a string for applying types
+        if is_file_path and os.path.exists(decompiled_code_path):
+            with open(decompiled_code_path, 'r') as f:
+                decompiled_code = f.read()
         
         # Apply inferred types to the code
         typed_code = self._apply_types(decompiled_code, all_types)
+        
+        # Clean up temporary files if created
+        if temp_dir:
+            temp_dir.cleanup()
         
         print(f"Inferred types for {len(all_types)} variables/functions")
         return typed_code
@@ -345,15 +400,32 @@ class TypeInferenceEngine:
                 var_name = var_match.group(1)
                 
                 # Check if we have a type for this variable
-                if var_name in types:
+                type_key = var_name
+                scoped_name = None
+                
+                # Look for function-scoped variables (format: function::variable)
+                for key in types.keys():
+                    if '::' in key and key.split('::')[-1] == var_name:
+                        # Check if we're in this function's scope by looking for function name
+                        func_name = key.split('::')[0]
+                        # Simple heuristic: if the function name appears in previous 50 lines, consider it in scope
+                        # In a real implementation, this would use proper scope analysis
+                        if func_name in '\n'.join(typed_lines[-50:]):
+                            scoped_name = key
+                            break
+                
+                if scoped_name and scoped_name in types:
+                    type_key = scoped_name
+                
+                if type_key in types:
                     # Replace the line with a typed declaration
                     indent = line[:line.find(var_name)]
-                    new_line = f"{indent}{types[var_name]} {var_name}{line[line.find('='):]}"
+                    new_line = f"{indent}{types[type_key]} {var_name}{line[line.find('='):]}"
                     typed_lines.append(new_line)
-                    continue
-            
-            # No changes needed for this line
-            typed_lines.append(line)
+                else:
+                    typed_lines.append(line)
+            else:
+                typed_lines.append(line)
         
         # Join lines back into a single string
         return '\n'.join(typed_lines)

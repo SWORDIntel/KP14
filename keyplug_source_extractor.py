@@ -105,8 +105,9 @@ class SourceCodeExtractor:
         # This is a placeholder for actual OpenVINO model setup
     
     def extract_source_code(self, binary_path, output_dir, decompiler_type="ghidra", 
-                           detect_boundaries=True, infer_types=True, 
-                           recover_control_flow=True, detect_idioms=True):
+                            detect_boundaries=True, infer_types=True, 
+                            recover_control_flow=True, detect_idioms=True,
+                            signature_data_path=None):
         """
         Extract source code from a binary file
         
@@ -118,6 +119,7 @@ class SourceCodeExtractor:
             infer_types: Whether to infer types
             recover_control_flow: Whether to recover control flow
             detect_idioms: Whether to detect compiler idioms
+            signature_data_path: Path to JSON file containing function signatures (optional)
             
         Returns:
             Path to the extracted source code
@@ -157,7 +159,11 @@ class SourceCodeExtractor:
         # Step 3: Infer types if requested
         if infer_types and decompiled_code:
             print("Inferring types...")
-            typed_code = self.type_inference.infer_types(decompiled_code, binary_path)
+            typed_code = self.type_inference.infer_types(
+                decompiled_code, 
+                binary_path,
+                signature_data_path=signature_data_path
+            )
             
             # Save typed code
             typed_path = os.path.join(binary_output_dir, "typed_code.c")
@@ -202,6 +208,7 @@ def main():
     parser.add_argument('-p', '--pattern', help='File pattern to match in directory', default='*.bin')
     parser.add_argument('-o', '--output', help='Output directory', default='keyplug_source_code')
     parser.add_argument('--decompiler', help='Decompiler to use (ghidra, retdec, ida)', default='ghidra')
+    parser.add_argument('--signatures', help='Path to function signatures JSON file for improved type inference')
     parser.add_argument('--no-boundaries', action='store_true', help='Disable function boundary detection')
     parser.add_argument('--no-types', action='store_true', help='Disable type inference')
     parser.add_argument('--no-control-flow', action='store_true', help='Disable control flow recovery')

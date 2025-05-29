@@ -80,7 +80,7 @@ class SymbolicExecutor:
                     else: t_addr_resolved = target_address
                     
                     a_addrs_resolved = []
-                    if avoid_addresses:
+                    if avoid_addresses and len(avoid_addresses) > 0:
                         for av_addr_str in avoid_addresses:
                             try: a_addrs_resolved.append(int(str(av_addr_str), 0))
                             except ValueError: self.logger.warning(f"Could not parse avoid_address '{av_addr_str}' to int.")
@@ -118,7 +118,7 @@ class SymbolicExecutor:
                          solutions.append({"path_id": f"deadended_{i}", "path_history_bbl_addrs": [hex(addr) for addr in deadended_state.history.bbl_addrs]})
                 
                 return {
-                    "status": "success_angr" if not target_address or target_reached else "angr_target_not_reached",
+                    "status": "success_angr" if (not target_address or target_reached) else "angr_target_not_reached",
                     "engine_used": "angr", "binary_analyzed": binary_path,
                     "target_address_sought": target_address, "target_reached": target_reached,
                     "paths_found_count": paths_found_count, "solutions_summary": solutions, 
@@ -217,10 +217,10 @@ class SymbolicExecutor:
             simgr = project.factory.simulation_manager(initial_state)
             self.logger.info("Angr simulation manager created for path discovery.")
 
-            num_find_paths = opts.get("num_find_paths", 10) # Default to finding up to 10 paths
-            self.logger.info(f"Angr exploring from {hex(parsed_from_addr) if isinstance(parsed_from_addr, int) else parsed_from_addr} to find {hex(parsed_to_addr) if isinstance(parsed_to_addr, int) else parsed_to_addr}, num_find: {num_find_paths}")
+            num_find = opts.get("num_find_paths", 10) # Default to finding up to 10 paths
+            self.logger.info(f"Angr exploring from {hex(parsed_from_addr) if isinstance(parsed_from_addr, int) else parsed_from_addr} to find {hex(parsed_to_addr) if isinstance(parsed_to_addr, int) else parsed_to_addr}, num_find: {num_find}")
             
-            simgr.explore(find=parsed_to_addr, num_find=num_find_paths)
+            simgr.explore(find=parsed_to_addr, num_find=num_find)
 
             found_paths_bbl_addrs: List[List[str]] = []
             if simgr.found:
@@ -326,5 +326,3 @@ if __name__ == '__main__':
         main_logger.info(f"Removed dummy binary: {dummy_bin_path}")
     
     main_logger.info("\n--- All symbolic execution tests completed ---")
-
-```

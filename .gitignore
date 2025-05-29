@@ -4,3 +4,12 @@
 /__pycache__
 
 /net-commander
+*.pyc
+/extracted_source_code
+*.c
+/keyplug_venv
+*.jpg
+*.png
+*.h
+*.o
+*.pyc

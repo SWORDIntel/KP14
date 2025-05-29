@@ -67,12 +67,53 @@ class ProgramSynthesisEngine:
             prompt_parts = [f"Synthesize a function in {target_language}."]
             if "description" in observed_behavior: prompt_parts.append(f"Description: {observed_behavior['description']}")
             if "pseudo_code" in observed_behavior: prompt_parts.append(f"Pseudo-code hint:\n{observed_behavior['pseudo_code']}")
-            # ... (other prompt parts as before) ...
+            if "inputs" in observed_behavior: prompt_parts.append(f"Input parameters: {observed_behavior['inputs']}")
+            if "output" in observed_behavior: prompt_parts.append(f"Output: {observed_behavior['output']}")
+            if "function_name" in observed_behavior: prompt_parts.append(f"Function name: {observed_behavior['function_name']}")
             prompt = "\n\n".join(prompt_parts)
             self.logger.debug(f"Constructed LLM Prompt (API):\n{prompt}")
-            # ... (API simulation logic as before) ...
+            # API result simulation
             placeholder_code = f"// Simulated LLM API response for {target_language} from model '{llm_model_name_api}'\n"
-            # ... (language specific stubs for API)
+            
+            # Generate language-specific code stubs with parameters
+            func_name = observed_behavior.get("function_name", "api_synthesized_function")
+            params_str = ""
+            
+            # Generate parameters string based on inputs
+            if "inputs" in observed_behavior and isinstance(observed_behavior["inputs"], list):
+                params = []
+                for param in observed_behavior["inputs"]:
+                    if isinstance(param, dict) and "name" in param:
+                        param_type = param.get("type", "")
+                        param_name = param["name"]
+                        if target_language.lower() == "python":
+                            params.append(param_name)
+                        elif target_language.lower() == "c":
+                            params.append(f"{param_type} {param_name}")
+                        else:
+                            params.append(f"{param_name}")
+                params_str = ", ".join(params)
+            
+            # Output type for C
+            output_type = "void"
+            if "output" in observed_behavior and isinstance(observed_behavior["output"], dict):
+                output_type = observed_behavior["output"].get("type", "void")
+            
+            # Generate language-specific code stubs
+            if target_language.lower() == "python":
+                placeholder_code += f"def {func_name}({params_str}):\n"
+                placeholder_code += f"    # API-generated Python implementation\n"
+                placeholder_code += f"    print('API-based LLM generation from {llm_model_name_api}')\n"
+                placeholder_code += f"    return None  # Placeholder return\n"
+            elif target_language.lower() == "c":
+                placeholder_code += f"{output_type} {func_name}({params_str}) {{\n"
+                placeholder_code += f"    // API-generated C implementation\n"
+                placeholder_code += f"    printf(\"API-based LLM generation from {llm_model_name_api}\\n\");\n"
+                if output_type != "void":
+                    placeholder_code += f"    return 0;  // Placeholder return\n"
+                placeholder_code += "}\n"
+            else:
+                placeholder_code += f"// API-generated {target_language} implementation for {func_name}({params_str})\n"
 
         elif local_model_ir: # Assuming this implies a local OpenVINO-compatible LLM
             self.logger.info(f"Local OpenVINO LLM synthesis initiated using IR model: {local_model_ir} (Model Name: {local_model_name}).")
@@ -188,5 +229,3 @@ if __name__ == '__main__':
         del os.environ["MY_TEST_LLM_API_KEY"]
 
     main_logger.info("\n--- All synthesis engine placeholder tests completed ---")
-
-```

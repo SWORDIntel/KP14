@@ -500,15 +500,29 @@ def main():
     
     pipeline_group = parser.add_argument_group('Pipeline Control')
     pipeline_config = get_pipeline_config()
+    
+    # Track added arguments to avoid duplicates
+    added_args = set()
+    
+    # Add stage disabling arguments
     for stage_name, _, _ in pipeline_config["pipeline_stages"]:
-        pipeline_group.add_argument(f'--disable-{stage_name}', action='store_true', help=f'Disable {stage_name} stage')
+        arg_name = f'--disable-{stage_name}'
+        if arg_name not in added_args:
+            pipeline_group.add_argument(arg_name, action='store_true', help=f'Disable {stage_name} stage')
+            added_args.add(arg_name)
+    
+    # Add module enabling/disabling arguments
     for mod_name, details in pipeline_config["module_details"].items():
         flag, enabled_by_default = details.get("cli_flag"), details.get("default_enabled", True)
         if flag:
             action = 'store_true' 
             help_text = f'Enable {mod_name}' if not enabled_by_default else f'Disable {mod_name}'
             arg_name = f'--enable-{flag}' if not enabled_by_default else f'--disable-{flag}'
-            pipeline_group.add_argument(arg_name, action=action, help=help_text)
+            
+            # Only add if not a duplicate
+            if arg_name not in added_args:
+                pipeline_group.add_argument(arg_name, action=action, help=help_text)
+                added_args.add(arg_name)
 
     decompiler_group = parser.add_argument_group('Decompiler Options')
     decompiler_group.add_argument('--decompiler-list', nargs='+', default=['ghidra', 'retdec', 'ida'], choices=['ghidra', 'retdec', 'ida', 'all'], help='Decompilers to try. Order implies preference.')
@@ -572,5 +586,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
-```

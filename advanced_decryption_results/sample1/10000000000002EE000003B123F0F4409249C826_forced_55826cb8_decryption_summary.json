@@ -1,0 +1,97 @@
+{
+  "file_name": "/home/john/Documents/GitHub/KP1/NDA_keyplug_extracted/10000000000002EE000003B123F0F4409249C826_forced_55826cb8.bin",
+  "file_size": 51626,
+  "original_entropy": 0.8871422441664508,
+  "decryption_results": [
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 0,
+      "length": 51626,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "5abb22de80dcffdd79a46f62ebdb141e"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 9107,
+      "length": 42519,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "561a68dbdfd710b4e7246920f26c3c25"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 11740,
+      "length": 39886,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "2884e2e8dfce0c44151d76a824f847b7"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 15929,
+      "length": 35697,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "44a1d015cf6c8af286542339f1f78787"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 16035,
+      "length": 35591,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "2161cf750d6fcb64db715d3d6ff2f07d"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 16103,
+      "length": 35523,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664509,
+      "md5": "37889ea229e17433e28bc55b1e16fdba"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 28253,
+      "length": 23373,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664508,
+      "md5": "ed54a429cd46dd47a874cdab09f89e15"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 31642,
+      "length": 19984,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664508,
+      "md5": "0326e3caf2e437ebfadaeb2eb17f8654"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 33763,
+      "length": 17863,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664508,
+      "md5": "6d50a4c3c18f49d4a13beae7a8add1e4"
+    },
+    {
+      "algorithm": "xor",
+      "key": "20",
+      "offset": 33849,
+      "length": 17777,
+      "file_type": "Unknown",
+      "entropy": 0.8871422441664508,
+      "md5": "297a08faf58451317830f97f1e99e0da"
+    }
+  ]
+}

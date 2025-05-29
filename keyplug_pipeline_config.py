@@ -507,5 +507,3 @@ if __name__ == "__main__":
     print("\nModule groups:")
     for group, modules in MODULE_GROUPS.items():
         print(f"{group}: {len(modules)} modules")
-
-```

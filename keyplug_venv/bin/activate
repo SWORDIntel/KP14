@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV=/home/john/Documents/keyplug1/keyplug_venv
+VIRTUAL_ENV=/home/john/Documents/GitHub/KP1/keyplug_venv
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

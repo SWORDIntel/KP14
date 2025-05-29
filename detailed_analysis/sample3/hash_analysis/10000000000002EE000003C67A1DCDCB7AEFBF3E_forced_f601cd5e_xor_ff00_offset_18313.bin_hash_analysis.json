@@ -1,0 +1,49 @@
+{
+  "file_path": "advanced_decryption_results/sample3/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_f601cd5e_xor_ff00_offset_18313.bin",
+  "file_size": 30063,
+  "hash_algorithms": [
+    {
+      "offset": 15771,
+      "size": 16,
+      "patterns": [
+        "INC EDI - increment string pointer",
+        "XOR EAX, ECX - character xor",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 3
+    },
+    {
+      "offset": 16773,
+      "size": 67,
+      "patterns": [
+        "CMP EAX, imm32 - hash comparison",
+        "INC ESI - increment string pointer",
+        "XOR EAX, EAX - hash initialization",
+        "INC EDI - increment string pointer"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 4
+    },
+    {
+      "offset": 29320,
+      "size": 55,
+      "patterns": [
+        "ADD EAX, EDX - character addition",
+        "CMP EAX, imm32 - hash comparison",
+        "CMP EAX, imm32 - hash comparison"
+      ],
+      "algorithm": "custom",
+      "confidence": 1.0,
+      "match_count": 3
+    }
+  ],
+  "api_hashes": [],
+  "processing_time": 0.033850669860839844,
+  "summary": {
+    "total_hash_algorithms": 3,
+    "total_api_hashes": 0
+  }
+}

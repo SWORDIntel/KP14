@@ -3,6 +3,7 @@ import logging
 import os
 import json
 import tempfile
+import sys
 from pathlib import Path
 import shutil # For tearDownClass if needed, or individual file cleanup
 
@@ -180,5 +181,3 @@ if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG, 
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     unittest.main()
-
-```

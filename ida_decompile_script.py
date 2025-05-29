@@ -121,9 +121,9 @@ def get_func_details(ea):
 def main():
     idaapi.auto_wait() 
     
-    output_dir_str = r"%s"
-    c_output_filename_str = r"%s"
-    json_output_filename_str = r"%s"
+    output_dir_str = os.environ.get("IDA_OUTPUT_DIR", os.path.join(os.path.dirname(idaapi.get_input_file_path()), "ida_output"))
+    c_output_filename_str = os.environ.get("IDA_C_OUTPUT_FILENAME", os.path.basename(idaapi.get_input_file_path()) + ".c")
+    json_output_filename_str = os.environ.get("IDA_JSON_OUTPUT_FILENAME", os.path.basename(idaapi.get_input_file_path()) + "_functions.json")
 
     if not os.path.exists(output_dir_str):
         os.makedirs(output_dir_str)
@@ -207,6 +207,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-%s
-```

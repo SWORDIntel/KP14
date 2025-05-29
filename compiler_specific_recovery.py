@@ -56,7 +56,7 @@ class CompilerSpecificRecovery:
                          {
                             "id": "msvc19_x64_rel_fastcall_ecx_param_001",
                             "description": "Use of ECX for first parameter in __fastcall.",
-                            "assembly_pattern": [r"^\s*mov\s+\[ebp\s*-\s*0x[0-9a-fA-F]+\],\s*ecx\s*$"], # Example: mov [ebp-8], ecx
+                            "assembly_pattern": [r"^\s*mov\s+\[ebp\s*-\s*(0x)?[0-9a-fA-F]+\],\s*ecx\s*$"], # Example: accepts both mov [ebp-8], ecx and mov [ebp-0x8], ecx
                             "equivalent_c": "// First parameter passed via ECX",
                             "notes": "Common in MSVC __fastcall convention."
                         }
@@ -351,5 +351,3 @@ if __name__ == '__main__':
         main_logger.info(f"Removed {test_db_path}")
     
     main_logger.info("--- All tests completed ---")
-
-```

@@ -152,7 +152,11 @@ class DecompilerIntegration:
         self.logger.info(f"Using '{ref_name}' as reference for consensus line ordering.")
 
         line_counts = collections.Counter(l.strip() for data in valid_outputs.values() for l in data["lines"])
-        consensus_lines = [l for l in ref_lines if (line_counts[l.strip()] * 2 > num_valid) or l.strip().startswith("//") or l.strip() == "" or l.strip() == "}"]
+        if not line_counts:
+            self.logger.warning("Empty line counts - no content found in decompiler outputs")
+            consensus_lines = []
+        else:
+            consensus_lines = [l for l in ref_lines if (line_counts[l.strip()] * 2 > num_valid) or l.strip().startswith("//") or l.strip() == "" or l.strip() == "}"]
         
         if not consensus_lines: # Fallback strategy
             self.logger.warning("Consensus resulted in empty output. Applying fallback (largest or preferred).")
@@ -223,9 +227,25 @@ class DecompilerIntegration:
 
             ghidra_home = os.environ.get("GHIDRA_HOME")
             ghidra_headless = os.path.join(ghidra_home, "support", "analyzeHeadless")
-            firejail_prefix = ["firejail", "--quiet", f"--whitelist={os.path.abspath(binary_path)}", f"--whitelist={os.path.abspath(output_dir)}", "--private=" + temp_dir]
             ghidra_base_cmd = [ghidra_headless, temp_dir, project_name, "-import", binary_path, "-postScript", os.path.basename(script_path), "-scriptPath", temp_dir, "-deleteProject"]
-            cmd = firejail_prefix + ghidra_base_cmd
+            
+            # Check if firejail is available
+            use_firejail = False
+            try:
+                firejail_check = subprocess.run(["firejail", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                if firejail_check.returncode == 0:
+                    use_firejail = True
+                    self.logger.info("Using firejail for sandboxing Ghidra execution")
+                else:
+                    self.logger.warning("Firejail check failed. Running Ghidra without sandboxing.")
+            except FileNotFoundError:
+                self.logger.warning("Firejail not found. Running Ghidra without sandboxing.")
+                
+            if use_firejail:
+                firejail_prefix = ["firejail", "--quiet", f"--whitelist={os.path.abspath(binary_path)}", f"--whitelist={os.path.abspath(output_dir)}", "--private=" + temp_dir]
+                cmd = firejail_prefix + ghidra_base_cmd
+            else:
+                cmd = ghidra_base_cmd
             
             try:
                 result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -516,5 +536,3 @@ class DecompilerIntegration:
 if __name__ == '__main__': 
     print("This module is not meant to be run directly.")
     print("Please use keyplug_source_extractor.py instead.")
-
-```

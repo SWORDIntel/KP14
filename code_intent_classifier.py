@@ -3,6 +3,7 @@ import os
 import re 
 import pickle 
 import joblib 
+import json
 import traceback # For more detailed error logging
 from sklearn.feature_extraction.text import TfidfVectorizer 
 from sklearn.linear_model import LogisticRegression 
@@ -76,10 +77,6 @@ class CodeIntentClassifier:
              self.logger.info("OpenVINO IR model loaded. It will be preferred for classification.")
         elif self.model:
              self.logger.info("Scikit-learn model loaded. It will be used for classification as OpenVINO IR model is not available.")
-
-    def load_trained_components(self, model_path: str, vectorizer_path: str) -> bool:
-        else:
-            self.logger.info("No model_path or vectorizer_path provided during initialization. Model and vectorizer not loaded. Train a model or load components manually.")
 
     def load_trained_components(self, model_path: str, vectorizer_path: str) -> bool:
         """
@@ -762,7 +759,7 @@ if __name__ == '__main__':
     assert classification["vectorizer_path_used"] == test_vectorizer_path
 
     test_snippet_file = "ReadFile(hFile, buffer, sizeof(buffer), &bytes_read, NULL);"
-    classification_file = classifier_load.classify_code_block(test_snippet_file)
+    classification_file = classifier_unified.classify_code_block(test_snippet_file)
     main_logger.info(f"Classification for '{test_snippet_file[:30]}...': {json.dumps(classification_file, indent=2)}")
     assert classification_file["intent"] is not None and classification_file["intent"] != "unknown_no_model_or_vectorizer", "Classification failed for file snippet."
     
@@ -800,4 +797,3 @@ if __name__ == '__main__':
                  main_logger.info(f"Removed {f_path}")
             
     main_logger.info("\n--- All baseline model training and classification tests completed ---")
-```

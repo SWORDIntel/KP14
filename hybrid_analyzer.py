@@ -74,7 +74,7 @@ class HybridAnalyzer:
         static_vuln_data = static_results.get("VulnerabilityDetector", {})
 
         if isinstance(static_decomp_data, dict) and isinstance(dynamic_pt_data, dict) :
-            static_func_count = len(static_decomp_data.get("functions_found", [])) # Assuming functions_found key
+            static_func_count = static_decomp_data.get("functions_found", 0) if isinstance(static_decomp_data.get("functions_found"), int) else len(static_decomp_data.get("functions_found", []))
             dynamic_blocks_count = dynamic_pt_data.get("decoded_elements_count", 0) # Using an existing key as proxy
             self.logger.info(f"  Conceptual: Static analysis found {static_func_count} functions. Dynamic trace observed {dynamic_blocks_count} elements (e.g., blocks/branches).")
             hybrid_insights["function_execution_correlation_note"] = f"Correlated {static_func_count} static functions with {dynamic_blocks_count} dynamic trace elements (conceptual)."
@@ -160,4 +160,3 @@ if __name__ == '__main__':
     assert "vulnerability_reachability_note" in hybrid_report
     
     main_logger.info("\n--- HybridAnalyzer test completed ---")
-```
