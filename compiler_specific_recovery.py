@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime, timezone # For timezone-aware timestamps
 from typing import Dict, List, Optional, Any
+import re # For regex matching in idioms
 
 class CompilerSpecificRecovery:
     def __init__(self, idiom_db_path: str = "compiler_idioms.json", logger: Optional[logging.Logger] = None):
@@ -24,7 +25,7 @@ class CompilerSpecificRecovery:
             "metadata": {
                 "created_at": self._get_timestamp(),
                 "updated_at": self._get_timestamp(),
-                "version": "0.1.0",
+                "version": "0.1.1", # Incremented version for new identify method
                 "description": "Database of compiler-specific idioms and patterns."
             },
             "compilers": {
@@ -33,20 +34,33 @@ class CompilerSpecificRecovery:
                     "common_sequences": [
                         {
                             "id": "msvc19_x64_rel_stack_setup_001",
-                            "description": "Common function prologue stack setup (push ebp, mov ebp, esp, sub esp, XX).",
-                            "assembly_pattern": ["push ebp", "mov ebp, esp", "sub esp, 0x[0-9a-fA-F]+"],
+                            "description": "Common function prologue stack setup.",
+                            # Regex: Allows for variations in hex value, ensures push/mov/sub sequence
+                            "assembly_pattern": [
+                                r"^\s*push\s+ebp\s*$", 
+                                r"^\s*mov\s+ebp,\s*esp\s*$", 
+                                r"^\s*sub\s+esp,\s*0x[0-9a-fA-F]+\s*$"
+                            ],
                             "equivalent_c": "Function prologue setup.",
                             "notes": "Size of stack allocation varies."
                         },
                         {
                             "id": "msvc19_x64_rel_security_cookie_init_001",
                             "description": "Stack security cookie initialization (__security_init_cookie).",
-                            "assembly_pattern": ["call __security_init_cookie"],
+                            "assembly_pattern": [r"^\s*call\s+__security_init_cookie\s*$"],
                             "equivalent_c": "// Calls to initialize stack security cookie.",
                             "notes": "Often seen at start of main or other key functions."
                         }
                     ],
-                    "idiomatic_optimizations": []
+                    "idiomatic_optimizations": [
+                         {
+                            "id": "msvc19_x64_rel_fastcall_ecx_param_001",
+                            "description": "Use of ECX for first parameter in __fastcall.",
+                            "assembly_pattern": [r"^\s*mov\s+\[ebp\s*-\s*0x[0-9a-fA-F]+\],\s*ecx\s*$"], # Example: mov [ebp-8], ecx
+                            "equivalent_c": "// First parameter passed via ECX",
+                            "notes": "Common in MSVC __fastcall convention."
+                        }
+                    ]
                 },
                 "GCC_v9_x64_O2": {
                     "name": "GCC v9.x x64 -O2 optimization",
@@ -54,9 +68,23 @@ class CompilerSpecificRecovery:
                         {
                             "id": "gcc9_x64_o2_func_prologue_001",
                             "description": "Typical GCC function prologue.",
-                            "assembly_pattern": ["push rbp", "mov rbp, rsp"],
+                            "assembly_pattern": [
+                                r"^\s*push\s+rbp\s*$", 
+                                r"^\s*mov\s+rbp,\s*rsp\s*$"
+                            ],
                             "equivalent_c": "Function prologue.",
                             "notes": ""
+                        },
+                        {
+                            "id": "gcc9_x64_o2_red_zone_usage_001",
+                            "description": "Use of red zone (no explicit stack allocation for leaf functions with small local vars).",
+                            "assembly_pattern": [
+                                r"^\s*mov\s+QWORD\s+PTR\s+\[rbp-0x[0-9a-fA-F]+\],\s*rdi\s*$", # Example: mov QWORD PTR [rbp-0x8], rdi
+                                r"^\s*mov\s+DWORD\s+PTR\s+\[rbp-0x[0-9a-fA-F]+\],\s*esi\s*$"  # Example: mov DWORD PTR [rbp-0xc], esi
+                                # This pattern is highly contextual and might need refinement or be part of a larger sequence.
+                            ],
+                            "equivalent_c": "// Parameters accessed relative to RBP without large stack frame setup.",
+                            "notes": "Indicates potential use of red zone if no preceding 'sub rsp, ...'."
                         }
                     ],
                     "idiomatic_optimizations": []
@@ -65,13 +93,9 @@ class CompilerSpecificRecovery:
         }
 
     def initialize_idiom_database(self, force_recreate: bool = False) -> None:
-        """
-        Initializes the idiom database. Loads from existing file or creates a new one.
-        """
         if not force_recreate and os.path.exists(self.idiom_db_path):
             if self._load_database():
                 self.logger.info(f"Successfully loaded existing idiom database from {self.idiom_db_path}")
-                # Ensure essential structure
                 if "metadata" not in self.idioms_db: self.idioms_db["metadata"] = {}
                 if "compilers" not in self.idioms_db: self.idioms_db["compilers"] = {}
                 self.idioms_db["metadata"]["last_loaded_at"] = self._get_timestamp()
@@ -86,10 +110,6 @@ class CompilerSpecificRecovery:
 
 
     def _load_database(self) -> bool:
-        """
-        Private helper to load the database from self.idiom_db_path.
-        Returns True on success, False on failure.
-        """
         try:
             if not os.path.exists(self.idiom_db_path):
                 self.logger.info(f"Idiom database file {self.idiom_db_path} does not exist. Cannot load.")
@@ -98,25 +118,12 @@ class CompilerSpecificRecovery:
                 self.idioms_db = json.load(f)
             self.logger.debug(f"Idiom database loaded successfully from {self.idiom_db_path}.")
             return True
-        except json.JSONDecodeError as e:
-            self.logger.error(f"Error decoding JSON from idiom database file {self.idiom_db_path}: {e}")
-            self.idioms_db = {} 
-            return False
-        except IOError as e:
-            self.logger.error(f"IOError reading idiom database file {self.idiom_db_path}: {e}")
-            self.idioms_db = {}
-            return False
         except Exception as e: 
             self.logger.error(f"Unexpected error loading idiom database {self.idiom_db_path}: {e}")
             self.idioms_db = {}
             return False
 
     def _save_database(self) -> bool:
-        """
-        Private helper to save self.idioms_db to self.idiom_db_path.
-        Updates 'updated_at' timestamp in metadata before saving.
-        Returns True on success, False on failure.
-        """
         if not self.idioms_db: 
             self.logger.warning("Attempted to save an empty or uninitialized idioms_db. Save aborted.")
             return False
@@ -135,42 +142,28 @@ class CompilerSpecificRecovery:
                 json.dump(self.idioms_db, f, indent=2, ensure_ascii=False)
             self.logger.debug(f"Idiom database saved successfully to {self.idiom_db_path}.")
             return True
-        except IOError as e:
-            self.logger.error(f"IOError writing idiom database file {self.idiom_db_path}: {e}")
-            return False
-        except TypeError as e: 
-            self.logger.error(f"TypeError during JSON serialization for idiom database {self.idiom_db_path}: {e}")
-            return False
         except Exception as e: 
             self.logger.error(f"Unexpected error saving idiom database {self.idiom_db_path}: {e}")
             return False
 
     def add_compiler_profile(self, profile_name: str, profile_details: Dict[str, Any]) -> bool:
-        """
-        Placeholder: Adds a new compiler profile to the database.
-        """
         if "compilers" not in self.idioms_db:
             self.logger.error("Idiom database not correctly initialized (missing 'compilers' key). Cannot add profile.")
-            self.idioms_db["compilers"] = {} # Attempt to fix
+            self.idioms_db["compilers"] = {} 
 
         if profile_name in self.idioms_db["compilers"]:
             self.logger.warning(f"Compiler profile '{profile_name}' already exists. Overwriting with new details.")
         
-        # Ensure basic structure for the new profile
         self.idioms_db["compilers"][profile_name] = {
             "name": profile_details.get("name", profile_name),
             "common_sequences": profile_details.get("common_sequences", []),
             "idiomatic_optimizations": profile_details.get("idiomatic_optimizations", []),
             "added_at": self._get_timestamp()
         }
-        self.logger.info(f"Placeholder: Added/Updated compiler profile '{profile_name}'.")
+        self.logger.info(f"Added/Updated compiler profile '{profile_name}'.")
         return self._save_database()
 
     def add_idiom(self, profile_name: str, idiom_type: str, idiom_details: Dict[str, Any]) -> bool:
-        """
-        Placeholder: Adds an idiom to a specified compiler profile.
-        `idiom_type` should be 'common_sequences' or 'idiomatic_optimizations'.
-        """
         if "compilers" not in self.idioms_db or profile_name not in self.idioms_db["compilers"]:
             self.logger.error(f"Compiler profile '{profile_name}' not found. Cannot add idiom.")
             return False
@@ -179,102 +172,180 @@ class CompilerSpecificRecovery:
             self.logger.error(f"Invalid idiom_type '{idiom_type}'. Must be 'common_sequences' or 'idiomatic_optimizations'.")
             return False
 
-        # Ensure the list for this idiom_type exists
         if idiom_type not in self.idioms_db["compilers"][profile_name]:
             self.idioms_db["compilers"][profile_name][idiom_type] = []
 
-        # Add a timestamp to the idiom details if not present
         if "added_at" not in idiom_details:
             idiom_details["added_at"] = self._get_timestamp()
         
         self.idioms_db["compilers"][profile_name][idiom_type].append(idiom_details)
-        self.logger.info(f"Placeholder: Added idiom to '{profile_name}' under '{idiom_type}'.")
+        self.logger.info(f"Added idiom to '{profile_name}' under '{idiom_type}'.")
         return self._save_database()
 
+    def _normalize_line(self, line: str) -> str:
+        """Normalizes an assembly line for matching."""
+        line = line.strip()
+        # Convert instruction mnemonic to lowercase, keep operands as is (case might matter for symbols/labels)
+        parts = line.split(None, 1)
+        if parts:
+            parts[0] = parts[0].lower()
+            return " ".join(parts)
+        return ""
+
+    def _match_line(self, pattern_regex: str, normalized_code_line: str) -> bool:
+        """Matches a pattern regex against a normalized code line."""
+        try:
+            # Using re.fullmatch to ensure the entire line matches the pattern
+            return bool(re.fullmatch(pattern_regex, normalized_code_line))
+        except re.error as e:
+            self.logger.error(f"Regex error for pattern '{pattern_regex}': {e}")
+            return False
+
     def identify_compiler_from_idioms(self, code_snippets: List[str]) -> Optional[str]:
-        '''
-        Placeholder for identifying the compiler based on matching idioms from the database.
+        if not code_snippets:
+            self.logger.info("No code snippets provided for compiler identification.")
+            return None
+        
+        self.logger.info(f"Attempting to identify compiler from {len(code_snippets)} code snippets.")
+        
+        normalized_input_lines = [self._normalize_line(line) for line in code_snippets]
+        # Filter out empty normalized lines if they are not meaningful for sequence matching
+        normalized_input_lines = [line for line in normalized_input_lines if line]
 
-        Future Implementation Ideas:
-        - Iterate through compiler profiles in self.idioms_db.
-        - For each profile, try to match its known idioms (common_sequences, idiomatic_optimizations)
-          against the provided code_snippets (which could be assembly instruction sequences).
-        - A scoring mechanism could be used (e.g., number of matched idioms, specificity of idioms).
-        - The profile with the highest score could be returned as the identified compiler.
+        if not normalized_input_lines:
+            self.logger.info("Normalized code snippets are empty. Cannot identify compiler.")
+            return None
 
-        Machine Learning Approach:
-        - An ML model could be trained to identify compilers.
-        - Features could be extracted from the binary (e.g., opcode frequencies, import usage,
-          section names, specific byte sequences from known library functions compiled by different compilers).
-        - This model could then predict the compiler profile name.
-        - This ML model could potentially be optimized using OpenVINO for NPU execution if applicable.
-        '''
-        self.logger.info(f"Placeholder: Called identify_compiler_from_idioms with {len(code_snippets)} snippets.")
-        self.logger.info("  (Future: Would compare snippets against stored idioms or use an ML model.)")
-        return None
+        compiler_scores: Dict[str, int] = {}
+
+        for profile_name, profile_data in self.idioms_db.get("compilers", {}).items():
+            compiler_scores[profile_name] = 0
+            all_idioms = profile_data.get("common_sequences", []) + profile_data.get("idiomatic_optimizations", [])
+            
+            self.logger.debug(f"Checking profile: {profile_name} with {len(all_idioms)} idioms.")
+
+            for idiom_details in all_idioms:
+                assembly_pattern = idiom_details.get("assembly_pattern", [])
+                if not assembly_pattern:
+                    continue
+                
+                pattern_len = len(assembly_pattern)
+                if pattern_len == 0:
+                    continue
+
+                # Iterate through the input code snippets to find a match for this sequence
+                for i in range(len(normalized_input_lines) - pattern_len + 1):
+                    match_found = True
+                    for j in range(pattern_len):
+                        pattern_line_regex = assembly_pattern[j]
+                        code_line_to_check = normalized_input_lines[i+j]
+                        
+                        if not self._match_line(pattern_line_regex, code_line_to_check):
+                            match_found = False
+                            break 
+                    
+                    if match_found:
+                        self.logger.info(f"Matched idiom '{idiom_details.get('id', 'N/A')}' for compiler '{profile_name}'.")
+                        compiler_scores[profile_name] += 1
+                        # Optional: break from inner loop if an idiom should only be counted once per snippet set
+                        # This means this idiom is "found" for this compiler, move to next idiom for this compiler.
+                        break 
+            self.logger.debug(f"Score for {profile_name}: {compiler_scores[profile_name]}")
+
+        if not compiler_scores:
+            self.logger.info("No compiler profiles found in the database.")
+            return None
+
+        # Determine the best match
+        best_score = 0
+        identified_compiler: Optional[str] = None
+        for profile_name, score in compiler_scores.items():
+            if score > best_score:
+                best_score = score
+                identified_compiler = profile_name
+            # Simple tie-breaking: first one encountered with max score is kept.
+            # Could collect all ties if needed: `if score == best_score: tied_compilers.append(profile_name)`
+        
+        if identified_compiler and best_score > 0:
+            self.logger.info(f"Identified compiler: {identified_compiler} with score {best_score}.")
+            return identified_compiler
+        else:
+            self.logger.info("No compiler identified with sufficient confidence (score > 0).")
+            return None
+
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     main_logger = logging.getLogger("CompilerSpecificRecoveryExample")
 
-    # Test with default path
-    main_logger.info("--- Test Case 1: Default database path ---")
-    recovery_engine = CompilerSpecificRecovery(logger=main_logger)
-    main_logger.info(f"Initial DB state (default path): First few keys: {list(recovery_engine.idioms_db.keys())}")
-    
-    msvc_profile = recovery_engine.idioms_db.get("compilers", {}).get("MSVC_v19_x64_Release")
-    if msvc_profile:
-        main_logger.info(f"Found MSVC profile with {len(msvc_profile.get('common_sequences', []))} common sequences.")
-    else:
-        main_logger.info("MSVC profile not found by default.")
-    
-    # Test adding a new profile
-    main_logger.info("\n--- Test Case 2: Adding a new compiler profile ---")
-    add_profile_success = recovery_engine.add_compiler_profile("Clang_v10_x64_O3", {
-        "name": "Clang v10 x64 -O3", 
-        "common_sequences": [], 
-        "idiomatic_optimizations": []
-    })
-    assert add_profile_success, "Failed to add Clang profile"
-    assert "Clang_v10_x64_O3" in recovery_engine.idioms_db["compilers"], "Clang profile key missing"
-    main_logger.info("Clang profile added.")
-
-    # Test adding an idiom
-    main_logger.info("\n--- Test Case 3: Adding an idiom to Clang profile ---")
-    add_idiom_success = recovery_engine.add_idiom("Clang_v10_x64_O3", "common_sequences", {
-        "id": "clang10_x64_o3_memcpy_opt_001",
-        "description": "Optimized memcpy using rep movsb.",
-        "assembly_pattern": ["rep movsb"],
-        "equivalent_c": "// Optimized memory copy",
-    })
-    assert add_idiom_success, "Failed to add idiom to Clang"
-    assert len(recovery_engine.idioms_db["compilers"]["Clang_v10_x64_O3"]["common_sequences"]) == 1, "Idiom count incorrect for Clang"
-    main_logger.info("Idiom added to Clang profile.")
-
-    # Test with a specific path and force recreate
-    main_logger.info("\n--- Test Case 4: Specific path and force recreate ---")
-    test_db_path = "test_compiler_idioms.json"
+    # Use a temporary specific path for tests to avoid interfering with default
+    test_db_path = "test_compiler_idioms_identify.json"
     if os.path.exists(test_db_path):
-        os.remove(test_db_path) # Ensure clean start for this test
+        os.remove(test_db_path)
         
-    recovery_engine_test = CompilerSpecificRecovery(idiom_db_path=test_db_path, logger=main_logger)
-    # initialize_idiom_database is called in __init__. To force recreate *after* __init__, call it explicitly.
-    recovery_engine_test.initialize_idiom_database(force_recreate=True) 
-    main_logger.info(f"DB state (test path, recreated). Has MSVC? {'MSVC_v19_x64_Release' in recovery_engine_test.idioms_db['compilers']}")
-    assert 'MSVC_v19_x64_Release' in recovery_engine_test.idioms_db['compilers'], "MSVC profile missing after recreate"
+    recovery_engine = CompilerSpecificRecovery(idiom_db_path=test_db_path, logger=main_logger)
+    # The __init__ calls initialize_idiom_database, which creates default entries.
 
-    # Test identify_compiler_from_idioms placeholder
-    main_logger.info("\n--- Test Case 5: Test identify_compiler_from_idioms placeholder ---")
-    identified_compiler = recovery_engine_test.identify_compiler_from_idioms(["push ebp", "mov ebp, esp", "sub esp, 0x20"])
-    assert identified_compiler is None, "Placeholder for identify_compiler_from_idioms should return None"
-    main_logger.info(f"identify_compiler_from_idioms returned: {identified_compiler} (as expected for placeholder)")
+    main_logger.info("\n--- Test Case 1: Identify MSVC ---")
+    msvc_snippets = [
+        "push ebp",
+        "mov ebp, esp",
+        "sub esp, 0x40", # Matches regex
+        "call __security_init_cookie"
+    ]
+    compiler = recovery_engine.identify_compiler_from_idioms(msvc_snippets)
+    main_logger.info(f"Identified: {compiler}")
+    assert compiler == "MSVC_v19_x64_Release"
+
+    main_logger.info("\n--- Test Case 2: Identify GCC ---")
+    gcc_snippets = [
+        "  push   rbp", # Test whitespace normalization
+        "mov RBP, rsp  ", # Test case normalization for mnemonic, varied spacing
+        "mov QWORD PTR [rbp-0x8], rdi" # Part of a GCC idiom (simplified for test)
+    ]
+    compiler = recovery_engine.identify_compiler_from_idioms(gcc_snippets)
+    main_logger.info(f"Identified: {compiler}")
+    assert compiler == "GCC_v9_x64_O2"
+    
+    main_logger.info("\n--- Test Case 3: Ambiguous or Partial Match (should prefer higher score or first) ---")
+    # This snippet has elements of both, but MSVC has more distinct patterns from default DB
+    ambiguous_snippets = [
+        "push ebp",         # MSVC / older GCC
+        "mov ebp, esp",     # MSVC / older GCC
+        "sub esp, 0x20",    # MSVC
+        "mov eax, [ebp+8]", # Generic
+        "call some_func"    # Generic
+    ]
+    compiler = recovery_engine.identify_compiler_from_idioms(ambiguous_snippets)
+    main_logger.info(f"Identified (ambiguous): {compiler}")
+    # Based on default DB, MSVC has "sub esp, 0x..." which is more specific than just push/mov
+    assert compiler == "MSVC_v19_x64_Release" 
+
+    main_logger.info("\n--- Test Case 4: No Match ---")
+    unknown_snippets = [
+        "xor eax, eax",
+        "ret"
+    ]
+    compiler = recovery_engine.identify_compiler_from_idioms(unknown_snippets)
+    main_logger.info(f"Identified (unknown): {compiler}")
+    assert compiler is None
+
+    main_logger.info("\n--- Test Case 5: Empty Snippets ---")
+    compiler = recovery_engine.identify_compiler_from_idioms([])
+    main_logger.info(f"Identified (empty): {compiler}")
+    assert compiler is None
+
+    main_logger.info("\n--- Test Case 6: MSVC fastcall idiom ---")
+    msvc_fastcall_snippet = [
+        "mov [ebp-8], ecx" 
+    ]
+    compiler = recovery_engine.identify_compiler_from_idioms(msvc_fastcall_snippet)
+    main_logger.info(f"Identified (MSVC fastcall): {compiler}")
+    assert compiler == "MSVC_v19_x64_Release"
+
 
     # Clean up
     main_logger.info("\n--- Cleaning up test files ---")
-    default_db_path = "compiler_idioms.json" 
-    if os.path.exists(default_db_path):
-        os.remove(default_db_path)
-        main_logger.info(f"Removed {default_db_path}")
     if os.path.exists(test_db_path):
         os.remove(test_db_path)
         main_logger.info(f"Removed {test_db_path}")
