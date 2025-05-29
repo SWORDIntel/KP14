@@ -286,30 +286,285 @@ class UnifiedOrchestrator:
             start_time = time.time()
             
             try:
-                # Check if the module has the analyze method
-                if hasattr(instance, 'analyze'):
-                    result = instance.analyze(file_path, context=context)
+                # Construct a unique output directory for this module and this specific file
+                file_specific_output_base = os.path.join(self.base_output_dir, file_name + "_analysis")
+                os.makedirs(file_specific_output_base, exist_ok=True)
+                module_output_dir = os.path.join(
+                    file_specific_output_base,
+                    f"{module_name.lower().replace('keyplug', '').replace('engine','').replace('integration','').replace('analyzer','').replace('detection','').replace('recovery','').replace('extractor','').replace('decrypt','')}_outputs"
+                )
+                os.makedirs(module_output_dir, exist_ok=True)
+
+                if module_name == "DecompilerIntegration":
+                    decompiler_outputs_dict = instance.decompile(
+                        file_path, 
+                        module_output_dir, 
+                        decompiler_types=self.decompiler_list_pref,
+                        functions=None 
+                    )
                     
-                    # Store the result
+                    consensus_c_path = None
+                    successful_c_outputs_count = sum(
+                        1 for out_data in decompiler_outputs_dict.values() 
+                        if out_data and out_data.get("c_code") and os.path.exists(out_data["c_code"])
+                    )
+                    
+                    if successful_c_outputs_count >= 1:
+                        consensus_c_path = instance.produce_consensus_output(
+                            decompiler_outputs_dict, 
+                            module_output_dir 
+                        )
+                    
+                    refined_cfg_path = instance.refine_cfg(
+                        file_path, 
+                        decompiler_outputs_dict, 
+                        module_output_dir 
+                    )
+                    
+                    normalized_decompiler_outputs = {}
+                    for decomp_name, out_data in decompiler_outputs_dict.items():
+                        current_decomp_output = out_data.copy() if out_data else {}
+                        if out_data and out_data.get("signatures") and os.path.exists(out_data["signatures"]):
+                            try:
+                                with open(out_data["signatures"], 'r', encoding='utf-8') as f_sig:
+                                    raw_sigs = json.load(f_sig)
+                                normalized_sigs_list = instance.normalize_signatures(raw_sigs) 
+                                
+                                norm_sig_filename = f"{decomp_name}_normalized_signatures.json"
+                                norm_sig_path = os.path.join(module_output_dir, norm_sig_filename)
+                                with open(norm_sig_path, 'w', encoding='utf-8') as f_norm_sig:
+                                    json.dump(normalized_sigs_list, f_norm_sig, indent=2)
+                                current_decomp_output["normalized_signatures"] = norm_sig_path
+                            except Exception as e_norm:
+                                print(f"  Error normalizing signatures for {decomp_name}: {e_norm}")
+                                current_decomp_output["normalized_signatures"] = None
+                        else:
+                            current_decomp_output["normalized_signatures"] = None
+                        normalized_decompiler_outputs[decomp_name] = current_decomp_output
+
+                    module_result_data = {
+                        "status": "completed" if successful_c_outputs_count > 0 else "error",
+                        "decompiler_outputs": normalized_decompiler_outputs,
+                        "consensus_c_code": consensus_c_path,
+                        "refined_cfg_path": refined_cfg_path
+                    }
+                    self.results_processor.store_file_result(file_name, module_name, module_result_data)
+
+                    # --- Context Update for TypePropagator ---
+                    chosen_c_file_for_typeprop = None
+                    chosen_sig_file_for_typeprop = None # This should be the *normalized* signature file
+
+                    if consensus_c_path and os.path.exists(consensus_c_path):
+                        chosen_c_file_for_typeprop = consensus_c_path
+                        for pref_decomp in self.decompiler_list_pref:
+                            outputs = normalized_decompiler_outputs.get(pref_decomp)
+                            if outputs and outputs.get("normalized_signatures") and os.path.exists(outputs["normalized_signatures"]):
+                                chosen_sig_file_for_typeprop = outputs["normalized_signatures"]
+                                print(f"  TypePropagator using consensus C and normalized signatures from {pref_decomp}.")
+                                break
+                        if not chosen_sig_file_for_typeprop:
+                             print(f"  TypePropagator using consensus C, but no suitable normalized signature file found.")
+                    else:
+                        for pref_decomp in self.decompiler_list_pref:
+                            outputs = normalized_decompiler_outputs.get(pref_decomp)
+                            if outputs and outputs.get("c_code") and os.path.exists(outputs["c_code"]):
+                                chosen_c_file_for_typeprop = outputs["c_code"]
+                                chosen_sig_file_for_typeprop = outputs.get("normalized_signatures")
+                                if chosen_sig_file_for_typeprop and not os.path.exists(chosen_sig_file_for_typeprop):
+                                    chosen_sig_file_for_typeprop = None 
+                                print(f"  TypePropagator using C code and normalized signatures from {pref_decomp}.")
+                                break
+                    
+                    context_updates_for_file = {
+                        "primary_c_file_path": chosen_c_file_for_typeprop,
+                        "primary_signatures_path": chosen_sig_file_for_typeprop, 
+                        "all_decompiler_outputs": normalized_decompiler_outputs 
+                    }
+                    self.results_processor.update_analysis_context(context_updates_for_file, file_specific=True, file_name_filter=file_name)
+                    # --- End Context Update ---
+                    self.execution_stats["completed_modules"] += 1
+
+                elif module_name == "TypePropagator":
+                    file_specific_context = self.results_processor.get_analysis_context(file_specific=True, file_name_filter=file_name)
+                    primary_c_file = file_specific_context.get("primary_c_file_path")
+                    primary_sig_file = file_specific_context.get("primary_signatures_path") 
+                    
+                    existing_types = file_specific_context.get("existing_types") 
+
+                    if primary_c_file and os.path.exists(primary_c_file):
+                        result_types = instance.propagate_types(
+                            primary_c_file,
+                            signature_data_path=primary_sig_file, 
+                            existing_types=existing_types
+                        )
+                        # Store the dictionary of inferred types
+                        self.results_processor.store_file_result(file_name, module_name, {"status": "completed", "inferred_types": result_types})
+                        self.execution_stats["completed_modules"] += 1
+                    else:
+                        error_msg = f"TypePropagator: Missing or inaccessible primary C file path ('{primary_c_file}') for {file_name}. Skipping."
+                        print(f"  Error: {error_msg}")
+                        self.results_processor.store_file_result(file_name, module_name, {"status": "error", "message": error_msg})
+                        stage_success = False # Mark stage as failed if TypePropagator couldn't run
+                
+                elif module_name == "VulnerabilityDetector":
+                    file_specific_context = self.results_processor.get_analysis_context(file_specific=True, file_name_filter=file_name)
+                    primary_c_file = file_specific_context.get("primary_c_file_path")
+                    pattern_scan_results = {"status": "skipped_no_c_file", "vulnerabilities_found": []}
+                    ml_scan_results = {"status": "skipped_no_c_file", "ml_findings": []}
+
+                    if primary_c_file and os.path.exists(primary_c_file):
+                        try:
+                            with open(primary_c_file, 'r', encoding='utf-8') as f_c:
+                                c_code_content = f_c.read()
+                            
+                            # 1. Pattern-based scan (already part of VulnerabilityDetector)
+                            pattern_scan_results = instance.scan_for_vulnerabilities(c_code_content, primary_c_file)
+
+                            # 2. Conditional Training (Placeholder - typically offline)
+                            train_vuln_model_data_path = self.cli_args.get("train_vuln_model")
+                            if train_vuln_model_data_path:
+                                print(f"  Attempting (dummy) training for VulnerabilityDetector ML model using data from: {train_vuln_model_data_path}")
+                                # In a real scenario, output names might be configurable or derived
+                                training_outcome = instance.train_vulnerability_model(
+                                    training_data_path=train_vuln_model_data_path,
+                                    output_model_name=f"{file_name}_trained_vuln_model.dummy.joblib",
+                                    output_vectorizer_name=f"{file_name}_vuln_vectorizer.dummy.pkl"
+                                )
+                                print(f"  VulnerabilityDetector ML training simulation outcome: {training_outcome['status']}")
+                                if training_outcome.get("model_path"):
+                                    print(f"    Dummy model saved to: {training_outcome['model_path']}")
+                                # Re-load components if training happened and paths were updated internally
+                                if training_outcome['status'] == 'simulated_vuln_training_complete' and \
+                                   instance.ml_model_path and instance.ml_vectorizer_path:
+                                   print(f"  Reloading VulnerabilityDetector ML components after training...")
+                                   instance.load_trained_ml_components(instance.ml_model_path, instance.ml_vectorizer_path)
+
+
+                            # 3. ML-based prediction
+                            ml_scan_results = instance.predict_vulnerabilities_ml(c_code_content, primary_c_file)
+
+                        except Exception as e_vuln:
+                            error_msg = f"VulnerabilityDetector: Error processing C code from {primary_c_file} for {file_name}: {e_vuln}"
+                            print(f"  Error: {error_msg}\n{traceback.format_exc()}")
+                            pattern_scan_results = {"status": "error", "message": error_msg, "vulnerabilities_found": []}
+                            ml_scan_results = {"status": "error", "message": error_msg, "ml_findings": []}
+                            stage_success = False
+                    else:
+                        error_msg = f"VulnerabilityDetector: Missing or inaccessible primary C file path ('{primary_c_file}') for {file_name}. Skipping."
+                        print(f"  Error: {error_msg}")
+                        pattern_scan_results["message"] = error_msg
+                        ml_scan_results["message"] = error_msg
+                        stage_success = False
+
+                    combined_results = {
+                        "status": "completed" if stage_success else "error",
+                        "pattern_scan": pattern_scan_results,
+                        "ml_scan": ml_scan_results
+                    }
+                    self.results_processor.store_file_result(file_name, module_name, combined_results)
+                    self.execution_stats["completed_modules"] += 1
+
+                elif module_name == "CodeIntentClassifier":
+                    file_specific_context = self.results_processor.get_analysis_context(file_specific=True, file_name_filter=file_name)
+                    primary_c_file = file_specific_context.get("primary_c_file_path")
+
+                    if primary_c_file and os.path.exists(primary_c_file):
+                        try:
+                            with open(primary_c_file, 'r', encoding='utf-8') as f_c:
+                                c_code_content = f_c.read()
+                            
+                            classification_result = instance.classify_code_block(c_code_content)
+                            # The result from classify_code_block is already a dictionary
+                            self.results_processor.store_file_result(file_name, module_name, classification_result)
+                            self.execution_stats["completed_modules"] += 1
+                        except Exception as e_intent:
+                            error_msg = f"CodeIntentClassifier: Error processing file {primary_c_file} for {file_name}: {e_intent}"
+                            print(f"  Error: {error_msg}")
+                            traceback.print_exc()
+                            self.results_processor.store_file_result(file_name, module_name, {"status": "error", "message": error_msg, "traceback": traceback.format_exc()})
+                            stage_success = False
+                    else:
+                        error_msg = f"CodeIntentClassifier: Missing or inaccessible primary C file path ('{primary_c_file}') for {file_name}. Skipping."
+                        print(f"  Error: {error_msg}")
+                        self.results_processor.store_file_result(file_name, module_name, {"status": "error", "message": error_msg})
+                        stage_success = False
+                
+                elif module_name == "ProgramSynthesisEngine":
+                    file_specific_context = self.results_processor.get_analysis_context(file_specific=True, file_name_filter=file_name)
+                    primary_c_file = file_specific_context.get("primary_c_file_path")
+                    behavior_dict = {
+                        "description": f"Synthesize based on decompiled output of {file_name}",
+                        "source_file_path_for_analysis": primary_c_file if primary_c_file else "N/A"
+                    }
+                    if primary_c_file and os.path.exists(primary_c_file):
+                        try:
+                            with open(primary_c_file, 'r', encoding='utf-8') as f_c:
+                                behavior_dict["pseudo_code"] = f_c.read(1024) # First 1KB as pseudo-code example
+                        except Exception as e_read:
+                            behavior_dict["pseudo_code_error"] = str(e_read)
+                    
+                    result_code = instance.synthesize_code(observed_behavior=behavior_dict, target_language="c")
+                    self.results_processor.store_file_result(file_name, module_name, {"status": "placeholder_executed", "synthesized_code_placeholder": result_code})
+                    self.execution_stats["completed_modules"] += 1
+
+                elif module_name == "CompilerSpecificRecovery":
+                    file_specific_context = self.results_processor.get_analysis_context(file_specific=True, file_name_filter=file_name)
+                    primary_c_file = file_specific_context.get("primary_c_file_path")
+                    code_snippets_for_compiler_id = ["push ebp", "mov ebp, esp"] # Dummy snippet
+                    if primary_c_file and os.path.exists(primary_c_file):
+                        try:
+                            with open(primary_c_file, 'r', encoding='utf-8') as f_c:
+                                # Using first few lines as representative snippets for placeholder
+                                code_snippets_for_compiler_id = [f_c.readline().strip() for _ in range(5) if f_c.readable()]
+                                code_snippets_for_compiler_id = [s for s in code_snippets_for_compiler_id if s] # Filter empty lines
+                                if not code_snippets_for_compiler_id : code_snippets_for_compiler_id = ["dummy_line_1;", "dummy_line_2;"]
+                        except Exception as e_read:
+                            print(f"  Could not read C file for CompilerSpecificRecovery snippets: {e_read}")
+                    
+                    identified_compiler = instance.identify_compiler_from_idioms(code_snippets=code_snippets_for_compiler_id)
+                    self.results_processor.store_file_result(file_name, module_name, {"status": "placeholder_executed", "identified_compiler": identified_compiler})
+                    self.execution_stats["completed_modules"] += 1
+
+                elif module_name == "IntelPTAnalyzer":
+                    dummy_pt_path = f"{file_path}.pt_trace" # Non-existent, placeholder will handle
+                    # Simulate creating an empty dummy file for the placeholder to "find"
+                    # open(dummy_pt_path, 'w').close() 
+                    # ^ Decided against creating file, placeholder handles non-existence.
+                    pt_result = instance.process_pt_trace(trace_file_path=dummy_pt_path)
+                    self.results_processor.store_file_result(file_name, module_name, pt_result)
+                    self.execution_stats["completed_modules"] += 1
+                    # if os.path.exists(dummy_pt_path): os.remove(dummy_pt_path) # Clean up if created
+
+                elif module_name == "IntelPinToolRunner":
+                    pin_result = instance.run_pin_tool(binary_path=file_path, pintool_name="keyplug_pintracer.so", pintool_options={"-o": f"{file_name}.pin_trace.txt"})
+                    self.results_processor.store_file_result(file_name, module_name, pin_result)
+                    self.execution_stats["completed_modules"] += 1
+
+                elif hasattr(instance, 'analyze'): # Standard module execution for other modules
+                    result = instance.analyze(file_path, context=context) 
                     self.results_processor.store_file_result(file_name, module_name, result)
-                    
-                    # Save to dedicated file if specified
-                    try:
-                        output_file = self.results_processor.save_component_result_to_file(file_name, module_name)
-                        print(f"  Results saved to: {output_file}")
-                    except Exception as e:
-                        print(f"  Warning: Could not save results to file: {e}")
-                    
-                    # Update module execution count
                     self.execution_stats["completed_modules"] += 1
                 else:
-                    print(f"  Warning: Module {module_name} does not have an 'analyze' method")
-                    result = {
-                        "status": "error",
-                        "message": f"Module {module_name} does not have an 'analyze' method"
-                    }
-                    self.results_processor.store_file_result(file_name, module_name, result)
-                    stage_success = False
+                    error_msg = f"Module {module_name} does not have a recognized analysis method (analyze, decompile, propagate_types)."
+                    print(f"  Warning: {error_msg}")
+                    self.results_processor.store_file_result(file_name, module_name, {"status": "skipped", "message": error_msg})
+                    # Not necessarily a stage failure, but a skip.
+                
+                # Save individual component result to its dedicated file if not already handled by module logic
+                # For DecompilerIntegration, the main result dict is stored. Individual files are in module_output_dir.
+                # For TypePropagator, its dict of types is stored.
+                if module_name not in ["DecompilerIntegration"]: # TypePropagator result is a dict, can be saved.
+                    try:
+                        output_filepath = self.results_processor.save_component_result_to_file(file_name, module_name, module_specific_output_dir=module_output_dir)
+                        if output_filepath: print(f"  Results for {module_name} also saved to: {output_filepath}")
+                    except Exception as e:
+                        print(f"  Warning: Could not save results to dedicated file for {module_name}: {e}")
+                    try:
+                        # Pass module_output_dir for modules that might want to save additional artifacts there
+                        output_filepath = self.results_processor.save_component_result_to_file(file_name, module_name, module_specific_output_dir=module_output_dir)
+                        if output_filepath: print(f"  Results for {module_name} also saved to: {output_filepath}")
+                    except Exception as e:
+                        print(f"  Warning: Could not save results to dedicated file for {module_name}: {e}")
             
             except Exception as e:
                 print(f"Error running {module_name} on {file_name}: {e}")
@@ -523,18 +778,38 @@ class UnifiedOrchestrator:
                 
                 # Check the module interface
                 # Different global modules might have different methods
-                if hasattr(instance, 'analyze_all'):
+                elif hasattr(instance, 'analyze_all'): # Generic global analyzer
                     result = instance.analyze_all(context=global_context)
-                elif hasattr(instance, 'correlate'):
+                elif hasattr(instance, 'correlate'): # For correlators
                     result = instance.correlate(
                         all_file_results=all_file_results,
-                        all_global_results=self.results_processor.global_results,
+                        all_global_results=self.results_processor.global_results, # Pass previous global results
                         context=global_context
                     )
-                elif hasattr(instance, 'update_database'):
+                elif hasattr(instance, 'update_database'): # For DB updaters (like old pattern_db)
                     result = instance.update_database(context=global_context)
+                
+                elif module_name == "MalwarePatternLearner" and hasattr(instance, 'learn_from_analysis'):
+                    print(f"  MalwarePatternLearner processing {len(all_file_results)} file results.")
+                    patterns_before = len(instance.patterns_db.get("patterns", []))
+                    for f_name, file_result_dict in all_file_results.items():
+                        # We need to pass the full result dict for that file, which includes 'file_name' and 'components'
+                        # The learn_from_analysis method expects a dict similar to what one file analysis produces
+                        # So, we pass the value part of the all_file_results dict
+                        instance.learn_from_analysis(file_result_dict) 
+                    
+                    patterns_after = len(instance.patterns_db.get("patterns", []))
+                    result = {
+                        "status": "learning_complete_placeholder",
+                        "patterns_in_db_start": patterns_before,
+                        "patterns_in_db_end": patterns_after,
+                        "new_patterns_attempted_this_run": patterns_after - patterns_before, # More accurate count
+                        "files_processed_for_learning": len(all_file_results)
+                    }
+                    print(f"  MalwarePatternLearner finished. DB now has {patterns_after} patterns.")
+
                 else:
-                    print(f"Warning: Module {module_name} does not have a recognized global analysis method")
+                    print(f"Warning: Module {module_name} does not have a recognized global analysis method (analyze_all, correlate, update_database, or specific MalwarePatternLearner logic).")
                     result = {
                         "status": "error",
                         "message": f"Module {module_name} does not have a recognized global analysis method"
@@ -659,6 +934,48 @@ def main():
                 action='store_true',
                 help=f'Enable {module_name} module (disabled by default)'
             )
+
+    # Decompiler specific arguments
+    decompiler_group = parser.add_argument_group('Decompiler Options')
+    decompiler_group.add_argument('--decompiler-list', 
+                                  nargs='+', 
+                                  default=['ghidra', 'retdec', 'ida'], 
+                                  choices=['ghidra', 'retdec', 'ida', 'all'], 
+                                  help='List of decompilers to try (e.g., ghidra retdec ida). Order can imply preference. "all" attempts all available.')
+
+    # Module-specific configurations
+    module_config_group = parser.add_argument_group('Module Configurations')
+    module_config_group.add_argument(
+        '--intent-model-path',
+        default=None, # Let the module define its default or handle None
+        help="Path to the trained Code Intent Classifier model file (e.g., .joblib)."
+    )
+    module_config_group.add_argument(
+        '--intent-vectorizer-path',
+        default=None, # Let the module define its default or handle None
+        help="Path to the trained Code Intent Classifier TF-IDF vectorizer file (e.g., .pkl)."
+    )
+    module_config_group.add_argument(
+        '--train-vuln-model',
+        metavar='TRAINING_DATA_PATH', # For help text clarity
+        default=None,
+        help="Path to training data to trigger (dummy) training for VulnerabilityDetector's ML model."
+    )
+    module_config_group.add_argument(
+        '--vuln-model-path',
+        default=None,
+        help="Path to a pre-trained VulnerabilityDetector ML model file."
+    )
+    module_config_group.add_argument(
+        '--vuln-vectorizer-path',
+        default=None,
+        help="Path to a pre-trained VulnerabilityDetector ML vectorizer file."
+    )
+    module_config_group.add_argument(
+        '--pattern-db-path',
+        default=None, # MalwarePatternLearner will use its default if None
+        help="Path to the malware pattern database JSON file for MalwarePatternLearner."
+    )
     
     args = parser.parse_args()
     
