@@ -22,11 +22,17 @@ MODULE_GROUPS = {
     "decryption": ["SimpleRC4", "RC4Decrypt", "SectionDecrypt", "MultiLayerDecrypt", 
                   "MultiLayerDecryptAdvanced", "TargetedPatternDecrypt", "KeyplugCombinationDecrypt"],
     "analysis": ["CompilerIdiomDetection", "KeyplugApiSequenceDetector", "TypeInference", 
-                "PolyglotAnalyzer", "KeyplugAdvancedAnalysis"],
-    "ml": ["MLPatternAnalyzer", "MLMalwareAnalyzer", "KeyplugAcceleratedMultilayer"],
+                "PolyglotAnalyzer", "KeyplugAdvancedAnalysis", "TypePropagator"], 
+    "ml": ["MLPatternAnalyzer", "MLMalwareAnalyzer", "KeyplugAcceleratedMultilayer", "CodeIntentClassifier", "VulnerabilityDetector"], 
     "behavioral": ["KeyplugBehavioralAnalyzer"],
     "memory": ["KeyplugMemoryAnalyzer"],
-    "global": ["KeyplugCrossSampleCorrelator", "KeyplugPatternDatabase"],
+    "global": ["KeyplugCrossSampleCorrelator", "KeyplugPatternDatabase", "MalwarePatternLearner", "HybridAnalyzer"], 
+    "experimental_recovery": [ 
+        "ProgramSynthesisEngine",
+        "CompilerSpecificRecovery",
+        "IntelPTAnalyzer",
+        "IntelPinToolRunner"
+    ],
 }
 
 # Pipeline stages define execution order and dependencies
@@ -59,37 +65,50 @@ PIPELINE_STAGES = [
     
     ("decompilation", [
         "KeyplugDecompiler", 
-        "DecompilerIntegration"
+        "DecompilerIntegration" 
     ], "deep_extraction"),
+    
+    ("type_analysis", [
+        "TypePropagator",
+    ], "decompilation"), 
     
     ("advanced_analysis", [
         "TypeInference", 
         "PolyglotAnalyzer", 
         "KeyplugApiSequenceDetector", 
         "KeyplugAdvancedAnalysis",
-    ], ["structure_analysis", "deep_extraction"]),
+    ], ["structure_analysis", "deep_extraction", "type_analysis"]), 
     
     ("ml_analysis", [
         "MLPatternAnalyzer", 
         "MLMalwareAnalyzer", 
-        "KeyplugAcceleratedMultilayer"
-    ], ["structure_analysis", "advanced_analysis"]),
+        "KeyplugAcceleratedMultilayer",
+        "CodeIntentClassifier",
+        "VulnerabilityDetector"  
+    ], ["structure_analysis", "advanced_analysis"]), 
     
     ("behavioral", [
         "KeyplugBehavioralAnalyzer"
     ], None),
     
-    # Memory analysis has no dependencies on file analysis since it's 
-    # analyzing memory dumps, not files
     ("memory", [
         "KeyplugMemoryAnalyzer"
     ], None),
     
+    ("alternate_recovery_techniques", [
+        "ProgramSynthesisEngine",
+        "CompilerSpecificRecovery",
+        "IntelPTAnalyzer",
+        "IntelPinToolRunner"
+    ], ["decompilation", "type_analysis"]), 
+
     # Global analysis runs after all other analyses
     ("global", [
         "KeyplugCrossSampleCorrelator", 
-        "KeyplugPatternDatabase"
-    ], ["advanced_analysis", "ml_analysis", "behavioral", "memory"]),
+        "KeyplugPatternDatabase",    
+        "MalwarePatternLearner",
+        "HybridAnalyzer" # Added HybridAnalyzer here
+    ], ["advanced_analysis", "ml_analysis", "behavioral", "memory", "alternate_recovery_techniques"]), # Added alternate_recovery_techniques dependency
 ]
 
 # Module details for UI presentation and help text
@@ -303,12 +322,20 @@ MODULE_DETAILS = {
         "output_type": "files"
     },
     "DecompilerIntegration": {
-        "description": "Integration with external decompilers",
+        "description": "Integrates with multiple external decompilers (Ghidra, IDA, RetDec) for C code generation and function signature extraction (name, address, return type, parameters). Supports consensus output from multiple decompilers and type normalization.",
         "cli_flag": "ext_decompile",
-        "default_enabled": False,
-        "requires_openvino": False,
+        "default_enabled": True, 
+        "requires_openvino": False, 
         "input_type": "file",
-        "output_type": "files"
+        "output_type": "files_json" 
+    },
+    "TypePropagator": {
+        "description": "Performs basic type inference and propagation based on decompiler outputs and signatures.",
+        "cli_flag": "type_prop",
+        "default_enabled": True, 
+        "requires_openvino": False, 
+        "input_type": "json", 
+        "output_type": "json" 
     },
     "KeyplugBehavioralAnalyzer": {
         "description": "Behavioral analysis of malware samples",
@@ -317,6 +344,70 @@ MODULE_DETAILS = {
         "requires_openvino": False,
         "input_type": "file",
         "output_type": "json"
+    },
+    "CodeIntentClassifier": {
+        "description": "Classifies the intent of code blocks or functions using a (currently placeholder) model.",
+        "cli_flag": "intent_classify",
+        "default_enabled": True, 
+        "requires_openvino": False, 
+        "input_type": "code_snippet_collection", 
+        "output_type": "json" 
+    },
+    "VulnerabilityDetector": {
+        "description": "Scans C code for known vulnerable function patterns (e.g., strcpy, gets).",
+        "cli_flag": "vuln_scan",
+        "default_enabled": True,
+        "requires_openvino": False,
+        "input_type": "code_content", 
+        "output_type": "json" 
+    },
+    "MalwarePatternLearner": {
+        "description": "Manages a database of malware patterns and includes a (placeholder) mechanism to learn new patterns from analysis results.",
+        "cli_flag": "pattern_learn",
+        "default_enabled": False, 
+        "requires_openvino": False,
+        "input_type": "analysis_results", 
+        "output_type": "database_update" 
+    },
+    "ProgramSynthesisEngine": {
+        "description": "Placeholder for program synthesis, potentially using LLMs to generate code from observed behavior or pseudo-code.",
+        "cli_flag": "prog_synth",
+        "default_enabled": False, 
+        "requires_openvino": False, 
+        "input_type": "behavior_description", 
+        "output_type": "source_code"
+    },
+    "CompilerSpecificRecovery": {
+        "description": "Manages a database of compiler idioms and (placeholder) identifies compilers.",
+        "cli_flag": "compiler_rec",
+        "default_enabled": False, 
+        "requires_openvino": False, 
+        "input_type": "binary_snippets",
+        "output_type": "json_report" 
+    },
+    "IntelPTAnalyzer": {
+        "description": "Placeholder for processing Intel Processor Trace (PT) data for execution flow analysis.",
+        "cli_flag": "intel_pt",
+        "default_enabled": False, 
+        "requires_openvino": False, 
+        "input_type": "pt_trace_file",
+        "output_type": "execution_log"
+    },
+    "IntelPinToolRunner": {
+        "description": "Placeholder for running Intel Pin tools for dynamic binary instrumentation.",
+        "cli_flag": "intel_pin",
+        "default_enabled": False, 
+        "requires_openvino": False,
+        "input_type": "binary_and_pintool",
+        "output_type": "trace_log_files"
+    },
+    "HybridAnalyzer": {
+        "description": "Combines static and dynamic analysis results for a comprehensive overview.",
+        "cli_flag": "hybrid_analysis",
+        "default_enabled": False, # Typically run explicitly
+        "requires_openvino": False,
+        "input_type": "all_analysis_results", # Conceptually takes all prior results
+        "output_type": "json_report"
     },
 }
 
@@ -356,7 +447,8 @@ def get_module_import_map() -> Dict[str, str]:
         
         # Analysis
         "KeyplugApiSequenceDetector": "keyplug_api_sequence_detector.KeyplugApiSequenceDetector",
-        "TypeInference": "type_inference.TypeInferenceEngine",
+        "TypeInference": "type_inference.TypeInferenceEngine", 
+        "TypePropagator": "type_propagation.TypePropagator", 
         "PolyglotAnalyzer": "polyglot_analyzer.PolyglotAnalyzer",
         "KeyplugAdvancedAnalysis": "keyplug_advanced_analysis.KeyplugAdvancedAnalysis",
         
@@ -364,6 +456,8 @@ def get_module_import_map() -> Dict[str, str]:
         "MLPatternAnalyzer": "ml_pattern_analyzer.MLPatternAnalyzer",
         "MLMalwareAnalyzer": "ml_malware_analyzer.MalwareML",
         "KeyplugAcceleratedMultilayer": "keyplug_accelerated_multilayer.KeyplugAcceleratedMultilayer",
+        "CodeIntentClassifier": "code_intent_classifier.CodeIntentClassifier",
+        "VulnerabilityDetector": "vulnerability_detector.VulnerabilityDetector",
         
         # Behavioral Analysis
         "KeyplugBehavioralAnalyzer": "keyplug_behavioral_analyzer.KeyplugBehavioralAnalyzer",
@@ -374,6 +468,14 @@ def get_module_import_map() -> Dict[str, str]:
         # Global Analysis
         "KeyplugCrossSampleCorrelator": "keyplug_cross_sample_correlator.KeyplugCrossSampleCorrelator",
         "KeyplugPatternDatabase": "keyplug_pattern_database.KeyplugPatternDatabase",
+        "MalwarePatternLearner": "malware_pattern_learner.MalwarePatternLearner",
+        "HybridAnalyzer": "hybrid_analyzer.HybridAnalyzer", # Added here
+
+        # Alternate Recovery & Hardware Assisted Analysis
+        "ProgramSynthesisEngine": "program_synthesis_engine.ProgramSynthesisEngine",
+        "CompilerSpecificRecovery": "compiler_specific_recovery.CompilerSpecificRecovery",
+        "IntelPTAnalyzer": "hardware_assisted_analysis.IntelPTAnalyzer",
+        "IntelPinToolRunner": "hardware_assisted_analysis.IntelPinToolRunner",
     }
 
 # Function to get the pipeline configuration
@@ -405,3 +507,5 @@ if __name__ == "__main__":
     print("\nModule groups:")
     for group, modules in MODULE_GROUPS.items():
         print(f"{group}: {len(modules)} modules")
+
+```
