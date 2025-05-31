@@ -1,2 +1,0 @@
-# KP1
-KP1ANALYSIS
