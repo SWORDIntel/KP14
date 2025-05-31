@@ -11,8 +11,6 @@ API call sequences, memory operations, and other indicators of malicious behavio
 import os
 import sys
 import json
-import numpy as np
-from collections import defaultdict
 import concurrent.futures
 
 # Try to import OpenVINO for hardware acceleration
@@ -51,11 +49,16 @@ print(f"Using maximum CPU cores: {MAX_WORKERS}")
 
 # Import API sequence detector
 try:
-    from keyplug_api_sequence_detector import APISequenceDetector
+    from stego_analyzer.analysis.api_sequence_detector import APISequenceDetector
     API_SEQUENCE_DETECTOR_AVAILABLE = True
 except ImportError:
-    API_SEQUENCE_DETECTOR_AVAILABLE = False
-    print("WARNING: API Sequence Detector not available - functionality will be limited")
+    # Fallback if the primary location is not found
+    try:
+        from analysis.api_sequence_detector import APISequenceDetector
+        API_SEQUENCE_DETECTOR_AVAILABLE = True
+    except ImportError:
+        API_SEQUENCE_DETECTOR_AVAILABLE = False
+        print("ERROR: APISequenceDetector not found. Ensure it's in stego_analyzer.analysis or analysis module.")
 
 class BehavioralAnalyzer:
     """
@@ -169,10 +172,12 @@ class BehavioralAnalyzer:
         if self.pattern_db_path and os.path.exists(self.pattern_db_path):
             try:
                 with open(self.pattern_db_path, 'r') as f:
-                    data = json.load(f)
+                    loaded_data = json.load(f) # Changed variable name to avoid conflict
                     
                     # TODO: Load behavior patterns from database
                     # This is a placeholder for actual implementation
+                    # For now, we can merge or update default_patterns with loaded_data if structure matches
+                    # Example: default_patterns.update(loaded_data.get("behavior_patterns", {}))
                     
                 print(f"Loaded behavior patterns from {self.pattern_db_path}")
             except Exception as e:
@@ -233,7 +238,7 @@ class BehavioralAnalyzer:
         try:
             # Read the binary file
             with open(binary_path, 'rb') as f:
-                data = f.read()
+                binary_content = f.read()
             
             # Extract API calls (simplified approach)
             common_apis = [
@@ -252,24 +257,24 @@ class BehavioralAnalyzer:
             # Look for API names in the binary
             for api in common_apis:
                 api_bytes = api.encode('utf-8')
-                if api_bytes in data:
+                if api_bytes in binary_content:
                     indicators["api_calls"].append(api)
             
             # Check for timing-based anti-analysis
-            if b"GetTickCount" in data and b"Sleep" in data:
+            if b"GetTickCount" in binary_content and b"Sleep" in binary_content:
                 indicators["timing_checks"] = True
             
             # Check for VM detection
             vm_strings = [b"VMware", b"VBox", b"QEMU", b"Virtual", b"Xen"]
             for vm_string in vm_strings:
-                if vm_string in data:
+                if vm_string in binary_content:
                     indicators["vm_detection"] = True
                     break
             
             # Extract strings (simplified approach)
             import re
             ascii_pattern = re.compile(b'[ -~]{4,}')
-            for match in ascii_pattern.finditer(data):
+            for match in ascii_pattern.finditer(binary_content):
                 string = match.group().decode('ascii', errors='ignore')
                 indicators["strings"].append(string)
             
@@ -279,7 +284,7 @@ class BehavioralAnalyzer:
                 "InternetOpen", "InternetConnect", "HttpOpenRequest", "HttpSendRequest"
             ]
             for indicator in network_indicators:
-                if indicator.encode('utf-8') in data:
+                if indicator.encode('utf-8') in binary_content:
                     protocol = "http"
                     if "ftp://" in indicator:
                         protocol = "ftp"
@@ -294,7 +299,7 @@ class BehavioralAnalyzer:
             # Check for file access
             file_indicators = ["CreateFile", "ReadFile", "WriteFile", "DeleteFile"]
             for indicator in file_indicators:
-                if indicator.encode('utf-8') in data:
+                if indicator.encode('utf-8') in binary_content:
                     operation = "read"
                     if "Write" in indicator:
                         operation = "write"
@@ -308,7 +313,7 @@ class BehavioralAnalyzer:
             # Check for registry access
             registry_indicators = ["RegOpenKeyEx", "RegSetValueEx", "RegDeleteValue"]
             for indicator in registry_indicators:
-                if indicator.encode('utf-8') in data:
+                if indicator.encode('utf-8') in binary_content:
                     operation = "read"
                     if "Set" in indicator:
                         operation = "write"
@@ -322,7 +327,7 @@ class BehavioralAnalyzer:
             # Check for memory operations
             memory_indicators = ["VirtualAlloc", "VirtualProtect", "WriteProcessMemory", "ReadProcessMemory"]
             for indicator in memory_indicators:
-                if indicator.encode('utf-8') in data:
+                if indicator.encode('utf-8') in binary_content:
                     operation = "allocate"
                     if "Write" in indicator:
                         operation = "write"

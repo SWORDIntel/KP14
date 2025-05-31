@@ -4,13 +4,10 @@ KEYPLUG ML Pattern Analyzer
 Uses OpenVINO and machine learning techniques to identify patterns in encrypted malware
 """
 import os
-import sys
 import binascii
 import numpy as np
-from pathlib import Path
 import matplotlib.pyplot as plt
-import concurrent.futures
-from collections import Counter, defaultdict
+from collections import Counter
 import re
 
 try:
@@ -509,10 +506,10 @@ def analyze_file(file_path, output_dir=None, enable_ml=False):
     # Save results
     if output_dir:
         import json
-        results_file = os.path.join(output_dir, f"{file_name}_analysis.json")
+        results_file = os.path.join(output_dir, file_name + "_analysis.json")
         with open(results_file, 'w') as f:
             json.dump(results, f, indent=2)
-        print(f"Results saved to: {results_file}")
+        print("Results saved to: {}".format(results_file))
     
     return results
 

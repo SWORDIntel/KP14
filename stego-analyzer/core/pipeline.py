@@ -1,16 +1,16 @@
 """Placeholder for pipeline module."""
 
 # Placeholder imports from analysis and utils modules
-from analysis.stegdetect import detect_steganography
-from analysis.payload_extract import extract_payload
-from analysis.ip_log_tracer import trace_ips
-from analysis.ml_classifier import classify_payload
-from utils.image_utils import load_image # Assuming we'll need to load the image
-from utils.entropy import calculate_entropy_map
-from utils.reconstructor import reconstruct_payload
+from stego_analyzer.analysis.stegdetect import detect_steganography
+from stego_analyzer.analysis.payload_extract import extract_payload
+from stego_analyzer.analysis.ip_log_tracer import trace_ips
+from stego_analyzer.analysis.ml_classifier import classify_payload
+from stego_analyzer.utils.image_utils import load_image # Assuming we'll need to load the image
+from stego_analyzer.utils.entropy import calculate_entropy_map
+from stego_analyzer.utils.reconstructor import reconstruct_payload
 # core.logger and core.config might be imported here in a real scenario
-# from core.logger import log_event
-# from core.config import get_setting
+# from stego_analyzer.core.logger import log_event
+# from stego_analyzer.core.config import get_setting
 
 def main_pipeline(image_path: str):
     """

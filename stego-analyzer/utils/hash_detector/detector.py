@@ -12,12 +12,12 @@ import binascii
 import struct
 from tqdm import tqdm
 import concurrent.futures
-import numpy as np
+# import numpy as np # Not used directly in this file
 from collections import defaultdict
 
-from .accelerator import OpenVINOAccelerator
-from .patterns import HashPatterns
-from .algorithms import HashAlgorithms
+from stego_analyzer.utils.hash_detector.accelerator import OpenVINOAccelerator
+from stego_analyzer.utils.hash_detector.patterns import HashPatterns
+from stego_analyzer.utils.hash_detector.algorithms import HashAlgorithms
 
 # Use maximum CPU cores
 MAX_WORKERS = os.cpu_count()
@@ -52,12 +52,12 @@ class HashDetector:
         # Find pattern matches using OpenVINO acceleration
         print("Searching for hash algorithm patterns...")
         matches = self.accelerator.accelerated_pattern_search(binary_data, all_patterns)
-        print(f"Found {len(matches)} potential hash pattern matches")
+        print("Found {} potential hash pattern matches".format(len(matches)))
         
         # Group matches by proximity to identify potential hash algorithms
         print("Grouping pattern matches by proximity...")
         grouped_matches = self.accelerator.group_matches_by_proximity(matches, max_distance=50)
-        print(f"Identified {len(grouped_matches)} potential hash algorithm groups")
+        print("Identified {} potential hash algorithm groups".format(len(grouped_matches)))
         
         # Analyze each group of matches
         hash_candidates = []
@@ -110,7 +110,7 @@ class HashDetector:
         if self.api_hash_db is None:
             print("Creating API hash database...")
             self.api_hash_db = HashAlgorithms.create_api_hash_database()
-            print(f"API hash database created with {len(self.api_hash_db)} entries")
+            print("API hash database created with {} entries".format(len(self.api_hash_db)))
         
         # Extract potential hash values (32-bit constants) following comparison instructions
         print("Searching for potential API hash values...")
@@ -132,7 +132,7 @@ class HashDetector:
                     result = future.result()
                     potential_hashes.extend(result)
                 except Exception as e:
-                    print(f"Error finding potential hashes: {e}")
+                    print("Error finding potential hashes: {}".format(e))
         
         # Identify API names from hash values
         print("Looking up API names from hash values...")
@@ -241,13 +241,13 @@ class HashDetector:
         
         # Detect hash algorithms
         hash_algorithms = self.detect_hash_algorithms(data)
-        print(f"Found {len(hash_algorithms)} potential API hashing algorithms")
+        print("Found {} potential API hashing algorithms".format(len(hash_algorithms)))
         
         # Identify API hashes
         api_hashes = []
         if hash_algorithms:
             api_hashes = self.identify_api_hashes(data, hash_algorithms)
-            print(f"Identified {len(api_hashes)} potential API hashes")
+            print("Identified {} potential API hashes".format(len(api_hashes)))
         
         # Record end time
         end_time = time.time()
@@ -268,18 +268,18 @@ class HashDetector:
         
         # Save results if output directory specified
         if output_dir:
-            output_path = os.path.join(output_dir, f"{file_name}_hash_analysis.json")
+            output_path = os.path.join(output_dir, file_name + "_hash_analysis.json")
             with open(output_path, 'w') as f:
                 # Convert binary data to hex strings for JSON serialization
                 serializable_results = self._prepare_for_serialization(results)
                 json.dump(serializable_results, f, indent=2)
             
-            print(f"Analysis results saved to: {output_path}")
+            print("Analysis results saved to: {}".format(output_path))
             
             # Generate human-readable report
-            report_path = os.path.join(output_dir, f"{file_name}_hash_analysis_report.txt")
+            report_path = os.path.join(output_dir, file_name + "_hash_analysis_report.txt")
             self._generate_report(results, report_path)
-            print(f"Human-readable report saved to: {report_path}")
+            print("Human-readable report saved to: {}".format(report_path))
         
         return results
     
@@ -291,6 +291,8 @@ class HashDetector:
             return {k: self._prepare_for_serialization(v) for k, v in obj.items()}
         elif isinstance(obj, list):
             return [self._prepare_for_serialization(item) for item in obj]
+        elif isinstance(obj, tuple): # Added tuple for completeness
+            return tuple(self._prepare_for_serialization(item) for item in obj)
         else:
             return obj
     
@@ -306,29 +308,29 @@ class HashDetector:
             f.write("KEYPLUG API Hash Algorithm Analysis Report\n")
             f.write("=========================================\n\n")
             
-            f.write(f"File: {results['file_path']}\n")
-            f.write(f"Size: {results['file_size']} bytes\n")
-            f.write(f"Processing Time: {results['processing_time']:.2f} seconds\n\n")
+            f.write("File: {}\n".format(results['file_path']))
+            f.write("Size: {} bytes\n".format(results['file_size']))
+            f.write("Processing Time: {:.2f} seconds\n\n".format(results['processing_time']))
             
             f.write("Summary\n")
             f.write("-------\n")
             summary = results['summary']
-            f.write(f"Total API hashing algorithms found: {summary['total_hash_algorithms']}\n")
-            f.write(f"Total API hashes identified: {summary['total_api_hashes']}\n\n")
+            f.write("Total API hashing algorithms found: {}\n".format(summary['total_hash_algorithms']))
+            f.write("Total API hashes identified: {}\n\n".format(summary['total_api_hashes']))
             
             if results['hash_algorithms']:
                 f.write("Hash Algorithms Detected\n")
                 f.write("----------------------\n")
                 for i, algo in enumerate(results['hash_algorithms']):
-                    f.write(f"\n[{i+1}] Algorithm at offset 0x{algo['offset']:x}\n")
-                    f.write(f"    Type: {algo['algorithm']}\n")
-                    f.write(f"    Confidence: {algo['confidence']:.2f}\n")
-                    f.write(f"    Size: {algo['size']} bytes\n")
+                    f.write("\n[{}] Algorithm at offset 0x{:x}\n".format(i+1, algo['offset']))
+                    f.write("    Type: {}\n".format(algo['algorithm']))
+                    f.write("    Confidence: {:.2f}\n".format(algo['confidence']))
+                    f.write("    Size: {} bytes\n".format(algo['size']))
                     f.write("    Patterns:\n")
                     for pattern in algo['patterns'][:5]:  # Limit to 5 patterns
-                        f.write(f"      - {pattern}\n")
+                        f.write("      - {}\n".format(pattern))
                     if len(algo['patterns']) > 5:
-                        f.write(f"      - (and {len(algo['patterns'])-5} more patterns)\n")
+                        f.write("      - (and {} more patterns)\n".format(len(algo['patterns'])-5))
             else:
                 f.write("No API hashing algorithms detected.\n\n")
             
@@ -336,13 +338,13 @@ class HashDetector:
                 f.write("\nAPI Hashes Identified\n")
                 f.write("--------------------\n")
                 for i, hash_entry in enumerate(results['api_hashes']):
-                    f.write(f"\n[{i+1}] Hash at offset 0x{hash_entry['offset']:x}\n")
-                    f.write(f"    Value: 0x{hash_entry['value']:08x}\n")
-                    f.write(f"    Algorithm: {hash_entry['algorithm']}\n")
+                    f.write("\n[{}] Hash at offset 0x{:x}\n".format(i+1, hash_entry['offset']))
+                    f.write("    Value: 0x{:08x}\n".format(hash_entry['value']))
+                    f.write("    Algorithm: {}\n".format(hash_entry['algorithm']))
                     if 'api_matches' in hash_entry:
                         f.write("    Potential APIs:\n")
                         for api in hash_entry['api_matches']:
-                            f.write(f"      - {api}\n")
+                            f.write("      - {}\n".format(api))
                     else:
                         f.write("    No API matches found.\n")
             else:

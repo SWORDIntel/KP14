@@ -4,7 +4,7 @@ Steganography Detection Module.
 This module provides functions to detect the presence and type of
 steganography used in an image.
 """
-# from core.logger import log # Example: if logging is needed
+# from stego_analyzer.core.logger import log # Example: if logging is needed
 
 def detect_steganography(image_path: str) -> dict:
     """

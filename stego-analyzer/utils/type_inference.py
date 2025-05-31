@@ -6,15 +6,11 @@ Infer types in decompiled code using OpenVINO acceleration.
 """
 
 import os
-import sys
 import re
-import json
 import tempfile
-import numpy as np
 import concurrent.futures
-from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional # F401 unused 'Dict', 'Any', 'Optional'
 
 # Try to import OpenVINO for hardware acceleration
 try:
@@ -251,12 +247,13 @@ class TypeInferenceEngine:
             }
             
             for future in concurrent.futures.as_completed(future_to_line):
-                line = future_to_line[future]
+                # line_data = future_to_line[future] # Original line, kept for context if needed for debugging
                 try:
                     name, type_info = future.result()
                     if name and type_info:
                         types[name] = type_info
                 except Exception as e:
+                    # print(f"Error extracting type from line '{line_data}': {e}") # Example with more context
                     print(f"Error extracting type from line: {e}")
         
         return types

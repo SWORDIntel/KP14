@@ -286,7 +286,7 @@ if __name__ == '__main__':
     recovery_engine = CompilerSpecificRecovery(idiom_db_path=test_db_path, logger=main_logger)
     # The __init__ calls initialize_idiom_database, which creates default entries.
 
-    main_logger.info("\n--- Test Case 1: Identify MSVC ---")
+    main_logger.info("--- Test Case 1: Identify MSVC ---")
     msvc_snippets = [
         "push ebp",
         "mov ebp, esp",
@@ -297,7 +297,7 @@ if __name__ == '__main__':
     main_logger.info(f"Identified: {compiler}")
     assert compiler == "MSVC_v19_x64_Release"
 
-    main_logger.info("\n--- Test Case 2: Identify GCC ---")
+    main_logger.info("--- Test Case 2: Identify GCC ---")
     gcc_snippets = [
         "  push   rbp", # Test whitespace normalization
         "mov RBP, rsp  ", # Test case normalization for mnemonic, varied spacing
@@ -307,7 +307,7 @@ if __name__ == '__main__':
     main_logger.info(f"Identified: {compiler}")
     assert compiler == "GCC_v9_x64_O2"
     
-    main_logger.info("\n--- Test Case 3: Ambiguous or Partial Match (should prefer higher score or first) ---")
+    main_logger.info("--- Test Case 3: Ambiguous or Partial Match (should prefer higher score or first) ---")
     # This snippet has elements of both, but MSVC has more distinct patterns from default DB
     ambiguous_snippets = [
         "push ebp",         # MSVC / older GCC
@@ -321,7 +321,7 @@ if __name__ == '__main__':
     # Based on default DB, MSVC has "sub esp, 0x..." which is more specific than just push/mov
     assert compiler == "MSVC_v19_x64_Release" 
 
-    main_logger.info("\n--- Test Case 4: No Match ---")
+    main_logger.info("--- Test Case 4: No Match ---")
     unknown_snippets = [
         "xor eax, eax",
         "ret"
@@ -330,12 +330,12 @@ if __name__ == '__main__':
     main_logger.info(f"Identified (unknown): {compiler}")
     assert compiler is None
 
-    main_logger.info("\n--- Test Case 5: Empty Snippets ---")
+    main_logger.info("--- Test Case 5: Empty Snippets ---")
     compiler = recovery_engine.identify_compiler_from_idioms([])
     main_logger.info(f"Identified (empty): {compiler}")
     assert compiler is None
 
-    main_logger.info("\n--- Test Case 6: MSVC fastcall idiom ---")
+    main_logger.info("--- Test Case 6: MSVC fastcall idiom ---")
     msvc_fastcall_snippet = [
         "mov [ebp-8], ecx" 
     ]
@@ -345,7 +345,7 @@ if __name__ == '__main__':
 
 
     # Clean up
-    main_logger.info("\n--- Cleaning up test files ---")
+    main_logger.info("--- Cleaning up test files ---")
     if os.path.exists(test_db_path):
         os.remove(test_db_path)
         main_logger.info(f"Removed {test_db_path}")

@@ -13,8 +13,8 @@ import sys
 import json
 import hashlib
 import datetime
-import numpy as np
-from collections import defaultdict
+# import numpy as np # F401 unused
+# from collections import defaultdict # F401 unused
 import concurrent.futures
 
 # Try to import OpenVINO for hardware acceleration

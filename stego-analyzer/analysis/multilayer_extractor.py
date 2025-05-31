@@ -14,11 +14,8 @@ import os
 import sys
 import argparse
 import json
-import struct
-import binascii
 import concurrent.futures
 import numpy as np
-from collections import defaultdict
 from datetime import datetime
 import time
 
@@ -399,7 +396,7 @@ class MultiLayerExtractor:
                 pe_score += 0.3
             
             # Check for PE header
-            pe_offset = None
+            # pe_offset = None # Unused
             if len(data) >= 64:
                 for i in range(0, min(256, len(data) - 4)):
                     if data[i] == 0x50 and data[i+1] == 0x45 and data[i+2] == 0x00 and data[i+3] == 0x00:

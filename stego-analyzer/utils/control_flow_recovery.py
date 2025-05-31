@@ -6,11 +6,11 @@ Recover control flow structures in decompiled code using OpenVINO acceleration.
 """
 
 import os
-import sys
+# import sys # F401 unused
 import re
-import numpy as np
+# import numpy as np # F401 unused
 import concurrent.futures
-from collections import defaultdict
+# from collections import defaultdict # F401 unused
 
 # Try to import OpenVINO for hardware acceleration
 try:

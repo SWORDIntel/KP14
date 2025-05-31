@@ -5,14 +5,10 @@ A specialized tool for extracting and analyzing APT-41's KEYPLUG malware payload
 Based on the analysis report and known KEYPLUG techniques
 """
 
-import os
 import sys
-import binascii
 import struct
 import hashlib
-import zlib
 import zipfile
-import io
 import re
 import math
 import argparse
@@ -195,7 +191,9 @@ def find_embedded_pe(data):
                 # Estimate PE file size (simplified)
                 size = min(5 * 1024 * 1024, len(data) - offset)  # Limit to 5MB or remaining data
                 results.append((offset, size))
-        except:
+        except Exception as ex:
+            # Log the exception or handle it more gracefully
+            print(f"{ANSI_RED}[!] Error processing potential PE file at offset {offset}: {str(ex)}{ANSI_RESET}")
             continue
     
     return results
@@ -396,8 +394,8 @@ def analyze_odg_file(odg_path, output_dir=None):
                                     "has_pe": has_pe,
                                     "has_text": has_text
                                 })
-                        except Exception as e:
-                            print(f"{ANSI_RED}[!] Error decrypting with key {key}: {str(e)}{ANSI_RESET}")
+                        except Exception as ex_decrypt:
+                            print(f"{ANSI_RED}[!] Error decrypting with key {key}: {str(ex_decrypt)}{ANSI_RESET}")
                     
                     # Store payload information
                     payload_info = {

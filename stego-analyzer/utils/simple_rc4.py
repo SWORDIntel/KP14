@@ -90,7 +90,7 @@ def main():
         print(ascii_preview)
         
     except Exception as e:
-        print(f"Error: {e}")
+        print("Error: {}".format(e))
         sys.exit(1)
 
 if __name__ == "__main__":

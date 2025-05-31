@@ -90,7 +90,7 @@ def score_result(data):
             if 0 < pe_offset < len(data) - 4:
                 if data[pe_offset:pe_offset+4] == b'PE\0\0':
                     score += 20
-        except:
+        except Exception: # Catch specific exceptions if possible
             pass
     
     # Check for high concentration of printable ASCII
@@ -313,7 +313,7 @@ def process_file(input_file, output_dir):
     with open(output_path, 'wb') as f:
         f.write(decrypted_full)
     
-    print(f"\nFull file decryption with pattern as key saved to: {output_path}")
+    print("\nFull file decryption with pattern as key saved to: {}".format(output_path))
     
     # Print preview
     hex_preview = binascii.hexlify(decrypted_full[:64]).decode()
@@ -330,7 +330,7 @@ def process_file(input_file, output_dir):
     with open(output_path, 'wb') as f:
         f.write(decrypted_sliding)
     
-    print(f"Sliding pattern decryption saved to: {output_path}")
+    print("Sliding pattern decryption saved to: {}".format(output_path))
     
     # Print preview
     hex_preview = binascii.hexlify(decrypted_sliding[:64]).decode()

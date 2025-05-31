@@ -12,15 +12,10 @@ This tool analyzes decrypted binary data to:
 4. Reconstruct function call graphs
 """
 import os
-import sys
-import struct
 import binascii
 import re
 import json
 import hashlib
-from collections import defaultdict
-import numpy as np
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 import concurrent.futures
 
@@ -164,7 +159,7 @@ WINDOWS_API_PATTERNS = [
 ASCII_PATTERN = rb'[\x20-\x7E]{6,}'
 
 # Wide-char pattern (UTF-16LE)
-WIDE_CHAR_PATTERN = rb'(?:[\x20-\x7E]\x00){6,}'
+WIDE_CHAR_PATTERN = rb'(?:[\x20-\x7E]\x00){4,}'
 
 class OpenVINOAccelerator:
     """OpenVINO acceleration for binary analysis operations"""
@@ -176,9 +171,9 @@ class OpenVINOAccelerator:
             try:
                 self.core = Core()
                 print("OpenVINO Core initialized successfully")
-                print(f"Available devices: {self.core.available_devices}")
+                print("Available devices: {}".format(self.core.available_devices))
             except Exception as e:
-                print(f"Error initializing OpenVINO Core: {e}")
+                print("Error initializing OpenVINO Core: {}".format(e))
                 self.core = None
     
     def accelerated_pattern_search(self, data, patterns):
@@ -220,7 +215,7 @@ class OpenVINOAccelerator:
             
             return results
         except Exception as e:
-            print(f"Error in accelerated pattern search: {e}")
+            print("Error in accelerated pattern search: {}".format(e))
             # Fall back to regular search
             return self._regular_pattern_search(data, patterns)
     
@@ -389,7 +384,7 @@ class FunctionExtractor:
                     "string": decoded,
                     "encoding": "utf-16le"
                 })
-            except:
+            except UnicodeDecodeError: # More specific exception
                 pass
         
         return strings
@@ -573,95 +568,95 @@ def analyze_decrypted_file(file_path, output_dir):
     with open(output_path, 'w') as f:
         json.dump(analyzed_functions, f, indent=2)
     
-    print(f"Detailed function analysis saved to: {output_path}")
+    print("Detailed function analysis saved to: {}".format(output_path))
     
     # Save summary
     summary_path = os.path.join(output_dir, f"{file_name}_analysis_summary.json")
     with open(summary_path, 'w') as f:
         json.dump(summary, f, indent=2)
     
-    print(f"Analysis summary saved to: {summary_path}")
+    print("Analysis summary saved to: {}".format(summary_path))
     
     # Generate human-readable report
     report_path = os.path.join(output_dir, f"{file_name}_analysis_report.txt")
     with open(report_path, 'w') as f:
-        f.write(f"KEYPLUG Function Analysis Report\n")
-        f.write(f"==============================\n\n")
-        f.write(f"File: {file_path}\n")
-        f.write(f"Size: {len(data)} bytes\n")
-        f.write(f"MD5: {summary['md5']}\n")
-        f.write(f"SHA256: {summary['sha256']}\n\n")
-        
-        f.write(f"Function Analysis Summary\n")
-        f.write(f"------------------------\n")
-        f.write(f"Total functions identified: {summary['functions_count']}\n")
-        f.write(f"High risk functions: {summary['high_risk_functions']}\n")
-        f.write(f"Medium risk functions: {summary['medium_risk_functions']}\n")
-        f.write(f"Low risk functions: {summary['low_risk_functions']}\n\n")
-        
-        f.write(f"Behavior Summary\n")
-        f.write(f"---------------\n")
+        f.write("KEYPLUG Function Analysis Report\n")
+        f.write("==============================\n\n")
+        f.write("File: {}\n".format(file_path))
+        f.write("Size: {} bytes\n".format(len(data)))
+        f.write("MD5: {}\n".format(summary['md5']))
+        f.write("SHA256: {}\n\n".format(summary['sha256']))
+
+        f.write("Function Analysis Summary\n")
+        f.write("------------------------\n")
+        f.write("Total functions identified: {}\n".format(summary['functions_count']))
+        f.write("High risk functions: {}\n".format(summary['high_risk_functions']))
+        f.write("Medium risk functions: {}\n".format(summary['medium_risk_functions']))
+        f.write("Low risk functions: {}\n\n".format(summary['low_risk_functions']))
+
+        f.write("Behavior Summary\n")
+        f.write("---------------\n")
         for behavior, present in summary['behavior_summary'].items():
-            f.write(f"- {behavior.replace('_', ' ').title()}: {'Yes' if present else 'No'}\n")
+            f.write("- {}: {}\n".format(behavior.replace('_', ' ').title(), 'Yes' if present else 'No'))
         
         f.write("\n\nHigh Risk Functions\n")
         f.write("------------------\n")
-        high_risk = [f for f in analyzed_functions if f["risk_score"] > 70]
+        high_risk = [f_item for f_item in analyzed_functions if f_item["risk_score"] > 70]
         for i, func in enumerate(high_risk):
-            f.write(f"\n[{i+1}] Function at 0x{func['start_offset']:x} (Risk Score: {func['risk_score']})\n")
-            f.write(f"    Size: {func['size']} bytes\n")
-            f.write(f"    Prologue: {func['prologue']['description']}\n")
+            f.write("\n[{}] Function at 0x{:x} (Risk Score: {})\n".format(i+1, func['start_offset'], func['risk_score']))
+            f.write("    Size: {} bytes\n".format(func['size']))
+            f.write("    Prologue: {}\n".format(func['prologue']['description']))
             
             if func['api_calls']:
-                f.write(f"    API Calls:\n")
+                f.write("    API Calls:\n")
                 for api in func['api_calls'][:10]:  # Show top 10
-                    f.write(f"      - {api['description']} (offset +0x{api['offset'] - func['start_offset']:x})\n")
+                    f.write("      - {} (offset +0x{:x})\n".format(api['description'], api['offset'] - func['start_offset']))
                 if len(func['api_calls']) > 10:
-                    f.write(f"      - (and {len(func['api_calls'])-10} more)\n")
+                    f.write("      - (and {} more)\n".format(len(func['api_calls'])-10))
             
             if func['strings']:
-                f.write(f"    Strings:\n")
+                f.write("    Strings:\n")
                 for s in func['strings'][:5]:  # Show top 5
-                    f.write(f"      - \"{s['string'][:50]}\" ({s['encoding']})\n")
+                    f.write("      - \"{}\" ({})\n".format(s['string'][:50], s['encoding']))
                 if len(func['strings']) > 5:
-                    f.write(f"      - (and {len(func['strings'])-5} more)\n")
+                    f.write("      - (and {} more)\n".format(len(func['strings'])-5))
         
         if not high_risk:
             f.write("No high risk functions identified\n")
         
         f.write("\n\nMedium Risk Functions\n")
         f.write("--------------------\n")
-        medium_risk = [f for f in analyzed_functions if 30 < f["risk_score"] <= 70]
+        medium_risk = [f_item for f_item in analyzed_functions if 30 < f_item["risk_score"] <= 70]
         for i, func in enumerate(medium_risk[:5]):  # Show top 5
-            f.write(f"\n[{i+1}] Function at 0x{func['start_offset']:x} (Risk Score: {func['risk_score']})\n")
-            f.write(f"    Size: {func['size']} bytes\n")
+            f.write("\n[{}] Function at 0x{:x} (Risk Score: {})\n".format(i+1, func['start_offset'], func['risk_score']))
+            f.write("    Size: {} bytes\n".format(func['size']))
             
             if func['api_calls']:
-                f.write(f"    API Calls: {len(func['api_calls'])} found\n")
+                f.write("    API Calls: {} found\n".format(len(func['api_calls'])))
                 for api in func['api_calls'][:3]:  # Show top 3
-                    f.write(f"      - {api['description']}\n")
+                    f.write("      - {}\n".format(api['description']))
                 if len(func['api_calls']) > 3:
-                    f.write(f"      - (and {len(func['api_calls'])-3} more)\n")
+                    f.write("      - (and {} more)\n".format(len(func['api_calls'])-3))
         
         if len(medium_risk) > 5:
-            f.write(f"\n... and {len(medium_risk)-5} more medium risk functions\n")
+            f.write("\n... and {} more medium risk functions\n".format(len(medium_risk)-5))
         
         if not medium_risk:
             f.write("No medium risk functions identified\n")
     
-    print(f"Human-readable report saved to: {report_path}")
+    print("Human-readable report saved to: {}".format(report_path))
     
     # Print summary to console
     print("\nAnalysis Summary:")
-    print(f"Total functions identified: {summary['functions_count']}")
-    print(f"High risk functions: {summary['high_risk_functions']}")
-    print(f"Medium risk functions: {summary['medium_risk_functions']}")
-    print(f"Low risk functions: {summary['low_risk_functions']}")
+    print("Total functions identified: {}".format(summary['functions_count']))
+    print("High risk functions: {}".format(summary['high_risk_functions']))
+    print("Medium risk functions: {}".format(summary['medium_risk_functions']))
+    print("Low risk functions: {}".format(summary['low_risk_functions']))
     
     print("\nBehavior Summary:")
     for behavior, present in summary['behavior_summary'].items():
         if present:
-            print(f"- {behavior.replace('_', ' ').title()}: YES")
+            print("- {}: YES".format(behavior.replace('_', ' ').title()))
     
     return analyzed_functions, summary
 
@@ -680,7 +675,7 @@ def main():
     analyze_decrypted_file(args.file, args.output_dir)
     end_time = time.time()
     
-    print(f"\nTotal processing time: {end_time - start_time:.2f} seconds")
+    print("\nTotal processing time: {:.2f} seconds".format(end_time - start_time))
 
 if __name__ == "__main__":
     main()
