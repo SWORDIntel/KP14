@@ -1,15 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
 
-*.pyc
+# C extensions
+*.o
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.env
+venv/
+*.venv/
+/keyplug_venv/
+
+# Log files
+*.log
+
+# Temporary Staging/Backup directories
+.new/
+.snapshots/
+
+# Existing custom rules from the project (preserved)
+# These might be overly broad and could be refined later if they cause issues
+# with files that *should* be versioned (e.g. specific .jpg or .png assets).
 *.bin
-/__pycache__
-
-/net-commander
-*.pyc
-/extracted_source_code
 *.c
-/keyplug_venv
 *.jpg
 *.png
 *.h
-*.o
-*.pyc
+
+# Specific directories to ignore (preserved)
+/net-commander/
+/extracted_source_code/
