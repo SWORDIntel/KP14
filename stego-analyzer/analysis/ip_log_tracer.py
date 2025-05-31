@@ -5,7 +5,7 @@ This module provides functions to analyze extracted payloads for IP addresses,
 URLs, or other indicators that could be traced or logged.
 """
 import re # For basic IP regex example
-# from core.logger import log # Example: if logging is needed
+# from stego_analyzer.core.logger import log # Example: if logging is needed
 
 def trace_ips(payload_data: bytes) -> list:
     """
@@ -35,8 +35,9 @@ def trace_ips(payload_data: bytes) -> list:
         # log.debug(f"Found potential IPs using regex: {found_ips}")
         if found_ips:
              return found_ips # Return actual found IPs if any
-    except Exception as e:
-        # log.error(f"Error during IP tracing: {e}")
+    except Exception as ex: # Renamed variable to ex to avoid conflict with loop variable if any
+        # log.error(f"Error during IP tracing: {ex}")
+        print(f"Error during IP tracing: {ex}") # Or use actual logging
         pass # Fall through to default placeholder if regex or decode fails
 
     # Default placeholder return if no IPs found by basic regex or if payload was not decodable easily
@@ -49,20 +50,20 @@ if __name__ == '__main__':
     dummy_payload_without_ips = b"Just some random text data without network stuff."
     empty_payload = b""
 
-    print(f"\n--- Testing trace_ips with IPs ---")
+    print("\n--- Testing trace_ips with IPs ---")
     ips_found = trace_ips(dummy_payload_with_ips)
     print(f"IPs from '{dummy_payload_with_ips[:30]}...': {ips_found}")
 
-    print(f"\n--- Testing trace_ips without IPs (should return placeholder) ---")
+    print("\n--- Testing trace_ips without IPs (should return placeholder) ---")
     ips_not_found = trace_ips(dummy_payload_without_ips)
     print(f"IPs from '{dummy_payload_without_ips}': {ips_not_found}")
 
-    print(f"\n--- Testing trace_ips with empty payload ---")
+    print("\n--- Testing trace_ips with empty payload ---")
     ips_empty = trace_ips(empty_payload)
     print(f"IPs from empty payload: {ips_empty}")
 
     # Using the default placeholder return from the function definition
-    print(f"\n--- Testing trace_ips with generic payload (likely placeholder) ---")
+    print("\n--- Testing trace_ips with generic payload (likely placeholder) ---")
     generic_payload = b"dummy_payload_data" # from previous step's placeholder
     ips_generic = trace_ips(generic_payload)
     print(f"IPs from '{generic_payload}': {ips_generic}")

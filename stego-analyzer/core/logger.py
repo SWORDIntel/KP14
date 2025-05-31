@@ -9,10 +9,10 @@ import logging.handlers
 
 # Import configuration variables from core.config
 try:
-    from core.config import LOG_DIR, DEFAULT_LOG_FILE, VERBOSE, LOG_LEVEL
+    from stego_analyzer.core.config import LOG_DIR, DEFAULT_LOG_FILE, VERBOSE, LOG_LEVEL
 except ImportError:
     # Fallback for direct execution or if config is not yet fully integrated
-    print("Warning: core.config not found, using default logger settings.")
+    print("Warning: stego_analyzer.core.config not found, using default logger settings.")
     PROJECT_ROOT_FALLBACK = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     LOG_DIR = os.path.join(PROJECT_ROOT_FALLBACK, 'output', 'logs')
     DEFAULT_LOG_FILE = os.path.join(LOG_DIR, 'pipeline_fallback.log')

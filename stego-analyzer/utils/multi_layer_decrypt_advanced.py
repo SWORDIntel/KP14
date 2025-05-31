@@ -4,15 +4,12 @@ Advanced Multi-Layer Decryption for KEYPLUG Malware
 Using OpenVINO for acceleration when possible
 """
 import os
-import sys
 import struct
 import binascii
 import hashlib
-import itertools
-import concurrent.futures
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import deque, Counter
+from collections import Counter
 from pathlib import Path
 import time
 import json
@@ -293,7 +290,7 @@ def detect_file_type(data):
             pe_offset = struct.unpack('<I', data[0x3C:0x40])[0]
             if 0 < pe_offset < len(data) - 4 and data[pe_offset:pe_offset+4] == PE_SIGNATURE:
                 return 'PE Executable'
-        except:
+        except Exception: # Catch specific exceptions if possible
             pass
     
     return 'Unknown'
@@ -346,7 +343,7 @@ def find_embedded_pe(data):
                 pe_offset = struct.unpack('<I', data[offset+0x3C:offset+0x40])[0]
                 if offset + pe_offset + 4 < len(data) and data[offset+pe_offset:offset+pe_offset+4] == PE_SIGNATURE:
                     results.append(offset)
-            except:
+            except Exception: # Catch specific exceptions if possible
                 pass
         
         offset += 2
@@ -537,7 +534,7 @@ def rank_result(result):
             if pe_offset < len(result["decrypted_data"]) - 4:
                 if result["decrypted_data"][pe_offset:pe_offset+4] == PE_SIGNATURE:
                     score += 15
-        except:
+        except Exception: # Catch specific exceptions if possible
             pass
     
     # Check for printable strings

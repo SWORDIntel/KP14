@@ -5,8 +5,8 @@ This module uses machine learning models to classify extracted payloads
 (e.g., as benign, malware, specific threat type).
 """
 # import os # For path joining if needed
-# from core.logger import log # Example: if logging is needed
-# from core.config import OPENVINO_MODEL_DIR # Example: to get default model path
+# from stego_analyzer.core.logger import log # Example: if logging is needed
+# from stego_analyzer.core.config import OPENVINO_MODEL_DIR # Example: to get default model path
 
 def classify_payload(payload_data: bytes, model_dir: str) -> dict:
     """
@@ -65,22 +65,22 @@ if __name__ == '__main__':
     # For direct testing, provide a dummy path.
     test_model_dir = "models/openvino/" # or OPENVINO_MODEL_DIR if available
 
-    print(f"\n--- Testing classify_payload with potentially 'malicious' data ---")
+    print("\n--- Testing classify_payload with potentially 'malicious' data ---")
     result_mal = classify_payload(dummy_payload_malicious, test_model_dir)
     print(f"Classification for 'malicious' data: {result_mal}")
 
-    print(f"\n--- Testing classify_payload with potentially 'benign' data ---")
+    print("\n--- Testing classify_payload with potentially 'benign' data ---")
     result_benign = classify_payload(dummy_payload_benign, test_model_dir)
     print(f"Classification for 'benign' data: {result_benign}")
 
-    print(f"\n--- Testing classify_payload with generic data ---")
+    print("\n--- Testing classify_payload with generic data ---")
     result_generic = classify_payload(generic_payload, test_model_dir)
     print(f"Classification for generic data: {result_generic}")
 
-    print(f"\n--- Testing classify_payload with empty payload ---")
+    print("\n--- Testing classify_payload with empty payload ---")
     result_empty = classify_payload(empty_payload, test_model_dir)
     print(f"Classification for empty payload: {result_empty}")
 
-    print(f"\n--- Testing classify_payload with missing model directory ---")
+    print("\n--- Testing classify_payload with missing model directory ---")
     result_no_model = classify_payload(generic_payload, "")
     print(f"Classification with missing model dir: {result_no_model}")

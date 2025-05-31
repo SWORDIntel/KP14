@@ -1,7 +1,6 @@
 import logging
 import os
 from typing import Optional, Dict, Any # For type hints
-import json # For pretty printing dicts in logs
 
 # Research Notes on Program Synthesis Tools & LLMs:
 # (Content remains the same as provided in the prompt - omitted here for brevity)

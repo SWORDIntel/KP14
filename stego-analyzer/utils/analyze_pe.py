@@ -28,7 +28,7 @@ def is_valid_pe(data):
             return False
         
         return True
-    except:
+    except Exception: # Changed bare except
         return False
 
 def analyze_pe_header(data):
@@ -48,14 +48,21 @@ def analyze_pe_header(data):
         
         # Optional header
         opt_header_size = struct.unpack('<H', data[pe_offset+20:pe_offset+22])[0]
+        subsystem = None # Initialize subsystem
+        magic = 0 # Initialize magic
         if opt_header_size > 0:
             magic = struct.unpack('<H', data[pe_offset+24:pe_offset+26])[0]
-            subsystem = None
             if magic == 0x10b:  # PE32
-                subsystem = struct.unpack('<H', data[pe_offset+68:pe_offset+70])[0]
+                if pe_offset + 70 <= len(data): # Check boundary
+                    subsystem = struct.unpack('<H', data[pe_offset+68:pe_offset+70])[0]
             elif magic == 0x20b:  # PE32+
-                subsystem = struct.unpack('<H', data[pe_offset+68:pe_offset+70])[0]
-        
+                if pe_offset + 68 <= len(data): # Check boundary for PE32+ subsystem (different offset)
+                     subsystem = struct.unpack('<H', data[pe_offset+68:pe_offset+70])[0] # This offset is actually for ImageBase in PE32+
+                     # Correct subsystem offset for PE32+ is typically pe_offset + 92
+                     if pe_offset + 94 <= len(data): # Check boundary for PE32+ subsystem
+                         subsystem = struct.unpack('<H', data[pe_offset+92:pe_offset+94])[0]
+
+
         # Machine types
         machine_types = {
             0x0: "IMAGE_FILE_MACHINE_UNKNOWN",
@@ -136,7 +143,7 @@ def analyze_pe_header(data):
                 "magic": magic,
                 "pe_type": "PE32" if magic == 0x10b else "PE32+" if magic == 0x20b else f"Unknown ({magic})",
                 "subsystem": subsystem,
-                "subsystem_type": subsystem_types.get(subsystem, f"Unknown ({subsystem})") if subsystem else None
+                "subsystem_type": subsystem_types.get(subsystem, f"Unknown ({subsystem})") if subsystem is not None else "N/A"
             }
         
         # Try to parse section headers if valid
@@ -310,13 +317,13 @@ def check_embedded_exe(data):
         # Check if this might be a valid PE
         if offset + 0x40 < len(data):
             try:
-                pe_offset = struct.unpack('<I', data[offset+0x3C:offset+0x40])[0]
-                if offset + pe_offset + 4 < len(data) and data[offset+pe_offset:offset+pe_offset+4] == b'PE\0\0':
+                pe_offset_val = struct.unpack('<I', data[offset+0x3C:offset+0x40])[0]
+                if offset + pe_offset_val + 4 < len(data) and data[offset+pe_offset_val:offset+pe_offset_val+4] == b'PE\0\0':
                     embedded.append({
                         "offset": offset,
-                        "pe_offset": pe_offset
+                        "pe_offset": pe_offset_val
                     })
-            except:
+            except Exception: # Changed bare except
                 pass
         
         offset += 2
@@ -382,7 +389,7 @@ def main():
             if "optional_header" in header:
                 opt = header["optional_header"]
                 print(f"PE type: {opt['pe_type']}")
-                if opt['subsystem_type']:
+                if opt.get('subsystem_type') is not None : # Check if subsystem_type exists
                     print(f"Subsystem: {opt['subsystem_type']}")
             
             if "sections" in header and header["sections"]:

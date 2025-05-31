@@ -7,13 +7,10 @@ Supports Ghidra, RetDec, and IDA Pro with OpenVINO acceleration.
 """
 
 import os
-import sys
 import subprocess
 import tempfile
 import json
-import concurrent.futures
 import shutil
-import time
 from pathlib import Path
 import collections # Added for Counter
 import logging
@@ -536,3 +533,117 @@ class DecompilerIntegration:
 if __name__ == '__main__': 
     print("This module is not meant to be run directly.")
     print("Please use keyplug_source_extractor.py instead.")
+    # Example main for direct testing (simplified)
+    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # main_logger = logging.getLogger("DecompilerIntegrationExample")
+    # decompiler_integration = DecompilerIntegration(logger=main_logger)
+
+    # # Dummy binary file path for testing
+    # dummy_binary_name = "dummy_binary_for_test.exe"
+    # test_output_dir = "test_decompiler_output"
+    # with open(dummy_binary_name, "wb") as f: f.write(b"MZ\x00\x00PE\x00\x00Test") # Minimal valid PE-like structure
+
+    # # Ensure the script path is correctly set if not using default logic in the class
+    # current_dir = Path(__file__).parent.resolve()
+    # # decompiler_integration.ghidra_script_template_path = current_dir / "ghidra_decompile_script.java"
+    # # decompiler_integration.ida_script_template_path = current_dir / "ida_decompile_script.py"
+
+
+    # main_logger.info("--- Test Decompilation with Ghidra (if available) ---")
+    # if decompiler_integration.ghidra_available:
+    #     main_logger.info(f"Ghidra is available. GHIDRA_HOME: {os.environ.get('GHIDRA_HOME')}")
+    #     # Ensure the script path is correctly set if not using default logic in the class
+    #     decompiler_integration.ghidra_script_template_path = current_dir / "ghidra_decompile_script.java" # Adjust as necessary
+    #     if not decompiler_integration.ghidra_script_template_path.exists():
+    #          main_logger.warning(f"Ghidra script template not found at {decompiler_integration.ghidra_script_template_path}, Ghidra test might fail or use internal template.")
+
+    #     ghidra_results = decompiler_integration.decompile(dummy_binary_name, test_output_dir, decompiler_types=["ghidra"])
+    #     main_logger.info(f"Ghidra results: {json.dumps(ghidra_results, indent=2)}")
+    #     # Add asserts here based on expected outcomes if dummy_binary_name was a real binary
+    #     # For example: assert "c_code" in ghidra_results.get("ghidra", {}) and ghidra_results["ghidra"]["c_code"] is not None
+    # else:
+    #     main_logger.warning("Ghidra not available or GHIDRA_HOME not set. Skipping Ghidra decompilation test.")
+
+    # main_logger.info("\n--- Test Decompilation with RetDec (if available) ---")
+    # if decompiler_integration.retdec_available:
+    #     main_logger.info("RetDec is available.")
+    #     retdec_results = decompiler_integration.decompile(dummy_binary_name, test_output_dir, decompiler_types=["retdec"])
+    #     main_logger.info(f"RetDec results: {json.dumps(retdec_results, indent=2)}")
+    # else:
+    #     main_logger.warning("RetDec not available. Skipping RetDec decompilation test.")
+
+    # main_logger.info("\n--- Test Decompilation with IDA Pro (if available) ---")
+    # if decompiler_integration.ida_available:
+    #     main_logger.info(f"IDA Pro is available. IDA_HOME: {os.environ.get('IDA_HOME')}")
+    #     decompiler_integration.ida_script_template_path = current_dir / "ida_decompile_script.py" # Adjust as necessary
+    #     if not decompiler_integration.ida_script_template_path.exists():
+    #         main_logger.warning(f"IDA script template not found at {decompiler_integration.ida_script_template_path}, IDA test might fail or use internal template.")
+
+    #     ida_results = decompiler_integration.decompile(dummy_binary_name, test_output_dir, decompiler_types=["ida"])
+    #     main_logger.info(f"IDA Pro results: {json.dumps(ida_results, indent=2)}")
+    # else:
+    #     main_logger.warning("IDA Pro not available or IDA_HOME not set. Skipping IDA Pro decompilation test.")
+
+    # main_logger.info("\n--- Test Consensus Output Generation ---")
+    # # Create dummy output files for consensus testing
+    # # These would normally be created by the actual decompiler runs
+    # dummy_ghidra_c = os.path.join(test_output_dir, "decompiled_ghidra.c")
+    # dummy_retdec_c = os.path.join(test_output_dir, "decompiled_retdec.c")
+    # with open(dummy_ghidra_c, "w") as f: f.write("void ghidra_func() {\n  int x = 1;\n}\n// Common line\n")
+    # with open(dummy_retdec_c, "w") as f: f.write("void retdec_func() {\n  int y = 2;\n}\n// Common line\n")
+
+    # all_results_for_consensus = {
+    #     "ghidra": {"c_code": dummy_ghidra_c, "signatures": None, "cfg_file_path": None},
+    #     "retdec": {"c_code": dummy_retdec_c, "signatures": None, "cfg_file_path": None}
+    # }
+    # consensus_path = decompiler_integration.produce_consensus_output(all_results_for_consensus, test_output_dir, preferred_decompiler_order=["ghidra", "retdec"])
+    # main_logger.info(f"Consensus C code generated at: {consensus_path}")
+    # if consensus_path and os.path.exists(consensus_path):
+    #     with open(consensus_path, 'r') as f_consensus:
+    #         main_logger.info(f"Consensus content:\n{f_consensus.read()}")
+    #     assert os.path.exists(consensus_path) # Check if file was created
+
+    # main_logger.info("\n--- Test CFG Refinement ---")
+    # # Create a dummy CFG file (e.g., from Ghidra)
+    # dummy_ghidra_cfg = os.path.join(test_output_dir, "decompiled_ghidra_cfg.dot")
+    # with open(dummy_ghidra_cfg, "w") as f: f.write("digraph CFG { node1 -> node2; }")
+
+    # all_results_for_cfg = {
+    #     "ghidra": {"c_code": dummy_ghidra_c, "signatures": None, "cfg_file_path": dummy_ghidra_cfg},
+    #     "retdec": {"c_code": dummy_retdec_c, "signatures": None, "cfg_file_path": None} # RetDec might not output CFG in this format
+    # }
+    # refined_cfg_path = decompiler_integration.refine_cfg(dummy_binary_name, all_results_for_cfg, test_output_dir, preferred_decompiler_order=["ghidra"])
+    # main_logger.info(f"Refined/Selected CFG at: {refined_cfg_path}")
+    # if refined_cfg_path:
+    #     assert os.path.exists(refined_cfg_path)
+
+    # main_logger.info("\n--- Test Type Normalization ---")
+    # # Example of raw signature data that might come from a decompiler's JSON output
+    # raw_signatures_data = [
+    #     {"name": "example_func1", "return_type": "INT32", "parameters": [{"name": "p1", "type": "LPCSTR"}, {"name": "p2", "type": "_DWORD"}]},
+    #     {"name": "example_func2", "return_type": "VOID*", "parameters": [{"name": "data", "type": "BYTE[]"}, {"name": "size", "type": "UINT"}]},
+    #     {"name": "global_callback_func", "return_type": "void (*)(int, char **)", "parameters": []}, # Test for function pointer
+    #     {"name": "struct_user", "return_type": "void", "parameters": [{"name": "my_struct_ptr", "type": "struct MyStruct*"}]},
+    #     {"name": "const_ptr_const_ptr_func", "return_type": "const char * const *", "parameters": []} # Test for complex const pointer
+    # ]
+    # normalized_signatures = decompiler_integration.normalize_signatures(raw_signatures_data)
+    # main_logger.info(f"Normalized signatures: {json.dumps(normalized_signatures, indent=2)}")
+    # # Add asserts here to check specific normalizations
+    # assert normalized_signatures[0]["return_type"] == "int" # INT32 -> int
+    # assert normalized_signatures[0]["parameters"][0]["type"] == "const char*" # LPCSTR -> const char*
+    # assert normalized_signatures[0]["parameters"][1]["type"] == "unsigned long" # _DWORD -> unsigned long
+    # assert normalized_signatures[1]["return_type"] == "void*" # VOID* -> void*
+    # assert normalized_signatures[1]["parameters"][0]["type"] == "unsigned char[]" # BYTE[] -> unsigned char[]
+    # assert normalized_signatures[1]["parameters"][1]["type"] == "unsigned int" # UINT -> unsigned int
+    # assert normalized_signatures[2]["return_type"] == "void(*)(int, char**)" # Function pointer
+    # assert normalized_signatures[3]["parameters"][0]["type"] == "struct MyStruct*" # Struct pointer
+    # assert normalized_signatures[4]["return_type"] == "const char* const*" # Complex const pointer
+
+    # # Clean up
+    # main_logger.info("\n--- Cleaning up test files ---")
+    # if os.path.exists(dummy_binary_name): os.remove(dummy_binary_name)
+    # if os.path.exists(test_output_dir): shutil.rmtree(test_output_dir) # Recursively remove
+    # main_logger.info(f"Removed dummy binary and test output directory: {test_output_dir}")
+
+    # main_logger.info("--- All decompiler_integration.py tests completed ---")
+[end of stego-analyzer/utils/decompiler_integration.py]

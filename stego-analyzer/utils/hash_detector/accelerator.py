@@ -6,7 +6,7 @@ using OpenVINO runtime and maximum CPU utilization.
 """
 
 import os
-import numpy as np
+# import numpy as np # F401 unused
 import concurrent.futures
 import binascii
 
@@ -40,8 +40,8 @@ class OpenVINOAccelerator:
             try:
                 self.core = Core()
                 self.devices = self.core.available_devices
-                print(f"OpenVINO Core initialized successfully")
-                print(f"Available devices: {self.devices}")
+                print("OpenVINO Core initialized successfully")
+                print("Available devices: {}".format(self.devices))
                 
                 # Default to CPU
                 self.preferred_device = "CPU"
@@ -57,7 +57,7 @@ class OpenVINOAccelerator:
                     print("Using CPU acceleration")
                     
             except Exception as e:
-                print(f"Error initializing OpenVINO Core: {e}")
+                print("Error initializing OpenVINO Core: {}".format(e))
                 self.core = None
     
     def accelerated_pattern_search(self, data, patterns):
@@ -109,7 +109,7 @@ class OpenVINOAccelerator:
             
             return results
         except Exception as e:
-            print(f"Error in accelerated pattern search: {e}")
+            print("Error in accelerated pattern search: {}".format(e))
             # Fall back to regular search
             return self._regular_pattern_search(data, patterns)
     
@@ -188,7 +188,7 @@ class OpenVINOAccelerator:
                     if result:
                         results.append(result)
                 except Exception as e:
-                    print(f"Error processing window: {e}")
+                    print("Error processing window: {}".format(e))
         
         return results
     

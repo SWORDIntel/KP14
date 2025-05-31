@@ -1,11 +1,11 @@
 import unittest
 import logging
-import os
-import json
+# import os # F401 unused
+# import json # F401 unused
 import tempfile
 import sys
 from pathlib import Path
-import shutil # For tearDownClass if needed, or individual file cleanup
+# import shutil # For tearDownClass if needed, or individual file cleanup # F401 unused
 
 # Assuming compiler_specific_recovery.py is in the same directory or accessible in PYTHONPATH
 try:

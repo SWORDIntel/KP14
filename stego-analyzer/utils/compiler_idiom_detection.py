@@ -6,7 +6,6 @@ Detect and replace compiler idioms in decompiled code using OpenVINO acceleratio
 """
 
 import os
-import sys
 import re
 import numpy as np
 import concurrent.futures
@@ -292,7 +291,7 @@ class CompilerIdiomDetector:
     
     def _handle_xor_self(self, match):
         """Handle XOR with self (zero initialization)"""
-        var = match.group(1)
+        # var = match.group(1) # Unused
         return f"0"
     
     def _handle_byte_swap(self, match):

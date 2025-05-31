@@ -251,5 +251,3 @@ if __name__ == '__main__':
 
     main_logger.info("--- IntelPinToolRunner tests completed ---")
     main_logger.info("--- All hardware_assisted_analysis.py tests completed ---")
-
-```

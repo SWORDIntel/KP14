@@ -6,16 +6,14 @@ Detect function boundaries in binary files using OpenVINO acceleration.
 """
 
 import os
-import sys
 import struct
 import numpy as np
 import concurrent.futures
-from collections import defaultdict
 
 # Try to import OpenVINO for hardware acceleration
 try:
-    from openvino.runtime import Core, Type, Layout, PartialShape
-    from openvino.preprocess import PrePostProcessor
+    from openvino.runtime import Core # , Type, Layout, PartialShape # F401 unused
+    # from openvino.preprocess import PrePostProcessor # F401 unused
     OPENVINO_AVAILABLE = True
 except ImportError:
     OPENVINO_AVAILABLE = False

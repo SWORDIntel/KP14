@@ -11,15 +11,12 @@ for maximum performance.
 
 import os
 import sys
-import json
 import numpy as np
-from collections import defaultdict
 import concurrent.futures
 
 # Try to import OpenVINO for hardware acceleration
 try:
-    from openvino.runtime import Core, Type, Layout, PartialShape
-    from openvino.preprocess import PrePostProcessor
+    from openvino.runtime import Core
     OPENVINO_AVAILABLE = True
     print("OpenVINO runtime available - using hardware acceleration for pattern matching")
     
@@ -212,8 +209,8 @@ class OpenVINOAccelerator:
                 try:
                     matches = future.result()
                     results[pattern] = matches
-                except Exception as e:
-                    print(f"Error searching for pattern: {e}")
+                except Exception as e_multi_pattern:
+                    print(f"Error searching for pattern {pattern}: {e_multi_pattern}")
                     results[pattern] = []
         
         return results

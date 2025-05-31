@@ -1,6 +1,6 @@
 import unittest
 import logging
-import os
+# import os # F401 unused
 import json
 import tempfile
 from pathlib import Path
@@ -9,8 +9,8 @@ import sys
 
 # Attempt to import pycparser and the TypePropagator
 try:
-    from pycparser import c_parser, c_ast, parse_file
-    PYCPARSER_AVAILABLE = True
+    # from pycparser import c_parser, c_ast, parse_file # F401 unused
+    PYCPARSER_AVAILABLE = True # Assume pycparser is installed for TypePropagator to work
 except ImportError:
     PYCPARSER_AVAILABLE = False
 

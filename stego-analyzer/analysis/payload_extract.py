@@ -4,7 +4,7 @@ Payload Extraction Module.
 This module provides functions to extract hidden payloads from
 images suspected of containing steganographic content.
 """
-# from core.logger import log # Example: if logging is needed
+# from stego_analyzer.core.logger import log # Example: if logging is needed
 
 def extract_payload(image_path: str) -> bytes:
     """

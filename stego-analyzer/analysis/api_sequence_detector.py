@@ -11,7 +11,6 @@ leveraging hardware acceleration for maximum performance.
 import os
 import sys
 import json
-import numpy as np
 from collections import defaultdict
 import concurrent.futures
 
@@ -48,6 +47,18 @@ except ImportError:
 # Use maximum CPU cores
 MAX_WORKERS = os.cpu_count()
 print(f"Using maximum CPU cores: {MAX_WORKERS}")
+
+# Import API sequence detector
+try:
+    from stego_analyzer.core.pattern_database import PatternDatabase
+except ImportError:
+    # Fallback if the primary location is not found
+    try:
+        from core.pattern_database import PatternDatabase
+    except ImportError:
+        print("ERROR: PatternDatabase not found. Ensure it's in stego_analyzer.core or core module.")
+        PatternDatabase = None
+
 
 class APISequenceDetector:
     """

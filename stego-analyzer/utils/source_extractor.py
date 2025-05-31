@@ -59,11 +59,11 @@ MAX_WORKERS = os.cpu_count()
 print(f"Using maximum CPU cores: {MAX_WORKERS}")
 
 # Module imports
-from decompiler_integration import DecompilerIntegration
-from function_boundary_detection import FunctionBoundaryDetector
-from type_inference import TypeInferenceEngine
-from control_flow_recovery import ControlFlowRecovery
-from compiler_idiom_detection import CompilerIdiomDetector
+from stego_analyzer.utils.decompiler_integration import DecompilerIntegration
+from stego_analyzer.utils.function_boundary_detection import FunctionBoundaryDetector
+from stego_analyzer.utils.type_inference import TypeInferenceEngine
+from stego_analyzer.utils.control_flow_recovery import ControlFlowRecovery
+from stego_analyzer.utils.compiler_idiom_detection import CompilerIdiomDetector
 
 class SourceCodeExtractor:
     """

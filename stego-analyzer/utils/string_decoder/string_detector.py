@@ -14,7 +14,7 @@ import concurrent.futures
 from collections import Counter, defaultdict
 from tqdm import tqdm
 
-from .entropy_analyzer import EntropyAnalyzer
+from stego_analyzer.utils.string_decoder.entropy_analyzer import EntropyAnalyzer
 
 # Use maximum CPU cores
 MAX_WORKERS = os.cpu_count()

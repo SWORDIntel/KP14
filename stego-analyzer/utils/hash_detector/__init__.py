@@ -5,9 +5,9 @@ Modular system for detecting API hashing algorithms in multi-layered encrypted m
 using OpenVINO hardware acceleration for maximum performance.
 """
 
-from .accelerator import OpenVINOAccelerator
-from .patterns import HashPatterns
-from .algorithms import HashAlgorithms
-from .detector import HashDetector
+from stego_analyzer.utils.hash_detector.accelerator import OpenVINOAccelerator  # noqa: F401
+from stego_analyzer.utils.hash_detector.patterns import HashPatterns  # noqa: F401
+from stego_analyzer.utils.hash_detector.algorithms import HashAlgorithms  # noqa: F401
+from stego_analyzer.utils.hash_detector.detector import HashDetector  # noqa: F401
 
 __version__ = "0.1.0"
