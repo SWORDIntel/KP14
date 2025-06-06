@@ -24,6 +24,7 @@ This section provides instructions on how to set up and run the KP14 Steganograp
     ```bash
     bash install.sh
     ```
+    The installer will also take care of new dependencies required for features like static PE file analysis, such as `capstone` and `pefile`.
 
 3.  **Activate the virtual environment:**
     Before running the analyzer, you need to activate the virtual environment:
@@ -61,4 +62,18 @@ Once the environment is activated and configured, you can run the main analysis 
 ```bash
 ./run_pipeline.py [arguments...]
 ```
+
+**Static Analysis:**
+The analyzer now includes a basic static analysis module for PE files (e.g., .exe, .dll). If you suspect an input file (or an extracted payload, once that feature is more developed) is a Windows executable, you can enable static analysis:
+
+```bash
+./run_pipeline.py your_file.exe --enable-static-analysis
+```
+This will attempt to:
+- Extract PE header information (sections, imports, exports, entry point).
+- Extract printable strings from the file.
+- Disassemble the first few instructions at the entry point.
+
+The results will be printed to the console.
+
 Refer to `docs/usage_examples.md` or use `python run_pipeline.py --help` (once implemented) for more details on command-line arguments and usage.
