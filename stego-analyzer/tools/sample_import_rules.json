@@ -1,0 +1,47 @@
+{
+    "project_root_comment": "This is typically not a rule, but a reminder that project_root is often supplied as a command-line argument or inferred.",
+
+    "alias_paths": {
+        "comment": "Replaces import paths. Key is old path, value is new path.",
+        "utils.old_utility_module": "core.new_utility_module",
+        "common.data_structures": "stego_analyzer.core.data_structures",
+        "stego_analyzer.scripts.old_script_helper": "stego_analyzer.tools.new_script_helper"
+    },
+
+    "force_absolute_imports_from_root": {
+        "comment": "[NOT FULLY IMPLEMENTED YET in import_resolver.py] List of modules/packages that should always be imported using absolute paths from the project root.",
+        "modules": [
+            "stego_analyzer.core.config",
+            "stego_analyzer.utils.image_utils"
+        ],
+        "enabled": false
+    },
+
+    "banned_relative_imports_depth": {
+        "comment": "[NOT IMPLEMENTED YET in import_resolver.py] Maximum depth for relative imports (e.g., 1 for '.module', 2 for '..module'). Set to 0 to ban all relative imports.",
+        "max_depth": 1,
+        "enabled": false
+    },
+
+    "preferred_import_style": {
+        "comment": "[NOT IMPLEMENTED YET in import_resolver.py] Define preferred style for certain modules.",
+        "rules": [
+            {
+                "module_pattern": "stego_analyzer.core.*",
+                "style": "direct", "reason": "Core modules should be imported directly."
+                // e.g., 'import stego_analyzer.core.config' instead of 'from stego_analyzer.core import config'
+            },
+            {
+                "module_pattern": "collections.abc",
+                "style": "from_import_as", "as_alias": "collections_abc", "reason": "Avoid long names."
+                // e.g., 'from collections import abc as collections_abc'
+            }
+        ],
+        "enabled": false
+    },
+    "remove_unused_imports": {
+        "comment": "[NOT IMPLEMENTED YET in import_resolver.py] Experimental: Attempt to identify and remove unused imports. Requires static analysis of variable/function usage.",
+        "enabled": false,
+        "aggressiveness": "low"
+    }
+}

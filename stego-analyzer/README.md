@@ -77,3 +77,19 @@ This will attempt to:
 The results will be printed to the console.
 
 Refer to `docs/usage_examples.md` or use `python run_pipeline.py --help` (once implemented) for more details on command-line arguments and usage.
+
+## Tools
+
+This section describes additional tools included with the `stego-analyzer` for development and project maintenance.
+
+### Python Import Resolver (`tools/import_resolver.py`)
+
+For developers working on the `stego-analyzer` codebase, a utility script `tools/import_resolver.py` is provided to help manage and refactor Python import statements. This tool can:
+-   Scan specified directories for Python files.
+-   Analyze import statements using Abstract Syntax Trees (AST).
+-   Apply configurable rules (e.g., renaming import paths) to enforce consistency.
+-   Perform a "dry run" to show proposed changes before applying them.
+
+This is particularly useful for larger refactoring efforts or for maintaining a consistent import style across the project.
+
+For detailed usage instructions and examples, please refer to the "Python Import Resolver" section in `docs/usage_examples.md`.
