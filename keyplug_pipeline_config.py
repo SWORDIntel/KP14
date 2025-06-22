@@ -419,63 +419,63 @@ def get_module_import_map() -> Dict[str, str]:
     """
     return {
         # Basic PE Analysis
-        "ExtractPE": "extract_pe.ExtractPE",
-        "AnalyzePE": "analyze_pe.AnalyzePE",
+        "ExtractPE": "stego_analyzer.utils.extract_pe.ExtractPE",
+        "AnalyzePE": "stego_analyzer.utils.analyze_pe.AnalyzePE",
         
         # Code Analysis
-        "FunctionBoundaryDetection": "function_boundary_detection.FunctionBoundaryDetection",
-        "ControlFlowRecovery": "control_flow_recovery.ControlFlowRecovery",
-        "CompilerIdiomDetection": "compiler_idiom_detection.CompilerIdiomDetection",
+        "FunctionBoundaryDetection": "stego_analyzer.utils.function_boundary_detection.FunctionBoundaryDetection",
+        "ControlFlowRecovery": "stego_analyzer.utils.control_flow_recovery.ControlFlowRecovery",
+        "CompilerIdiomDetection": "stego_analyzer.utils.compiler_idiom_detection.CompilerIdiomDetection",
         
         # Decompilation
-        "DecompilerIntegration": "decompiler_integration.DecompilerIntegration",
-        "KeyplugDecompiler": "keyplug_decompiler.KeyplugDecompiler", 
-        "KeyplugFunctionExtractor": "keyplug_function_extractor.KeyplugFunctionExtractor",
+        "DecompilerIntegration": "stego_analyzer.utils.decompiler_integration.DecompilerIntegration",
+        "KeyplugDecompiler": "stego_analyzer.analysis.keyplug_decompiler.KeyplugDecompiler",
+        "KeyplugFunctionExtractor": "stego_analyzer.utils.function_extractor.KeyplugFunctionExtractor",
         
         # Extraction
-        "KeyplugExtractor": "keyplug_extractor.KeyplugExtractor",
-        "KeyplugMultilayerExtractor": "keyplug_multilayer_extractor.KeyplugMultilayerExtractor",
+        "KeyplugExtractor": "stego_analyzer.analysis.keyplug_extractor.KeyplugExtractor",
+        "KeyplugMultilayerExtractor": "stego_analyzer.analysis.multilayer_extractor.KeyplugMultilayerExtractor",
         
         # Decryption
-        "SimpleRC4": "simple_rc4.SimpleRC4",
-        "RC4Decrypt": "rc4_decrypt.RC4Decrypt",
-        "SectionDecrypt": "section_decrypt.SectionDecrypt",
-        "MultiLayerDecrypt": "multi_layer_decrypt.MultiLayerDecrypt",
-        "MultiLayerDecryptAdvanced": "multi_layer_decrypt_advanced.MLDecryptionEngine",
-        "TargetedPatternDecrypt": "targeted_pattern_decrypt.TargetedPatternDecrypt",
-        "KeyplugCombinationDecrypt": "keyplug_combination_decrypt.KeyplugCombinationDecrypt",
+        "SimpleRC4": "stego_analyzer.utils.simple_rc4.SimpleRC4",
+        "RC4Decrypt": "stego_analyzer.utils.rc4_decrypt.RC4Decrypt",
+        "SectionDecrypt": "stego_analyzer.utils.section_decrypt.SectionDecrypt",
+        "MultiLayerDecrypt": "stego_analyzer.utils.multi_layer_decrypt.MultiLayerDecrypt",
+        "MultiLayerDecryptAdvanced": "stego_analyzer.utils.multi_layer_decrypt_advanced.MLDecryptionEngine",
+        "TargetedPatternDecrypt": "stego_analyzer.utils.targeted_pattern_decrypt.TargetedPatternDecrypt",
+        "KeyplugCombinationDecrypt": "stego_analyzer.analysis.keyplug_combination_decrypt.KeyplugCombinationDecrypt",
         
         # Analysis
-        "KeyplugApiSequenceDetector": "keyplug_api_sequence_detector.KeyplugApiSequenceDetector",
-        "TypeInference": "type_inference.TypeInferenceEngine", 
-        "TypePropagator": "type_propagation.TypePropagator", 
-        "PolyglotAnalyzer": "polyglot_analyzer.PolyglotAnalyzer",
-        "KeyplugAdvancedAnalysis": "keyplug_advanced_analysis.KeyplugAdvancedAnalysis",
+        "KeyplugApiSequenceDetector": "stego_analyzer.analysis.api_sequence_detector.KeyplugApiSequenceDetector",
+        "TypeInference": "stego_analyzer.utils.type_inference.TypeInferenceEngine",
+        "TypePropagator": "stego_analyzer.utils.type_propagation.TypePropagator",
+        "PolyglotAnalyzer": "stego_analyzer.utils.polyglot_analyzer.PolyglotAnalyzer",
+        "KeyplugAdvancedAnalysis": "stego_analyzer.analysis.keyplug_advanced_analysis.KeyplugAdvancedAnalysis",
         
         # ML-based Analysis
-        "MLPatternAnalyzer": "ml_pattern_analyzer.MLPatternAnalyzer",
-        "MLMalwareAnalyzer": "ml_malware_analyzer.MalwareML",
-        "KeyplugAcceleratedMultilayer": "keyplug_accelerated_multilayer.KeyplugAcceleratedMultilayer",
-        "CodeIntentClassifier": "code_intent_classifier.CodeIntentClassifier",
-        "VulnerabilityDetector": "vulnerability_detector.VulnerabilityDetector",
+        "MLPatternAnalyzer": "stego_analyzer.utils.ml_pattern_analyzer.MLPatternAnalyzer",
+        "MLMalwareAnalyzer": "stego_analyzer.analysis.ml_malware_analyzer.MalwareML",
+        "KeyplugAcceleratedMultilayer": "stego_analyzer.analysis.keyplug_accelerated_multilayer.KeyplugAcceleratedMultilayer",
+        "CodeIntentClassifier": "stego_analyzer.analysis.code_intent_classifier.CodeIntentClassifier",
+        "VulnerabilityDetector": "stego_analyzer.utils.vulnerability_detector.VulnerabilityDetector",
         
         # Behavioral Analysis
-        "KeyplugBehavioralAnalyzer": "keyplug_behavioral_analyzer.KeyplugBehavioralAnalyzer",
+        "KeyplugBehavioralAnalyzer": "stego_analyzer.analysis.behavioral_analyzer.KeyplugBehavioralAnalyzer",
         
         # Memory Analysis
-        "KeyplugMemoryAnalyzer": "keyplug_memory_forensics.KeyplugMemoryAnalyzer",
+        "KeyplugMemoryAnalyzer": "stego_analyzer.analysis.keyplug_memory_forensics.KeyplugMemoryAnalyzer",
         
         # Global Analysis
-        "KeyplugCrossSampleCorrelator": "keyplug_cross_sample_correlator.KeyplugCrossSampleCorrelator",
-        "KeyplugPatternDatabase": "keyplug_pattern_database.KeyplugPatternDatabase",
-        "MalwarePatternLearner": "malware_pattern_learner.MalwarePatternLearner",
-        "HybridAnalyzer": "hybrid_analyzer.HybridAnalyzer", # Added here
+        "KeyplugCrossSampleCorrelator": "stego_analyzer.analysis.keyplug_cross_sample_correlator.KeyplugCrossSampleCorrelator",
+        "KeyplugPatternDatabase": "stego_analyzer.core.pattern_database.KeyplugPatternDatabase",
+        "MalwarePatternLearner": "stego_analyzer.utils.malware_pattern_learner.MalwarePatternLearner",
+        "HybridAnalyzer": "stego_analyzer.utils.hybrid_analyzer.HybridAnalyzer",
 
         # Alternate Recovery & Hardware Assisted Analysis
-        "ProgramSynthesisEngine": "program_synthesis_engine.ProgramSynthesisEngine",
-        "CompilerSpecificRecovery": "compiler_specific_recovery.CompilerSpecificRecovery",
-        "IntelPTAnalyzer": "hardware_assisted_analysis.IntelPTAnalyzer",
-        "IntelPinToolRunner": "hardware_assisted_analysis.IntelPinToolRunner",
+        "ProgramSynthesisEngine": "stego_analyzer.utils.program_synthesis_engine.ProgramSynthesisEngine",
+        "CompilerSpecificRecovery": "stego_analyzer.utils.compiler_specific_recovery.CompilerSpecificRecovery",
+        "IntelPTAnalyzer": "stego_analyzer.utils.hardware_assisted_analysis.IntelPTAnalyzer",
+        "IntelPinToolRunner": "stego_analyzer.utils.hardware_assisted_analysis.IntelPinToolRunner",
     }
 
 # Function to get the pipeline configuration
