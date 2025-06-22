@@ -13,7 +13,7 @@ source kp14_venv/bin/activate
 
 echo "Installing dependencies from requirements.txt..."
 if [ -f "requirements.txt" ]; then
-    pip install -r requirements.txt
+    pip install --upgrade -r requirements.txt
 else
     echo "ERROR: requirements.txt not found!"
     exit 1
