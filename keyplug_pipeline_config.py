@@ -429,12 +429,12 @@ def get_module_import_map() -> Dict[str, str]:
         
         # Decompilation
         "DecompilerIntegration": "stego_analyzer.utils.decompiler_integration.DecompilerIntegration",
-        "KeyplugDecompiler": "stego_analyzer.analysis.keyplug_decompiler.KeyplugDecompiler",
+        "KeyplugDecompiler": "stego_analyzer.analysis.keyplug_decompiler.KeyplugDecompiler", # Path verified
         "KeyplugFunctionExtractor": "stego_analyzer.utils.function_extractor.KeyplugFunctionExtractor",
         
         # Extraction
-        "KeyplugExtractor": "stego_analyzer.analysis.keyplug_extractor.KeyplugExtractor",
-        "KeyplugMultilayerExtractor": "stego_analyzer.analysis.multilayer_extractor.KeyplugMultilayerExtractor",
+        "KeyplugExtractor": "stego_analyzer.analysis.keyplug_extractor.KeyplugExtractor", # Path verified
+        "KeyplugMultilayerExtractor": "stego_analyzer.analysis.multilayer_extractor.KeyplugMultilayerExtractor", # Path verified
         
         # Decryption
         "SimpleRC4": "stego_analyzer.utils.simple_rc4.SimpleRC4",
@@ -443,30 +443,30 @@ def get_module_import_map() -> Dict[str, str]:
         "MultiLayerDecrypt": "stego_analyzer.utils.multi_layer_decrypt.MultiLayerDecrypt",
         "MultiLayerDecryptAdvanced": "stego_analyzer.utils.multi_layer_decrypt_advanced.MLDecryptionEngine",
         "TargetedPatternDecrypt": "stego_analyzer.utils.targeted_pattern_decrypt.TargetedPatternDecrypt",
-        "KeyplugCombinationDecrypt": "stego_analyzer.analysis.keyplug_combination_decrypt.KeyplugCombinationDecrypt",
+        "KeyplugCombinationDecrypt": "stego_analyzer.analysis.keyplug_combination_decrypt.KeyplugCombinationDecrypt", # Path verified
         
         # Analysis
-        "KeyplugApiSequenceDetector": "stego_analyzer.analysis.api_sequence_detector.KeyplugApiSequenceDetector",
+        "KeyplugApiSequenceDetector": "stego_analyzer.analysis.api_sequence_detector.KeyplugApiSequenceDetector", # Path verified
         "TypeInference": "stego_analyzer.utils.type_inference.TypeInferenceEngine",
         "TypePropagator": "stego_analyzer.utils.type_propagation.TypePropagator",
         "PolyglotAnalyzer": "stego_analyzer.utils.polyglot_analyzer.PolyglotAnalyzer",
-        "KeyplugAdvancedAnalysis": "stego_analyzer.analysis.keyplug_advanced_analysis.KeyplugAdvancedAnalysis",
+        "KeyplugAdvancedAnalysis": "stego_analyzer.analysis.keyplug_advanced_analysis.KeyplugAdvancedAnalysis", # Path verified
         
         # ML-based Analysis
         "MLPatternAnalyzer": "stego_analyzer.utils.ml_pattern_analyzer.MLPatternAnalyzer",
-        "MLMalwareAnalyzer": "stego_analyzer.analysis.ml_malware_analyzer.MalwareML",
-        "KeyplugAcceleratedMultilayer": "stego_analyzer.analysis.keyplug_accelerated_multilayer.KeyplugAcceleratedMultilayer",
-        "CodeIntentClassifier": "stego_analyzer.analysis.code_intent_classifier.CodeIntentClassifier",
+        "MLMalwareAnalyzer": "stego_analyzer.analysis.ml_malware_analyzer.MalwareML", # Path verified
+        "KeyplugAcceleratedMultilayer": "stego_analyzer.analysis.keyplug_accelerated_multilayer.KeyplugAcceleratedMultilayer", # Path verified
+        "CodeIntentClassifier": "stego_analyzer.analysis.code_intent_classifier.CodeIntentClassifier", # Path verified
         "VulnerabilityDetector": "stego_analyzer.utils.vulnerability_detector.VulnerabilityDetector",
         
         # Behavioral Analysis
-        "KeyplugBehavioralAnalyzer": "stego_analyzer.analysis.behavioral_analyzer.KeyplugBehavioralAnalyzer",
+        "KeyplugBehavioralAnalyzer": "stego_analyzer.analysis.behavioral_analyzer.KeyplugBehavioralAnalyzer", # Path verified
         
         # Memory Analysis
-        "KeyplugMemoryAnalyzer": "stego_analyzer.analysis.keyplug_memory_forensics.KeyplugMemoryAnalyzer",
+        "KeyplugMemoryAnalyzer": "stego_analyzer.analysis.keyplug_memory_forensics.KeyplugMemoryAnalyzer", # Path verified (was keyplug_memory_forensics.py)
         
         # Global Analysis
-        "KeyplugCrossSampleCorrelator": "stego_analyzer.analysis.keyplug_cross_sample_correlator.KeyplugCrossSampleCorrelator",
+        "KeyplugCrossSampleCorrelator": "stego_analyzer.analysis.keyplug_cross_sample_correlator.KeyplugCrossSampleCorrelator", # Path verified
         "KeyplugPatternDatabase": "stego_analyzer.core.pattern_database.KeyplugPatternDatabase",
         "MalwarePatternLearner": "stego_analyzer.utils.malware_pattern_learner.MalwarePatternLearner",
         "HybridAnalyzer": "stego_analyzer.utils.hybrid_analyzer.HybridAnalyzer",
