@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🔌 KP14: UNPLUGGED 🔥
 
 **Finally, a solution to remove that annoying malware plug—no lube required!**
@@ -93,7 +92,11 @@ Misuse of KP14 may lead to:
 **Disclaimer:** KP14 is purely intended for educational and hilarious purposes. Please don’t use it to do anything silly. Actually, go ahead—but you didn't hear that from us.
 
 Happy unplugging! 🍑🔌🚀
-=======
+
+---
+---
+---
+
 # STEGTEST
 Steganographical Test Suite for a variety of image processing and steganography functions.
 
@@ -219,4 +222,3 @@ Use this section if you are testing direct embedding/extraction using the "Embed
 *   **Observations**: `(e.g., File copied, warnings displayed, conceptual logic notes, Signal simulation steps followed)`
 
 ---
->>>>>>> feature-repo/main
