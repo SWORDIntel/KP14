@@ -1,0 +1,485 @@
+# 1. Create install directory -> # 2. Move the built bundle into place
+# 1) Create the target dir -> # 2) Unpack with no prompts (-o = overwrite existing)
+# 1) Define threads (half your logical cores) -> THREADS=$(( $(nproc) / 2 ))
+# 1) Most common: follows the file and survives log rotation -> tail -F /tmp/iowa_discovery.log
+# 1) Unzip (if you haven’t already) -> sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle
+2;38;14M2;38;14m -> # 1) Unzip (if you haven’t already)
+2;38;14M2;38;14m -> export CFLAGS="-march=alderlake -O3 -pipe -mavx2 -mfma -mbmi2 -mabm -mvaes -mlzcnt"
+2;38;14M2;38;14m -> sudo mkdir -p /opt/gradle && sudo unzip -q ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle && sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest && sudo ln -sf /opt/gradle/latest/bin/gradle /usr/local/bin/gradle && gradle -v
+# 2. Move the built bundle into place -> # (adjust VERSION to match your build, e.g. ghidra_11.1.0_DEV)
+# 2) Rename the timestamped folder to the “all” name -> sudo mv /opt/gradle/gradle-8.14.1-20250527230000+0000 /opt/gradle/gradle-8.14.1-all
+# 2) Unpack with no prompts (-o = overwrite existing) -> sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle
+# 3) Export Meteor-Lake tuned compile flags -> export CXXFLAGS="$
+# 3. Make it world-readable/traversable -> # 4. Create a convenient symlink for future upgrades
+# 3) Rename the timestamped folder to the “all” name you expect -> pushd /opt/gradle
+# 3) Update the ‘latest’ symlink -> sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest
+# 4. Create a convenient symlink for future upgrades -> # 5. Install a small wrapper script into /usr/local/bin
+# 4) Fetch all dependencies -> gradle -I gradle/support/fetchDependencies.gradle
+# 4) Point `latest` at it -> # 5) Expose `gradle` on your PATH
+# 4) Symlink the gradle executable into your PATH -> # 5) Verify
+# 4) Symlink the gradle executable into your PATH -> sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle
+# 5) Expose `gradle` on your PATH -> # 6) Verify
+# 5. Install a small wrapper script into /usr/local/bin -> cat <<'EOF' | sudo tee /usr/local/bin/ghidra >/dev/null
+# 5) Verify -> ls -l /usr/local/bin/gradle
+# 6. (Optional) Install a .desktop entry for KDE/GNOME -> cat <<'EOF' | sudo tee /usr/share/applications/ghidra.desktop >/dev/null
+# 6) Verify -> sudo apt install lshw inxi lscpu lspci lsusb smartmontools pciutils -y
+add2path -> sudo snap install gitkraken --classic
+# Add user to video group (if not already) -> sudo usermod -a -G video,render $USER
+# (adjust VERSION to match your build, e.g. ghidra_11.1.0_DEV) -> sudo mv ~/Documents/BUILD/ghidra/build/dist/ghidra_*_DEV /opt/ghidra/ghidra-dev
+apt remove gradle -> sudo apt remove gradle
+apt search ssdeep -> sudo apt install ssdeep python3-ssdeep libfuzzy-dev
+apt update && apt -y install yara -> # Drop Mandiant multi-XOR config rule to /opt/yara/keyplug.yar
+# a) The tidy ‘-r’ flag (works if you used add-apt-repository originally) -> sudo add-apt-repository --remove ppa:x2go/stable
+./audio -> ./audio_repair.py
+./audio_repair.py -> ssh root@192.168.1.45
+bash install.sh -> ls -la /home/john/bash_modules.d/
+bash install.sh -> ./uninstall.sh
+bash -l -c 'declare -F | grep -E "sentinel|_sentinel"' -> bash -l -c 'env | grep SENTINEL'
+bash -l -c 'echo "Bash login test successful"' -> cp ~/.bashrc /home/john/Documents/GitHub/SENTINEL/bashrc.working
+bash -l -c 'echo "Testing module loading..."' -> bash -l -c 'if [[ -n "$_SENTINEL_CONFIG_CACHE_LOADED" && -n "$_SENTINEL_LOGGING_LOADED" && -n "$_SENTINEL_MODULE_MANAGER_LOADED" ]]; then echo "All three modules successfully loaded!"; else echo "Some modules failed to load. Status:"; echo "config_cache: ${_SENTINEL_CONFIG_CACHE_LOADED:-not loaded}"; echo "logging: ${_SENTINEL_LOGGING_LOADED:-not loaded}"; echo "module_manager: ${_SENTINEL_MODULE_MANAGER_LOADED:-not loaded}"; fi'
+bash -l -c 'env | grep SENTINEL' -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+bash -l -c 'if [[ -n "$_SENTINEL_CONFIG_CACHE_LOADED" && -n "$_SENTINEL_LOGGING_LOADED" && -n "$_SENTINEL_MODULE_MANAGER_LOADED" ]]; then echo "All three modules successfully loaded!"; else echo "Some modules failed to load. Status:"; echo "config_cache: ${_SENTINEL_CONFIG_CACHE_LOADED:-not loaded}"; echo "logging: ${_SENTINEL_LOGGING_LOADED:-not loaded}"; echo "module_manager: ${_SENTINEL_MODULE_MANAGER_LOADED:-not loaded}"; fi' -> mkdir -p ~/.bash_modules.d ~/bash_modules.d ~/.sentinel/cache/config ~/.sentinel/cache/modules ~/.sentinel/logs
+#!/bin/bash -> last=$(</sys/class/powercap/intel-rapl\:0/energy_uj)
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> chmod +x *.*
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> # Create tests directory
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> ./directeye_tui.sh
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> # List any active X2Go sessions (root privileges required)
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> mkdir -p /home/john/Documents/GitHub/ARTICBASTION/Midway/BASTION/ui/remote_dash_connector
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> mkdir -p /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_generator
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --verbose
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> python3 -m venv .venv
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> python3 -m venv venv
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> python -m us_lookup.core.tools.texas_socrata.analyzer --discover
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> set -o interactive-comments
+/bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt -> sudo apt-get update
+# b) Manual: delete the list file then refresh indexes -> sudo rm -f /etc/apt/sources.list.d/x2go*.list
+btop -> 2;38;14M2;38;14m
+# build_ghidra_meteorlake.sh – Native-optimized Ghidra build for Intel Core Ultra 7 165H -> set -euo pipefail
+./build_ghidra.sh -> unset JAVA_TOOL_OPTIONS
+Categories=Development;Security;ReverseEngineering; -> EOF
+cat <<'EOF' | sudo tee /usr/local/bin/ghidra >/dev/null -> #!/usr/bin/env bash
+cat <<'EOF' | sudo tee /usr/share/applications/ghidra.desktop >/dev/null -> [Desktop Entry]
+cat /home/john/.bash_modules -> ls -la /home/john/bashrc.postcustom
+cat /home/john/logs/install.log | tail -n 50 -> bash install.sh
+cat /home/john/logs/verification.log -> ls -la /home/john/logs/
+cat >/opt/yara/keyplug.yar <<'EOF' -> <--–- full rule block from lines 93-96 snipped for brevity –-->
+cat tmp/iowa_deprecated_endpoints.json -> # 1) Most common: follows the file and survives log rotation
+cd BUILD/ -> git clone https://github.com/NationalSecurityAgency/ghidra
+cd BUILD/ -> sudo rm -fdr ghidra/
+cd BUILD/ -> #!/usr/bin/env bash
+cd .. -> # Enable bookworm-backports if not already
+cd ghidra -> # 3) Export Meteor-Lake tuned compile flags
+cd ghidra/ -> export JAVA_HOME=/usr/lib/jvm/msopenjdk-21-amd64
+cd ghidra -> sudo gradle -I gradle/support/fetchDependencies.gradle
+cd -> git clone https://github.com/NationalSecurityAgency/ghidra
+cd gradle/ -> hash -r
+cd .. -> gradle -I gradle/support/fetchDependencies.gradle
+cd /home/john/Documents/GitHub/ARTICBASTION/Midway/BASTION/ui/remote_dash_connector -> pip install -r requirements.txt
+cd /home/john/Documents/GitHub/ARTICBASTION/Midway && pytest -xvs tests/test_remote_node_installer.py::TestRemoteNodeInstaller::test_init -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+cd /home/john/Documents/GitHub/ARTICBASTION/Midway -> python -m tests.unit.distributed_cert_management.run_tests
+cd /home/john/Documents/GitHub/ARTICBASTION -> mkdir -p /home/john/Documents/GitHub/ARTICBASTION/Midway/BASTION/tests
+cd /home/john/Documents/GitHub/ARTICBASTION -> mkdir -p /home/john/Documents/GitHub/ARTICBASTION/Midway/monitoring_integration
+cd /home/john/Documents/GitHub/ARTICBASTION -> pip install -r requirements.txt
+cd /home/john/Documents/GitHub/ARTICBASTION -> python Midway/BASTION/ui/migration_tools/detect_deprecated_imports.py
+cd /home/john/Documents/GitHub/ARTICBASTION -> sudo apt-get install portaudio19-dev
+cd /home/john/Documents/GitHub/DIRECTEYE && python -m us_lookup.core.tools.iowa_socrata.analyzer --discover --output test_output.json --script test_update_script.py -> python /tmp/test_socrata_endpoint.py
+cd /home/john/Documents/GitHub/SWORDTools -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+cd /home/john/Documents/GitHub/SWORDTools/Libraries -> mkdir -p SubdomainEnumeration/discovery SubdomainEnumeration/analysis SubdomainEnumeration/utils
+cd /home/john/Documents/GitHub/SWORDTools -> pip install jsonschema
+cd /home/john/Documents/GitHub/SWORDTools && python -m unittest Libraries/TUI/tests/unit/test_plugin_system.py -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+cd /home/john -> ls -la ~/.bashrc
+cd /opt/scripts/ -> nano fullsysteport.py
+cd /opt/scripts/ -> rm -f reset_isr_extreme_*
+cd /opt/ -> su
+cd .. -> sudo apt install gradle
+cd .. -> sudo find /opt/gradle -type d -exec chmod 755 {} \;
+chmod +x build_ghidra.sh -> ./build_ghidra.sh
+chmod +x ~/fix_blesh.sh && ~/fix_blesh.sh -> ./uninstall.sh
+chmod +x ghidra.sh -> ./ghidra.sh
+chmod +x /home/john/Documents/GitHub/SENTINEL/test_bash_modules.sh -> ./test_bash_modules.sh
+chmod +x *.* -> sudo apt install capstone r2pipe
+Comment=NSA Reverse Engineering Framework -> Exec=/usr/local/bin/ghidra
+cp ~/.bashrc ~/.bashrc.backup-$(date +%Y%m%d-%H%M%S) -> bash -l -c 'echo "Bash login test successful"'
+cp ~/.bashrc /home/john/Documents/GitHub/SENTINEL/bashrc.working -> bash -l -c 'echo "Testing module loading..."'
+# Create test files -> touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_enhanced_openvino.py
+# Create tests directory -> mkdir -p /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration
+# Create udev rule for NPU -> echo 'KERNEL=="accel[0-9]", SUBSYSTEM=="accel", MODE="0666", GROUP="video"' | sudo tee /etc/udev/rules.d/50-intel-npu.rules
+─────────────────────────────────────── Debian System Audit – live run ───────────────────────────────────────── -> Output directory: /root/sys_audit
+[Desktop Entry] -> Name=Ghidra
+df -h /boot -> df -h /
+df -h / -> dpkg --list | grep linux-image
+diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/cli.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py -> ls -la /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/
+diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py -> diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/cli.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py
+diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py -> diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/incremental.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_incremental.py
+diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/incremental.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_incremental.py -> diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py
+diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py | head -30 -> ls -l /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database*.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py
+diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py | head -50 -> diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py
+diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py -> diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py | head -50
+diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py -> grep -r "Libraries.Chains.Generator.cve_database" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/
+diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_integration.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/integration.py | head -50 -> grep -r "Libraries.Chains.Generator.cve_db_integration" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+./directeye_tui.sh -> pkill -f "python /tmp/iowa_endpoint_discovery"
+dpkg -l | grep -i x2go || echo "✔️ No X2Go packages installed" -> # Nothing should print from grep; the ✅ tells you the purge succeeded.
+dpkg --list | grep linux-image -> # Remove old kernel initrd and vmlinuz
+# Drop Mandiant multi-XOR config rule to /opt/yara/keyplug.yar -> cat >/opt/yara/keyplug.yar <<'EOF'
+echo $PATH | tr ':' '\n' -> # look for /usr/local/bin in the output
+echo "deb http://deb.debian.org/debian bookworm-backports main" | sudo tee /etc/apt/sources.list.d/bookworm-backports.list -> # Install OpenJDK 21 from backports
+echo 'KERNEL=="accel[0-9]", SUBSYSTEM=="accel", MODE="0666", GROUP="video"' | sudo tee /etc/udev/rules.d/50-intel-npu.rules -> # Reload udev
+# Either way is fine – pick one -> # a) The tidy ‘-r’ flag (works if you used add-apt-repository originally)
+# Enable bookworm-backports if not already -> echo "deb http://deb.debian.org/debian bookworm-backports main" | sudo tee /etc/apt/sources.list.d/bookworm-backports.list
+# Ensure all dirs are executable and files readable by everyone -> ls -l /opt/gradle
+# ensure the binary exists and is executable -> echo $PATH | tr ':' '\n'
+EOF -> # 6. (Optional) Install a .desktop entry for KDE/GNOME
+EOF -> nano ghidra.sh
+EOF -> # Scan every executable under / (skip /proc, /sys for speed)
+EOF -> sudo chmod +x /usr/local/bin/ghidra
+# Exact package names can vary; the wildcards catch add-ons such as x2goagent -> sudo apt-get update
+Exec=/usr/local/bin/ghidra -> Icon=/opt/ghidra/latest/support/ghidra.ico
+export CFLAGS="-march=alderlake -O3 -pipe -mavx2 -mfma -mbmi2 -mabm -mvaes -mlzcnt" -> export CXXFLAGS="$CFLAGS"
+export CFLAGS="-march=alderlake -O3 -pipe -mavx2 -mfma -mbmi2 -mabm -mvaes -mlzcnt" -> sudo gradle -I gradle/support/fetchDependencies.gradle
+export CFLAGS="-march=alderlake -O3 -pipe -mtune=alderlake" -> export CXXFLAGS="$CFLAGS"
+export CFLAGS="-march=native -O3 -pipe -mtune=native" -> gcc -march=native -E -v - < /dev/null 2>&1 | grep cc1
+export CXXFLAGS="$CFLAGS" -> export JAVA_TOOL_OPTIONS="-XX:+UseG1GC -XX:+UseAES -XX:+UseStringDeduplication -XX:MaxHeapFreeRatio=20"
+export CXXFLAGS="$ -> export CFLAGS="-march=alderlake -O3 -pipe -mtune=alderlake"
+export GRADLE_OPTS="-Xmx8G -Dorg.gradle.workers.max=${THREADS}" -> # 4) Fetch all dependencies
+export JAVA_HOME=/usr/lib/jvm/msopenjdk-21-amd64 -> export PATH="$JAVA_HOME/bin:$PATH"
+export JAVA_TOOL_OPTIONS="-XX:+UseG1GC \ -> -XX:+UseAES \
+export JAVA_TOOL_OPTIONS="-XX:+UseG1GC -XX:+UseAES -XX:+UseStringDeduplication -XX:MaxHeapFreeRatio=20" -> export GRADLE_OPTS="-Xmx8G -Dorg.gradle.workers.max=${THREADS}"
+export PATH="$JAVA_HOME/bin:$PATH" -> gradle --stop
+FileNotFoundError: [Errno 2] No such file or directory: 'inxi' -> john@LONENOMAD:/opt/scripts$
+find /home/john -name "bashrc.postcustom" -> chmod +x /home/john/Documents/GitHub/SENTINEL/test_bash_modules.sh
+# Fix perms: -> # Repoint latest + PATH:
+# Fix perms: -> sudo chmod -R u=rwX,go=rX /opt/gradle
+<--–- full rule block from lines 93-96 snipped for brevity –--> -> EOF
+gcc -march=native -E -v - < /dev/null 2>&1 | grep cc1 -> export CFLAGS="-march=alderlake -O3 -pipe -mavx2 -mfma -mbmi2 -mabm -mvaes -mlzcnt"
+./ghidra.sh -> ls -1 ~/Documents/BUILD/ghidra/build/dist
+ghidra --version -> df -h /boot
+# gradle-8.14.1-all/ latest@ -> gradle-8.14.1-all/ -> # ensure the binary exists and is executable
+# gradle-8.14.1-all/ latest@ -> gradle-8.14.1-all/ -> ls -l /opt/gradle/latest/bin/gradle
+gradle -> gradle -v
+gradle -I gradle/support/fetchDependencies.gradle -> gradle --no-daemon --max-workers=$(( $(nproc)/2 )) buildGhidra
+gradle -I gradle/support/fetchDependencies.gradle -> set +o ignoreeof
+gradle -I gradle/support/fetchDependencies.gradle -> sudo apt install gradle
+gradle --no-daemon --max-workers=$(( $(nproc)/2 )) buildGhidra -> # 1. Create install directory
+gradle -> snap info gradle
+gradle --stop -> gradle -I gradle/support/fetchDependencies.gradle
+gradle -v -> gradle -V
+gradle -v # (no "cd --" prefix!) -> sudo apt update
+gradle -v -> snap info gradle
+gradle -v -> sudo chmod +x /usr/local/bin/gradle
+gradle -V -> sudo rm -f /usr/local/bin/gradle
+grep -A5 -B5 "attach=overhead" /home/john/bash_modules.d/autocomplete.module -> grep -r "attach=overhead" --include="*" /home/john/Documents/GitHub/SENTINEL/ 2>/dev/null || echo "No matches found in SENTINEL repo"
+grep -r "attach=overhead" --include="*" /home/john/Documents/GitHub/SENTINEL/ 2>/dev/null || echo "No matches found in SENTINEL repo" -> chmod +x ~/fix_blesh.sh && ~/fix_blesh.sh
+grep -r "cve_database_" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/ | grep -v "/home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_" -> rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_incremental.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py
+grep -r "Libraries.Chains.Generator.cve_database_fts" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> grep -r "Libraries.Chains.Generator.cve_database_incremental" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+grep -r "Libraries.Chains.Generator.cve_database" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> grep -r "Libraries.Chains.Generator.cve_database_fts" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+grep -r "Libraries.Chains.Generator.cve_database" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/ -> grep -r "Libraries.Chains.Generator.cve_db_cli" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/
+grep -r "Libraries.Chains.Generator.cve_database_incremental" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> grep -r "Libraries.Chains.Generator.cve_db_cli" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+grep -r "Libraries.Chains.Generator.cve_db_cli" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> grep -r "Libraries.Chains.Generator.cve_db_integration" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+grep -r "Libraries.Chains.Generator.cve_db_cli" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/ -> grep -r "cve_database_" --include="*.py" /home/john/Documents/GitHub/SWORDTools/Libraries/ | grep -v "/home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_"
+grep -r "Libraries.Chains.Generator.cve_db_integration" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> grep -r "cve_database.py\|cve_database_fts.py\|cve_database_incremental.py\|cve_db_cli.py\|cve_db_integration.py" --include="*.md" /home/john/Documents/GitHub/SWORDTools/
+grep -r "Libraries.Chains.Generator.cve_db_integration" --include="*.py" /home/john/Documents/GitHub/SWORDTools/ -> rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_integration.py
+hash -r # clear command cache -> gradle -v # (no "cd --" prefix!)
+hash -r -> command gradle -v
+hash -r -> gradle -v
+hash -r -> gradle -V
+Icon=/opt/ghidra/latest/support/ghidra.ico -> Terminal=false
+# If anything is reported, warn users and let them disconnect cleanly. -> # You can also force-terminate specific sessions (last column = session ID):
+./im -> ./install.sh
+# Install OpenJDK 21 from backports -> # Point your system Java to 21
+# Install OpenVINO runtime -> pip install openvino
+./install.sh -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+./install.sh -> ./uninstall.sh
+# Install Volatility 3 -> pip install volatility3
+# Install yara if you don’t already have it -> apt update && apt -y install yara
+iptables -F -> add2path
+iptables -L -n -> # Temporarily disable firewall to test (if present)
+java -version -> # → openjdk version "21" ...
+john@LONENOMAD:/opt/scripts$ -> sudo rm -f /etc/apt/sources.list.d/intel-gpu-jammy.list
+# List any active X2Go sessions (root privileges required) -> sudo x2golistsessions_root
+================= -> log() { local level="$1"; shift; local message="$*"; local timestamp=$(date '+%Y-%m-%d %H:%M:%S'); echo "[$timestamp] [$level] $message" | tee -a "$INSTALL_LOG"; case "$level" in ERROR) echo -e "${RED}[ERROR]${NC} $message" >&2
+log() { local level="$1"; shift; local message="$*"; local timestamp=$(date '+%Y-%m-%d %H:%M:%S'); echo "[$timestamp] [$level] $message" | tee -a "$INSTALL_LOG"; case "$level" in ERROR) echo -e "${RED}[ERROR]${NC} $message" >&2 -> ssh root@192.168.1.45
+# look for /usr/local/bin in the output -> hash -r
+# look for /usr/local/bin in the output -> sudo chmod +x /usr/local/bin/gradle
+ls -1 ~/Documents/BUILD/ghidra/build/dist -> sudo mkdir -p /opt/ghidra
+ls -la ~/.bashrc -> cp ~/.bashrc ~/.bashrc.backup-$(date +%Y%m%d-%H%M%S)
+ls -la /home/john/bash_modules.d/ -> bash install.sh
+ls -la /home/john/bash_modules.d -> ls -la /home/john/bashrc.postcustom
+ls -la /home/john/bashrc.postcustom -> find /home/john -name "bashrc.postcustom"
+ls -la /home/john/bashrc.postcustom -> ls -la /home/john/bash_modules.d
+ls -la /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/ -> diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py | head -30
+ls -la /home/john/logs/ -> cat /home/john/.bash_modules
+ls -lh /boot -> sudo apt autoremove --purge
+ls -l /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database*.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py -> ls -l /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/cli.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/incremental.py
+ls -l /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/core.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/cli.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/incremental.py -> diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py
+ls -l /opt/gradle/latest/bin/gradle -> # ensure the binary exists and is executable
+ls -l /opt/gradle/latest/bin/gradle -> sudo rm -rf /opt/gradle
+ls -l /opt/gradle/latest/bin/gradle -> # You should see something like:
+ls -l /opt/gradle -> ls -l /opt/gradle/latest/bin/gradle
+ls -l /opt/gradle -> sudo rm -rf /opt/gradle
+ls -l /opt/gradle -> # you should see:
+ls -l /usr/local/bin/gradle -> # should point to /opt/gradle/latest/bin/gradle and be executable (rwxr-xr-x)
+# make less more friendly for non-text input files, see lesspipe(1) -> python pathnpu.py
+# match all files and zero or more directories and subdirectories. -> #shopt -s globstar
+mkdir -p ~/.bash_modules.d ~/bash_modules.d ~/.sentinel/cache/config ~/.sentinel/cache/modules ~/.sentinel/logs -> bash -l -c 'declare -F | grep -E "sentinel|_sentinel"'
+mkdir -p /home/john/Documents/GitHub/ARTICBASTION/Midway/BASTION/tests -> pip install -r requirements.txt
+mkdir -p /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_generator -> rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_generator.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/improved_module_generator.py
+mkdir -p /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_templates/exploit_modules -> rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_templates/generic_exploit_template.py
+mkdir -p /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration -> # Create test files
+mkdir -p SubdomainEnumeration/discovery SubdomainEnumeration/analysis SubdomainEnumeration/utils -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+module_list -> mkenv
+module_list -> safe_load_direct_module fzf
+Name=Ghidra -> Comment=NSA Reverse Engineering Framework
+nano build_ghidra.sh -> chmod +x build_ghidra.sh
+nano explore.py -> python explore.py
+nano fullsysteport.py -> python fullsysteport.py
+nano ghidra.sh -> chmod +x ghidra.sh
+nano newbench.py -> python newbench.py
+nano power.sh -> sudo ./power.sh
+nano p.py -> python p.py
+nano testing.py -> python testing.py
+nano test.py -> python test
+nano test.py -> python test.py
+>newbench.py -> nano newbench.py
+# Nothing should print from grep; the ✅ tells you the purge succeeded. -> sudo apt install distcc
+# On LONENOMAD - check firewall status -> iptables -L -n
+# → openjdk version "21" ... -> sudo apt install -y -t bookworm-backports openjdk-21-jdk
+openssl version -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+# (Optional) Install Yara Python bindings for advanced rule scanning -> pip install yara-python
+# (Optional) Jupyter for interactive development -> pip install notebook
+Output directory: /root/sys_audit -> Traceback (most recent call last):
+packer build debian-osint.json -> pip install aiodns
+phpunit tests/unit/Chains/Specialized/test_quantum_shadow.php -> # Run Python tests
+pip install aiodns -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+pip install aiodns -> # Run PHP tests
+pip install cryptography -> python -m unittest tests/unit/API/test_beacon_integration.py
+pip install jsonschema -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+pip install notebook -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+pip install openvino -> # Install Volatility 3
+pip install pycryptodome -> # match all files and zero or more directories and subdirectories.
+pip install requests -> pip install cryptography
+pip install -r requirements.txt -> openssl version
+pip install -r requirements.txt -> pip install -r requirements.txt --upgrade
+pip install -r requirements.txt -> sudo apt search pygraphviz
+pip install -r requirements.txt --upgrade -> pip install sqlalchemy
+pip install -r requirements.txt --upgrade -> y
+pip install volatility3 -> # (Optional) Install Yara Python bindings for advanced rule scanning
+pip install yara-python -> # (Optional) Jupyter for interactive development
+pkill -f "python /tmp/iowa_endpoint_discovery" -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+pkill -f "python /tmp/iowa_endpoint_discovery" -> python /tmp/iowa_endpoint_discovery_with_wireguard.py
+# Point your system Java to 21 -> sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 2100
+popd -> # 4) Point `latest` at it
+printf "%'d \u03bcW\n" $((x - last)); last=$x; done -> nano power.sh
+pushd /opt/gradle -> popd
+python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type e2e --verbose -> python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type unit --verbose
+python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type integration --verbose -> python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type e2e --verbose
+python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type unit --verbose -> python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type integration --verbose
+python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --verbose -> python3 /home/john/Documents/GitHub/SWORDTools/Libraries/TUI/tests/test_runner.py --type unit --verbose
+python3 -m pip install --upgrade pip -> # Install OpenVINO runtime
+python3 -m venv .venv -> pip install -r requirements.txt
+python3 -m venv venv -> pip install -r requirements.txt --upgrade
+python ciscorecoverfinal.py -> sudo apt update && sudo apt install -y openjdk-17-jdk unzip wget
+python explore.py -> # Install yara if you don’t already have it
+python fullsysteport.py -> sudo python fullsysteport.py
+python Midway/BASTION/ui/migration_tools/detect_deprecated_imports.py -> # Test just the JWT components
+python -m tests.unit.distributed_cert_management.run_tests --component jwt -> # Test with coverage report
+python -m tests.unit.distributed_cert_management.run_tests --coverage -> pip install pytest
+python -m tests.unit.distributed_cert_management.run_tests -> python3 -m venv keyplug_venv
+python -m unittest tests/unit/API/test_beacon_integration.py -> pip install -r requirements.txt
+python -m unittest tests/unit/TUI/test_beacon_dashboard.py -> pip install requests
+python -m us_lookup.core.tools.texas_socrata.analyzer --discover -> ./directeye_tui.sh
+python newbench.py -> nano explore.py
+python pathnpu.py -> nano p.py
+python p.py -> # Create udev rule for NPU
+python testing.py -> nano test.py
+python test.py -> >newbench.py
+python test -> >test.py
+python /tmp/iowa_endpoint_discovery.py -> python /tmp/iowa_endpoint_discovery_with_wireguard.py
+python /tmp/iowa_endpoint_discovery_with_wireguard.py -> ./directeye_tui.sh
+python /tmp/iowa_endpoint_discovery_with_wireguard.py -> pkill -f "python /tmp/iowa_endpoint_discovery"
+python /tmp/test_multiple_endpoints.py -> python /tmp/iowa_endpoint_discovery.py
+python /tmp/test_socrata_endpoint.py -> python /tmp/test_multiple_endpoints.py
+# Refresh your shell’s cache: -> # Verify:
+# Reload udev -> sudo udevadm control --reload-rules
+# Remove duplicate/backups of current initrd -> sudo rm /boot/initrd.img-6.8.12-11-pve.dpkg-bak
+# Remove old kernel initrd and vmlinuz -> sudo rm /boot/initrd.img-6.8.12-10-pve
+# Remove orphaned dependencies -> sudo apt-get --yes autoremove --purge
+# Rename timestamped dir if necessary: -> sudo mv /opt/gradle/gradle-8.14.1-* /opt/gradle/gradle-8.14.1-all
+# Repoint latest + PATH: -> # Refresh your shell’s cache:
+rm -f reset_isr_extreme_* -> sudo ./pwo
+rm -f ~/.Xauthority ~/.xsession-x2go* -> rm -rf ~/.cache/{sessions,fontconfig}
+rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_incremental.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_cli.py -> diff -u /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_integration.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/integration.py | head -50
+rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_db_integration.py -> grep -r "Libraries.Chains.Generator.cve_database" --include="*.py" /home/john/Documents/GitHub/SWORDTools/
+rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_generator.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/improved_module_generator.py -> mkdir -p /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_templates/exploit_modules
+rm /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/module_templates/generic_exploit_template.py -> diff -q /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/CVEDB/fts.py /home/john/Documents/GitHub/SWORDTools/Libraries/Chains/Generator/cve_database_fts.py
+rm -rf ~/.cache/{sessions,fontconfig} -> sudo rm -rf /tmp/.X11-unix /tmp/.ICE-unix
+rm -rf ~/.x2go -> rm -f ~/.Xauthority ~/.xsession-x2go*
+# Run once per user account that ever launched X2Go -> rm -rf ~/.x2go
+# Run PHP tests -> phpunit tests/unit/Chains/Specialized/test_quantum_shadow.php
+# Run Python tests -> python -m unittest tests/unit/TUI/test_beacon_dashboard.py
+# -rwxr-xr-x 1 root root ... gradle -> sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle
+safe_load_direct_module fzf -> module_list
+# Scan every executable under / (skip /proc, /sys for speed) -> yara -C -r /opt/yara/keyplug.yar / 2>&1 | tee /var/log/keyplug_yara.log
+# Select the Java 21 entries -> # Verify
+~/sentinel_complete_cleanup.sh -> ./uninstall.sh
+set -euo pipefail -> # 1) Define threads (half your logical cores)
+set +o ignoreeof -> set -o interactive-comments
+set -o interactive-comments -> set +o keyword
+set +o keyword -> set -o monitor
+set -o monitor -> set +o noclobber
+set +o noclobber -> set +o noexec
+set +o noexec -> set +o noglob
+set +o noglob -> set +o nolog
+set +o nolog -> set +o notify
+set +o notify -> set +o nounset
+set +o notify -> set -o nounset
+set +o nounset -> set +o onecmd
+set -o nounset -> set +o onecmd
+set +o nounset -> set +o pipefail
+set +o onecmd -> set +o physical
+set +o physical -> set +o pipefail
+set +o physical -> set -o pipefail
+set +o pipefail -> set +o posix
+set -o pipefail -> set +o posix
+set +o pipefail -> touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_enhanced_openvino.py
+set +o posix -> set +o privileged
+set +o privileged -> set +o verbose
+set +o verbose -> set +o vi
+set +o vi -> set +o xtrace
+set +o xtrace -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+set +o xtrace -> touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_enhanced_openvino.py
+#shopt -s globstar -> # make less more friendly for non-text input files, see lesspipe(1)
+# should point to /opt/gradle/latest/bin/gradle and be executable (rwxr-xr-x) -> ls -l /opt/gradle
+ssh root@192.168.1.40 -> ./audio
+ssh root@192.168.1.45 -> ./install.sh
+ssh root@192.168.1.45 -> ssh root@192.168.1.40
+ssh root@192.168.1.45 -> ssh root@192.168.1.50
+ssh root@192.168.1.50 -> packer build debian-osint.json
+ssh root@leantwin.org -> /bin/python /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/printEnvVariablesToFile.py /home/john/.windsurf/extensions/ms-python.python-2025.4.0-universal/python_files/deactivate/bash/envVars.txt
+ssh root@leantwin.org -> # On LONENOMAD - check firewall status
+su -> # 1) Create the target dir
+sudo add-apt-repository --remove ppa:x2go/stable -> # b) Manual: delete the list file then refresh indexes
+sudo apt autoremove -> sudo update-alternatives --config java
+sudo apt autoremvoe -> sudo apt autoremove
+sudo apt-get install build-essential python3-dev -> # Upgrade pip
+sudo apt-get install portaudio19-dev -> pip install -r requirements.txt
+sudo apt-get update -> dpkg -l | grep -i x2go || echo "✔️ No X2Go packages installed"
+sudo apt-get update -> sudo apt-get install build-essential python3-dev
+sudo apt-get update -> sudo apt-get --yes purge 'x2goserver*' 'x2godesktopsharing*' 'x2goagent*' 'x2goclient*'
+sudo apt-get --yes autoremove --purge -> # Run once per user account that ever launched X2Go
+sudo apt-get --yes purge 'x2goserver*' 'x2godesktopsharing*' 'x2goagent*' 'x2goclient*' -> # Remove orphaned dependencies
+sudo apt install capstone r2pipe -> mkvenv
+sudo apt install distcc hashcat -> module_list
+sudo apt install distcc -> sudo apt install distcc hashcat
+sudo apt install gradle -> sudo apt install -y openjdk-17-jdk git gradle unzip python3 build-essential cmake
+sudo apt install inxi -y -> sudo nano ~/.bashrc
+sudo apt install lshw inxi lscpu lspci lsusb smartmontools pciutils -y -> ─────────────────────────────────────── Debian System Audit – live run ─────────────────────────────────────────
+sudo apt install msopenjdk-21 -> sudo update-java-alternatives --set msopenjdk-21-amd64
+sudo apt install python3-pygraphviz -> apt search ssdeep
+sudo apt install wget lsb-release -y -> wget https://packages.microsoft.com/config/debian/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo apt install -y openjdk-17-jdk git gradle unzip python3 build-essential cmake -> export CFLAGS="-march=native -O3 -pipe -mtune=native"
+sudo apt install -y openjdk-17-jdk git unzip zip -> btop
+sudo apt install -y -t bookworm-backports openjdk-21-jdk -> sudo apt install wget lsb-release -y
+sudo apt remove gradle -> sudo apt install -y openjdk-17-jdk git unzip zip
+sudo apt remove gradle -> sudo apt update
+sudo apt search pygraphviz -> sudo apt install python3-pygraphviz
+sudo apt update -> sudo apt install inxi -y
+sudo apt update -> sudo apt install msopenjdk-21
+sudo apt update -> sudo apt install -y openjdk-17-jdk git unzip zip
+sudo chmod -R u=rwX,go=rX /opt/ghidra/ghidra-dev -> sudo ln -sfn /opt/ghidra/ghidra-dev /opt/ghidra/latest
+sudo chmod -R u=rwX,go=rX /opt/gradle -> # Repoint latest + PATH:
+sudo chmod -R u=rwX,go=rX /opt/gradle -> sudo chmod +x /opt/gradle/latest/bin/gradle
+sudo chmod +x /opt/gradle/gradle-8.14.1-*/bin/gradle -> sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest
+sudo chmod +x /opt/gradle/latest/bin/gradle -> sudo ln -sfn /opt/gradle/gradle-8.14.1-20250527230000+0000 /opt/gradle/latest
+sudo chmod +x /usr/local/bin/ghidra -> which ghidra
+sudo dpkg -i packages-microsoft-prod.deb -> sudo apt update
+sudo find /opt/gradle -type d -exec chmod 755 {} \; -> sudo find /opt/gradle -type f -exec chmod 644 {} \;
+sudo find /opt/gradle -type f -exec chmod 644 {} \; -> sudo chmod +x /opt/gradle/gradle-8.14.1-*/bin/gradle
+sudo gradle -I gradle/support/fetchDependencies.gradle -> apt remove gradle
+sudo ln -sfn /opt/ghidra/ghidra-dev /opt/ghidra/latest -> sudo tee /usr/local/bin/ghidra >/dev/null <<'EOF'
+sudo ln -sfn /opt/gradle/gradle-8.14.1-20250527230000+0000 /opt/gradle/latest -> ls -l /opt/gradle/latest/bin/gradle
+sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest -> 2;38;14M2;38;14m
+sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest -> # 4) Symlink the gradle executable into your PATH
+sudo ln -sfn /opt/gradle/gradle-8.14.1-all /opt/gradle/latest -> sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle
+sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle -> 2;38;14M2;38;14m
+sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle -> # 5) Verify
+sudo ln -sfn /opt/gradle/latest/bin/gradle /usr/local/bin/gradle -> hash -r
+sudo mkdir -p /opt/ghidra -> sudo unzip -o ~/Documents/BUILD/ghidra/build/dist/ghidra_11.5_DEV_20250529_linux_x86_64.zip -d /opt/ghidra/ghidra-dev
+sudo mkdir -p /opt/gradle -> sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle
+sudo mv ~/Documents/BUILD/ghidra/build/dist/ghidra_*_DEV /opt/ghidra/ghidra-dev -> # 3. Make it world-readable/traversable
+sudo mv /opt/gradle/gradle-8.14.1-20250527230000+0000 /opt/gradle/gradle-8.14.1-all -> # 3) Update the ‘latest’ symlink
+sudo mv /opt/gradle/gradle-8.14.1-* /opt/gradle/gradle-8.14.1-all -> # Fix perms:
+sudo ./power.sh -> #!/bin/bash
+sudo ./power.sh -> ssh root@192.168.1.45
+sudo ./pwo -> sudo ./power.sh
+sudo python fullsysteport.py -> grep -A5 -B5 "attach=overhead" /home/john/bash_modules.d/autocomplete.module
+sudo python fullsysteport.py -> hash -r # clear command cache
+sudo rm /boot/config-6.8.12-10-pve -> # Remove duplicate/backups of current initrd
+sudo rm /boot/initrd.img-6.8.12-10-pve -> sudo rm /boot/System.map-6.8.12-10-pve
+sudo rm /boot/initrd.img-6.8.12-11-pve.dpkg-bak -> sudo rm /boot/initrd.img-6.8.12-11-pve.new
+sudo rm /boot/initrd.img-6.8.12-11-pve.new -> ls -lh /boot
+sudo rm /boot/System.map-6.8.12-10-pve -> sudo rm /boot/vmlinuz-6.8.12-10-pve
+sudo rm /boot/vmlinuz-6.8.12-10-pve -> sudo rm /boot/config-6.8.12-10-pve
+sudo rm -fdr ghidra/ -> nano build_ghidra.sh
+sudo rm -f /etc/apt/sources.list.d/intel-gpu-jammy.list -> # Ensure all dirs are executable and files readable by everyone
+sudo rm -f /etc/apt/sources.list.d/x2go*.list -> sudo apt-get update
+sudo rm -f /usr/local/bin/gradle -> sudo chmod -R u=rwX,go=rX /opt/gradle
+sudo rm -rf /opt/gradle -> sudo mkdir -p /opt/gradle
+sudo rm -rf /tmp/.X11-unix /tmp/.ICE-unix -> # Either way is fine – pick one
+sudo snap install gitkraken --classic -> ssh root@leantwin.org
+sudo systemctl disable x2goserver.service x2goserver-xsession.service -> # Exact package names can vary; the wildcards catch add-ons such as x2goagent
+sudo systemctl stop x2goserver.service x2goserver-xsession.service -> sudo systemctl disable x2goserver.service x2goserver-xsession.service
+sudo tee /usr/local/bin/ghidra >/dev/null <<'EOF' -> #!/usr/bin/env bash
+sudo udevadm control --reload-rules -> sudo udevadm trigger --subsystem-match=accel
+sudo udevadm trigger --subsystem-match=accel -> # Add user to video group (if not already)
+sudo unzip -o ~/Documents/BUILD/ghidra/build/dist/ghidra_11.5_DEV_20250529_linux_x86_64.zip -d /opt/ghidra/ghidra-dev -> sudo chmod -R u=rwX,go=rX /opt/ghidra/ghidra-dev
+sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle -> # 2) Rename the timestamped folder to the “all” name
+sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle -> # 3) Rename the timestamped folder to the “all” name you expect
+sudo unzip -o ~/Documents/BUILD/gradle/packaging/distributions-full/build/distributions/gradle-8.14.1-all.zip -d /opt/gradle -> # Rename timestamped dir if necessary:
+sudo update-alternatives --config java -> sudo update-alternatives --config javac
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-21-openjdk-amd64/bin/javac 2100 -> # Select the Java 21 entries
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 2100 -> sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-21-openjdk-amd64/bin/javac 2100
+sudo update-java-alternatives --set msopenjdk-21-amd64 -> sudo apt autoremvoe
+sudo usermod -a -G video,render $USER -> nano testing.py
+sudo x2golistsessions_root -> # If anything is reported, warn users and let them disconnect cleanly.
+# sudo x2goserver-te -> sudo systemctl stop x2goserver.service x2goserver-xsession.service
+su -> set +o ignoreeof
+su -> set +o nounset
+tail -F /tmp/iowa_discovery.log -> ./directeye_tui.sh
+# Temporarily disable firewall to test (if present) -> iptables -F
+Terminal=false -> Type=Application
+./test_bash_modules.sh -> ./install.sh
+# Test just the JWT components -> python -m tests.unit.distributed_cert_management.run_tests --component jwt
+>test.py -> nano test.py
+# Test with coverage report -> python -m tests.unit.distributed_cert_management.run_tests --coverage
+THREADS=$(( $(nproc) / 2 )) -> # 2) Clone (or update) the Ghidra source
+touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_batch_processing.py -> touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_precision_modes.py
+touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_enhanced_openvino.py -> touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_batch_processing.py
+touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_precision_modes.py -> pip install aiodns
+touch /home/john/Documents/GitHub/SWORDTools/Tests/unit/MLAcceleration/test_precision_modes.py -> python ciscorecoverfinal.py
+Traceback (most recent call last): -> FileNotFoundError: [Errno 2] No such file or directory: 'inxi'
+Type=Application -> Categories=Development;Security;ReverseEngineering;
+./uninstall.sh -> bash install.sh
+./uninstall.sh -> cat /home/john/logs/install.log | tail -n 50
+./uninstall.sh -> cat /home/john/logs/verification.log
+./uninstall.sh -> ./im
+./uninstall.sh -> ./install.sh
+./uninstall.sh -> ~/sentinel_complete_cleanup.sh
+./uninstall.sh -> ssh root@leantwin.org
+./uninstall.sh -> y
+./uninstall.sh -> yy
+unset JAVA_TOOL_OPTIONS -> export JAVA_TOOL_OPTIONS="-XX:+UseG1GC \
+# Upgrade pip -> python3 -m pip install --upgrade pip
+#!/usr/bin/env bash -> # build_ghidra_meteorlake.sh – Native-optimized Ghidra build for Intel Core Ultra 7 165H
+# Verify -> java -version
+wget https://packages.microsoft.com/config/debian/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb -> sudo dpkg -i packages-microsoft-prod.deb
+which ghidra -> ghidra --version
+-XX:MaxHeapFreeRatio=20" -> export JAVA_TOOL_OPTIONS="-XX:+UseG1GC \
+-XX:MinHeapFreeRatio=20 \ -> -XX:MaxHeapFreeRatio=20"
+-XX:+UseAES \ -> -XX:+UseStringDeduplication \
+-XX:+UseStringDeduplication \ -> -XX:MinHeapFreeRatio=20 \
+yara -C -r /opt/yara/keyplug.yar / 2>&1 | tee /var/log/keyplug_yara.log -> su
+y -> ./install.sh
+# You can also force-terminate specific sessions (last column = session ID): -> # sudo x2goserver-te
+# you should see: -> # gradle-8.14.1-all/ latest@ -> gradle-8.14.1-all/
+# You should see something like: -> # -rwxr-xr-x 1 root root ... gradle
+yy -> ./install.sh

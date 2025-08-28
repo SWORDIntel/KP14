@@ -1,0 +1,234 @@
+{
+  "scan_time": "2025-05-21T08:53:55.058464",
+  "scanner_version": "KEYPLUG 3.0",
+  "source_file": "/home/john/Documents/NDA.odg",
+  "deep_scan": true,
+  "brute_force": true,
+  "total_images": 3,
+  "total_payloads": 3,
+  "high_risk_count": 2,
+  "results": [
+    {
+      "source_file": "10000000000002EE000003B123F0F4409249C826.jpg",
+      "source_path_in_odg": "Pictures/10000000000002EE000003B123F0F4409249C826.jpg",
+      "payload_file": "/home/john/Documents/keyplug/payloads/10000000000002EE000003B123F0F4409249C826_forced_091c103c.bin",
+      "payload_size": 34227,
+      "hashes": {
+        "md5": "091c103c06f96a11e3c41ab6e305a267",
+        "sha1": "8a2a3cff10fbb70c010cd0cb98d968ac5761b227",
+        "sha256": "e5ebcfe7d2b388be037fc7c1f40a7ee3d5aedd8ffe316639afb25bcad9e2020e"
+      },
+      "detection": {
+        "method": "forced_heuristic",
+        "file_type": "data",
+        "mime_type": "application/octet-stream",
+        "entropy": 7.76393512679277,
+        "encryption_assessment": {
+          "is_encrypted": false,
+          "confidence": 0.3,
+          "reason": "High entropy (7.76)"
+        },
+        "yara_matches": []
+      },
+      "iocs": {
+        "c2_urls": [],
+        "domains": [],
+        "ips": [],
+        "commands": [],
+        "api_calls": []
+      },
+      "interesting_patterns": [],
+      "decryption_attempts": [],
+      "embedded_files": [],
+      "risk_level": "low",
+      "extracted_path": "/home/john/Documents/keyplug/payloads/10000000000002EE000003B123F0F4409249C826_forced_091c103c.bin"
+    },
+    {
+      "source_file": "10000000000002EE000003C0C4539E29A848DE5F.jpg",
+      "source_path_in_odg": "Pictures/10000000000002EE000003C0C4539E29A848DE5F.jpg",
+      "payload_file": "/home/john/Documents/keyplug/payloads/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b.bin",
+      "payload_size": 170043,
+      "hashes": {
+        "md5": "8ca7ab3baee20670771fbc1485b5bd7f",
+        "sha1": "9ef108d8699a1babcd6995bfb4e1860739f4ccba",
+        "sha256": "543bd7ed04515926020b0526cb5b040beb27c26e059fb1b18fed8302c17561aa"
+      },
+      "detection": {
+        "method": "forced_heuristic",
+        "file_type": "data",
+        "mime_type": "application/octet-stream",
+        "entropy": 7.970561900049786,
+        "encryption_assessment": {
+          "is_encrypted": true,
+          "confidence": 0.6000000000000001,
+          "reason": "Very high entropy (7.97), No dominant byte patterns"
+        },
+        "yara_matches": []
+      },
+      "iocs": {
+        "c2_urls": [],
+        "domains": [
+          "n.dF"
+        ],
+        "ips": [],
+        "commands": [],
+        "api_calls": []
+      },
+      "interesting_patterns": [
+        {
+          "offset": 48821,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 67468,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 105709,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 141411,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 141497,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 156188,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        }
+      ],
+      "decryption_attempts": [
+        {
+          "method": "single-byte XOR",
+          "key": "9e",
+          "key_ascii": "\ufffd",
+          "score": 12.13134765625,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_1.bin",
+          "file_type": "application/octet-stream",
+          "md5": "72c37fc64f883c771b50e0df631a89fe"
+        },
+        {
+          "method": "single-byte XOR",
+          "key": "d3",
+          "key_ascii": "\ufffd",
+          "score": 12.060546875,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_2.bin",
+          "file_type": "application/octet-stream",
+          "md5": "30c54be42ccb8988c90facbbcaaf14e9"
+        },
+        {
+          "method": "single-byte XOR",
+          "key": "a5",
+          "key_ascii": "\ufffd",
+          "score": 11.9677734375,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_3.bin",
+          "file_type": "application/octet-stream",
+          "md5": "4437b1695e7aea28811d99d8ed74c450"
+        }
+      ],
+      "embedded_files": [],
+      "risk_level": "high",
+      "extracted_path": "/home/john/Documents/keyplug/payloads/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b.bin"
+    },
+    {
+      "source_file": "10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg",
+      "source_path_in_odg": "Pictures/10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg",
+      "payload_file": "/home/john/Documents/keyplug/payloads/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1.bin",
+      "payload_size": 172143,
+      "hashes": {
+        "md5": "adbb0ac1c17e904da5e844e143c1583f",
+        "sha1": "6053c0c805e1732d884e00566440731def5ccc5e",
+        "sha256": "0bca2a488be7fc21b7a6965f755ecdbf473fb8d6d0fb380de27f574ea579a23f"
+      },
+      "detection": {
+        "method": "forced_heuristic",
+        "file_type": "data",
+        "mime_type": "application/octet-stream",
+        "entropy": 7.961072263811442,
+        "encryption_assessment": {
+          "is_encrypted": true,
+          "confidence": 0.6000000000000001,
+          "reason": "Very high entropy (7.96), No dominant byte patterns"
+        },
+        "yara_matches": []
+      },
+      "iocs": {
+        "c2_urls": [],
+        "domains": [
+          "m5.n.Rfvyf",
+          "5Ko.Wx"
+        ],
+        "ips": [],
+        "commands": [],
+        "api_calls": []
+      },
+      "interesting_patterns": [
+        {
+          "offset": 106673,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        },
+        {
+          "offset": 157833,
+          "pattern": "4d5a",
+          "ascii": "MZ",
+          "description": "PE header (MZ)"
+        }
+      ],
+      "decryption_attempts": [
+        {
+          "method": "4-byte XOR",
+          "key": "0a61200d",
+          "key_ascii": "\na \r",
+          "score": 22.0556640625,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_1.bin",
+          "file_type": "application/octet-stream",
+          "md5": "4562c7570ec8a655c1e6c49c7e602ab9"
+        },
+        {
+          "method": "4-byte XOR",
+          "key": "410d200d",
+          "key_ascii": "A\r \r",
+          "score": 12.18505859375,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_2.bin",
+          "file_type": "application/octet-stream",
+          "md5": "a42eba4450a442a98a8a702b5265515d"
+        },
+        {
+          "method": "4-byte XOR",
+          "key": "4100200d",
+          "key_ascii": "A\u0000 \r",
+          "score": 12.1826171875,
+          "path": "/home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_3.bin",
+          "file_type": "application/octet-stream",
+          "md5": "863f24f911a3f6a85039fec7fc47034f"
+        }
+      ],
+      "embedded_files": [],
+      "risk_level": "high",
+      "extracted_path": "/home/john/Documents/keyplug/payloads/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1.bin"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.8.12-10-pve",
+    "python": "3.11.2",
+    "architecture": "x86_64",
+    "hostname": "LONENOMAD"
+  }
+}

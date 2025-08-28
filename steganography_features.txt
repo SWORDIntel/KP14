@@ -1,0 +1,27 @@
+Core Steganography Features (based on comments and READMEs, current implementation is placeholder):
+
+Detection Capabilities:
+- Intends to detect the presence and type of steganography in images.
+- Potential methods mentioned:
+    - LSB (Least Significant Bit) analysis.
+    - EXIF data analysis.
+    - Signatures of specific steganography tools.
+- Primary file type focus for detection appears to be JPEG, though PNG is also mentioned in utility contexts.
+
+Extraction Capabilities:
+- Intends to extract hidden payloads from images.
+- Extraction method would be dependent on the steganography technique identified (e.g., LSB de-interleaving).
+- Aims to extract from various steganographic images.
+
+Specific Steganographic Techniques or Image Types Mentioned:
+- Techniques:
+    - LSB (Least Significant Bit) steganography.
+    - Use of EXIF data for hiding information.
+- Image Types:
+    - JPEG (explicitly mentioned for decoding in main README).
+    - PNG (mentioned in image utility examples and segment parsing comments).
+
+Auxiliary Features:
+- Image loading.
+- Parsing of image segments (e.g., JPEG APPn markers, PNG chunks - currently placeholder).
+- Image corruption checking.

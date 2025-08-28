@@ -1,0 +1,68 @@
+2025-05-21 08:18:45,674 [INFO] Starting analysis of /home/john/Documents/NDA.odg
+2025-05-21 08:18:45,674 [INFO] Extracting ODG file: /home/john/Documents/NDA.odg
+2025-05-21 08:18:45,689 [INFO] Successfully extracted 19 files
+2025-05-21 08:18:45,689 [INFO] Searching for JPEG files...
+2025-05-21 08:18:45,690 [INFO] Found 3 JPEG files
+2025-05-21 08:18:45,690 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:18:45,691 [WARNING] No valid payload extracted from 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:18:45,691 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003C0C4539E29A848DE5F.jpg
+2025-05-21 08:18:45,691 [WARNING] No valid payload extracted from 10000000000002EE000003C0C4539E29A848DE5F.jpg
+2025-05-21 08:18:45,691 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+2025-05-21 08:18:45,691 [WARNING] No valid payload extracted from 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+2025-05-21 08:18:45,691 [INFO] Generating report to /home/john/Documents/keyplug/keyplug_report.md
+2025-05-21 08:18:45,691 [INFO] JSON report successfully written to /home/john/Documents/keyplug/keyplug_report.json
+2025-05-21 08:18:45,691 [INFO] Report successfully written to /home/john/Documents/keyplug/keyplug_report.md
+2025-05-21 08:18:45,692 [INFO] Analysis completed for NDA.odg
+2025-05-21 08:18:45,692 [INFO] All operations completed
+2025-05-21 08:23:56,128 [ERROR] Unhandled exception: 'ODGAnalyzer' object has no attribute 'run_analysis'
+Traceback (most recent call last):
+  File "/home/john/Documents/keyplug.py", line 1664, in main
+    success = analyzer.run_analysis()
+              ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ODGAnalyzer' object has no attribute 'run_analysis'
+2025-05-21 08:23:56,129 [INFO] All operations completed
+2025-05-21 08:53:35,621 [INFO] Starting analysis of /home/john/Documents/NDA.odg
+2025-05-21 08:53:35,622 [INFO] Extracting ODG file: /home/john/Documents/NDA.odg
+2025-05-21 08:53:35,646 [INFO] Successfully extracted 19 files
+2025-05-21 08:53:35,646 [INFO] Searching for JPEG files...
+2025-05-21 08:53:35,647 [INFO] Found 3 JPEG files
+2025-05-21 08:53:35,648 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:53:35,648 [WARNING] Standard extraction failed for 10000000000002EE000003B123F0F4409249C826.jpg, trying forced methods
+2025-05-21 08:53:35,648 [INFO] Attempting forced heuristic extraction on 10000000000002EE000003B123F0F4409249C826.jpg...
+2025-05-21 08:53:35,648 [INFO] Target file match: 10000000000002EE000003B123F0F4409249C826.jpg - using specialized extraction
+2025-05-21 08:53:35,713 [INFO] Found entropy shift boundary at position 109312 in 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:53:35,714 [INFO] Using fallback 70% cutoff point at 79863 in 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:53:35,715 [INFO] [92mFORCED extraction from 10000000000002EE000003B123F0F4409249C826.jpg to 10000000000002EE000003B123F0F4409249C826_forced_091c103c.bin (34,227 bytes)[0m
+2025-05-21 08:53:35,750 [INFO] Successfully analyzed payload from 10000000000002EE000003B123F0F4409249C826.jpg
+2025-05-21 08:53:35,751 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003C0C4539E29A848DE5F.jpg
+2025-05-21 08:53:35,751 [WARNING] Standard extraction failed for 10000000000002EE000003C0C4539E29A848DE5F.jpg, trying forced methods
+2025-05-21 08:53:35,751 [INFO] Attempting forced heuristic extraction on 10000000000002EE000003C0C4539E29A848DE5F.jpg...
+2025-05-21 08:53:35,751 [INFO] Target file match: 10000000000002EE000003C0C4539E29A848DE5F.jpg - using specialized extraction
+2025-05-21 08:53:35,862 [INFO] Found entropy shift boundary at position 896 in 10000000000002EE000003C0C4539E29A848DE5F.jpg
+2025-05-21 08:53:35,879 [INFO] [92mFORCED extraction from 10000000000002EE000003C0C4539E29A848DE5F.jpg to 10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b.bin (170,043 bytes)[0m
+2025-05-21 08:53:35,937 [INFO] Attempting to decrypt data in 10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b.bin...
+2025-05-21 08:53:35,937 [INFO] Attempting XOR decryption with single-byte keys...
+2025-05-21 08:53:36,090 [INFO] Attempting XOR decryption with multi-byte keys (up to 4 bytes)...
+2025-05-21 08:53:42,341 [INFO] Saved possible decryption #1 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_1.bin
+2025-05-21 08:53:42,348 [INFO] Saved possible decryption #2 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_2.bin
+2025-05-21 08:53:42,351 [INFO] Saved possible decryption #3 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C0C4539E29A848DE5F_forced_8ca7ab3b_decrypted_3.bin
+2025-05-21 08:53:42,354 [INFO] Successfully analyzed payload from 10000000000002EE000003C0C4539E29A848DE5F.jpg
+2025-05-21 08:53:42,354 [WARNING] No valid JPEG EOF position detected in 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+2025-05-21 08:53:42,355 [WARNING] Standard extraction failed for 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg, trying forced methods
+2025-05-21 08:53:42,355 [INFO] Attempting forced heuristic extraction on 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg...
+2025-05-21 08:53:42,355 [INFO] Target file match: 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg - using specialized extraction
+2025-05-21 08:53:42,462 [INFO] Found entropy shift boundary at position 768 in 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+2025-05-21 08:53:42,480 [INFO] [92mFORCED extraction from 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg to 10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1.bin (172,143 bytes)[0m
+2025-05-21 08:53:42,531 [INFO] Attempting to decrypt data in 10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1.bin...
+2025-05-21 08:53:42,531 [INFO] Attempting XOR decryption with single-byte keys...
+2025-05-21 08:53:42,758 [INFO] Attempting XOR decryption with multi-byte keys (up to 4 bytes)...
+2025-05-21 08:53:55,028 [INFO] Attempting simple RC4 decryption with common keys...
+2025-05-21 08:53:55,044 [INFO] Saved possible decryption #1 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_1.bin
+2025-05-21 08:53:55,046 [INFO] Saved possible decryption #2 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_2.bin
+2025-05-21 08:53:55,048 [INFO] Saved possible decryption #3 to /home/john/Documents/keyplug/decrypted/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_adbb0ac1_decrypted_3.bin
+2025-05-21 08:53:55,057 [INFO] Successfully analyzed payload from 10000000000002EE000003C67A1DCDCB7AEFBF3E.jpg
+2025-05-21 08:53:55,057 [INFO] Generating report to /home/john/Documents/keyplug/keyplug_report.md
+2025-05-21 08:53:55,059 [INFO] JSON report successfully written to /home/john/Documents/keyplug/keyplug_report.json
+2025-05-21 08:53:55,059 [INFO] Report successfully written to /home/john/Documents/keyplug/keyplug_report.md
+2025-05-21 08:53:55,059 [INFO] Analysis completed for NDA.odg
+2025-05-21 08:53:55,059 [INFO] All operations completed

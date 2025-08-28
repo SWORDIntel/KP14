@@ -1,0 +1,17 @@
+KEYPLUG PEB Traversal Analysis Report
+===================================
+
+File: advanced_decryption_results/sample3/10000000000002EE000003C67A1DCDCB7AEFBF3E_forced_f601cd5e_xor_ff00_offset_18313.bin
+Size: 30063 bytes
+
+Summary
+-------
+Total PEB access patterns found: 0
+Total functions identified: 5
+Functions with PEB traversal: 0
+PEB accesses with context: 0
+Likely API resolution techniques: 0
+
+PEB Traversal Details
+--------------------
+No detailed PEB traversal analysis found in functions.

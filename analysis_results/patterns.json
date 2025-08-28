@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "created_at": "2025-05-29T12:22:18.477900+00:00",
+    "updated_at": "2025-05-29T12:22:18.479509+00:00",
+    "version": "0.2.0",
+    "description": "Database of learned malware patterns."
+  },
+  "patterns": [
+    {
+      "pattern_id": "be41de42-36f5-4714-830f-2c5bc4204c67",
+      "type": "generic_analysis_observation",
+      "description": "Generic observation from analysis of unknown_file.",
+      "indicators": [
+        {
+          "type": "file_analyzed",
+          "value": "unknown_file"
+        }
+      ],
+      "confidence": 0.1,
+      "source_artifact": "unknown_file",
+      "derived_from_module": "learn_from_analysis_fallback",
+      "created_at": "2025-05-29T12:22:18.479455+00:00",
+      "last_updated_at": "2025-05-29T12:22:18.479463+00:00"
+    }
+  ]
+}
