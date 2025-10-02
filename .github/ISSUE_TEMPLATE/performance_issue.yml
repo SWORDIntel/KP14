@@ -1,0 +1,153 @@
+name: Performance Issue
+description: Report slow performance or optimization opportunities
+title: "[PERFORMANCE] "
+labels: ["performance", "optimization"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report performance issues or suggest optimizations.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Performance Issue Description
+      description: What is slow or inefficient?
+      placeholder: |
+        When analyzing...
+        The operation takes...
+        Expected performance...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operation
+    attributes:
+      label: Affected Operation
+      description: Which operation is slow?
+      options:
+        - File analysis (overall)
+        - PE parsing
+        - Disassembly
+        - String extraction
+        - Steganography detection
+        - Cryptographic operations
+        - Pattern matching
+        - Batch processing
+        - Other (specify)
+    validations:
+      required: true
+
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Performance Measurements
+      description: Provide timing data if available
+      placeholder: |
+        Operation: String extraction
+        File size: 10 MB
+        Current time: 15 seconds
+        Expected time: <5 seconds
+
+        Profiling output:
+        ```
+        ncalls  tottime  percalls  cumtime  percalls filename:lineno(function)
+        ```
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: KP14 Version
+      placeholder: v1.5.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: hardware
+    attributes:
+      label: Hardware Acceleration
+      options:
+        - Intel NPU enabled
+        - Intel GPU enabled
+        - CPU only
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Information
+      description: CPU, RAM, OS, Python version
+      placeholder: |
+        CPU: Intel Core i7-1185G7
+        RAM: 16 GB
+        OS: Ubuntu 22.04
+        Python: 3.11.5
+        OpenVINO: 2025.3.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: sample-info
+    attributes:
+      label: Sample Information
+      description: Details about the file causing slow performance
+      placeholder: |
+        File type: PE executable
+        File size: 25 MB
+        Sections: 8
+        Imports: 150+
+        Characteristics: Packed, high entropy
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposed-optimization
+    attributes:
+      label: Proposed Optimization
+      description: Ideas for improving performance
+      placeholder: |
+        Potential improvements:
+        - Use caching for...
+        - Parallelize...
+        - Optimize algorithm from O(n²) to O(n log n)
+        - Use compiled code (Rust/C++) for...
+    validations:
+      required: false
+
+  - type: textarea
+    id: profiling
+    attributes:
+      label: Profiling Data
+      description: Output from cProfile, py-spy, or other profilers
+      render: shell
+      placeholder: |
+        Profiling command: python -m cProfile -o profile.stats main.py sample.exe
+
+        Top functions by cumulative time:
+        [paste profiler output]
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have provided actual performance measurements (not estimates)
+          required: true
+        - label: I have tested with the latest version
+          required: true
+        - label: I have enabled hardware acceleration if available
+          required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Anything else relevant

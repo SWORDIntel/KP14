@@ -1,0 +1,169 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the sections below to help us diagnose and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Run command '...'
+        2. Analyze file '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: What should have happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened (include error messages, stack traces)
+      placeholder: |
+        Error output, logs, or screenshots
+      render: shell
+    validations:
+      required: true
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: KP14 Version
+      description: Which version are you using?
+      options:
+        - v1.5.0 (latest)
+        - v1.4.x
+        - v1.3.x
+        - main branch (git)
+        - other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment Method
+      options:
+        - Docker
+        - Native installation
+        - Source (development)
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: "e.g., Ubuntu 22.04, Windows 11, macOS 14"
+      placeholder: Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python Version
+      description: Output of `python --version`
+      placeholder: Python 3.11.5
+    validations:
+      required: true
+
+  - type: dropdown
+    id: hardware
+    attributes:
+      label: Hardware Acceleration
+      options:
+        - Intel NPU
+        - Intel GPU
+        - CPU only
+        - Other (specify)
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please copy and paste relevant log output (use Debug level if possible)
+      render: shell
+      placeholder: |
+        Include logs from:
+        - logs/kp14.log
+        - Console output
+        - Error traces
+    validations:
+      required: false
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Share relevant settings.ini configuration (redact sensitive info)
+      render: ini
+      placeholder: |
+        [general]
+        log_level = INFO
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample Information
+      description: Information about the file being analyzed (DO NOT upload actual malware)
+      placeholder: |
+        File type: PE executable
+        File size: 2.5 MB
+        SHA256: abc123...
+        Source: MalwareBazaar ID 12345
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have done the following
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I am using the latest version (or have checked the issue still exists)
+          required: true
+        - label: I have included all requested information above
+          required: true
+        - label: I have redacted any sensitive information (API keys, file paths, etc.)
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or information
+      placeholder: Add any other context about the problem here

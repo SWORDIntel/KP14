@@ -39,3 +39,12 @@ venv/
 
 # Legacy code directory (removed from main branch, preserved in legacy-archive branch)
 archive/
+
+# Security scanning reports
+security_reports/
+*_results.json
+*_report.json
+safety_report.json
+pip_audit_report.json
+bandit_results.json
+semgrep.sarif

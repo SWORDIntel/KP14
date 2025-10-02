@@ -1,0 +1,107 @@
+name: Documentation Issue
+description: Report missing, unclear, or incorrect documentation
+title: "[DOCS] "
+labels: ["documentation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve KP14's documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What kind of documentation issue is this?
+      options:
+        - Installation / Setup
+        - Usage / User Guide
+        - API Reference
+        - Configuration
+        - Troubleshooting
+        - Architecture / Design
+        - Contributing Guide
+        - Examples / Tutorials
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      options:
+        - Missing documentation
+        - Incorrect / Outdated
+        - Unclear / Confusing
+        - Typo / Grammar
+        - Broken link
+        - Suggestion for improvement
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where is the documentation issue?
+      placeholder: "docs/INSTALLATION.md, line 45"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Documentation
+      description: What does the documentation currently say? (copy-paste or link)
+      placeholder: |
+        Current text:
+        "To install, run pip install kp14"
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected / Proposed Documentation
+      description: What should it say instead?
+      placeholder: |
+        Proposed text:
+        "To install, first create a virtual environment:
+        python3.11 -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this change needed?
+      placeholder: |
+        This caused confusion because...
+        Users are getting errors when...
+        This information is missing...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Contribution Interest
+      description: Can you help fix this documentation?
+      options:
+        - "Yes, I can submit a PR with the fix"
+        - "Yes, but need help with formatting/structure"
+        - "No, just reporting"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Screenshots, examples, or other helpful information

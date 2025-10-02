@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/yourusername/kp14/discussions
+    about: Ask questions, share ideas, or discuss with the community
+  - name: Security Vulnerability
+    url: https://github.com/yourusername/kp14/security/advisories/new
+    about: Report security vulnerabilities privately
+  - name: Documentation
+    url: https://kp14.readthedocs.io
+    about: Browse the comprehensive documentation

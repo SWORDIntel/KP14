@@ -1,0 +1,206 @@
+name: KP14 Malware Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'samples/**'
+      - 'core_engine/**'
+      - '.github/workflows/kp14-analysis.yml'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      sample_path:
+        description: 'Path to malware sample'
+        required: false
+        default: 'samples/'
+
+env:
+  PYTHON_VERSION: '3.11'
+  KP14_CONFIG: 'settings.ini'
+
+jobs:
+  analyze-samples:
+    name: Analyze Malware Samples
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y radare2
+
+      - name: Verify KP14 installation
+        run: |
+          python kp14-cli.py version
+
+      - name: Run unit tests
+        run: |
+          pytest tests/ -v --cov=core_engine --cov-report=xml
+
+      - name: Analyze sample files
+        id: analysis
+        run: |
+          # Create results directory
+          mkdir -p ci_results
+
+          # Run batch analysis
+          python batch_analyzer.py \
+            --dir "${{ github.event.inputs.sample_path || 'samples/' }}" \
+            --output ci_results \
+            --workers 2 \
+            --quiet
+
+          # Check exit code
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+
+          # Generate summary
+          if [ -f ci_results/summary.json ]; then
+            cat ci_results/summary.json
+          fi
+        continue-on-error: true
+
+      - name: Generate reports
+        if: always()
+        run: |
+          # Export to multiple formats
+          if [ -f ci_results/batch_results.jsonl ]; then
+            python examples/generate-report.py \
+              --input ci_results/batch_results.jsonl \
+              --output ci_results/report.html \
+              --format html
+          fi
+
+      - name: Upload analysis results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: kp14-analysis-results
+          path: |
+            ci_results/
+            !ci_results/temp_*
+          retention-days: 30
+
+      - name: Upload coverage reports
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-kp14
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            let summary = 'No summary available';
+
+            if (fs.existsSync('ci_results/summary.json')) {
+              const data = JSON.parse(fs.readFileSync('ci_results/summary.json'));
+              summary = `
+              ### KP14 Analysis Results
+              - **Total Files**: ${data.total || 0}
+              - **Clean**: ${data.clean || 0}
+              - **Suspicious**: ${data.suspicious || 0}
+              - **Malware**: ${data.malware || 0}
+              - **Errors**: ${data.errors || 0}
+              `;
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Check for malware detection
+        run: |
+          EXIT_CODE=${{ steps.analysis.outputs.exit_code }}
+
+          if [ "$EXIT_CODE" = "2" ]; then
+            echo "::warning::Malware detected in samples!"
+            # Optional: fail the build
+            # exit 1
+          elif [ "$EXIT_CODE" = "3" ]; then
+            echo "::warning::Suspicious files detected!"
+          fi
+
+  docker-analysis:
+    name: Docker-based Analysis
+    runs-on: ubuntu-latest
+    needs: analyze-samples
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t kp14:ci .
+
+      - name: Run analysis in container
+        run: |
+          docker run --rm \
+            -v $(pwd)/samples:/samples:ro \
+            -v $(pwd)/docker_results:/output \
+            kp14:ci python batch_analyzer.py \
+              --dir /samples \
+              --output /output \
+              --workers 2
+
+      - name: Upload Docker results
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-analysis-results
+          path: docker_results/
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Bandit security scan
+        run: |
+          pip install bandit
+          bandit -r . -f json -o bandit-report.json || true
+
+      - name: Run Safety check
+        run: |
+          pip install safety
+          safety check --json > safety-report.json || true
+
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: |
+            bandit-report.json
+            safety-report.json

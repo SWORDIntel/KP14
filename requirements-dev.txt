@@ -1,0 +1,81 @@
+# Development Dependencies for KP14 Project
+# ==========================================
+# This file contains all dependencies required for development, testing,
+# and security scanning of the KP14 project.
+#
+# Install with: pip install -r requirements-dev.txt
+#
+# This includes:
+# - All production dependencies (from requirements.txt)
+# - Testing frameworks and tools
+# - Code quality and linting tools
+# - Security scanning tools
+
+# ===================================
+# Production Dependencies
+# ===================================
+-r requirements.txt
+
+# ===================================
+# Core Testing Framework
+# ===================================
+pytest>=8.0.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+pytest-timeout>=2.2.0
+pytest-xdist>=3.5.0  # Parallel test execution
+
+# ===================================
+# Code Quality and Linting
+# ===================================
+pylint>=3.0.0
+black>=24.0.0
+isort>=5.13.0
+mypy>=1.8.0
+flake8>=7.0.0
+flake8-docstrings>=1.7.0
+flake8-bugbear>=24.0.0
+pydocstyle>=6.3.0
+
+# ===================================
+# Security Scanning Tools
+# ===================================
+# CVE and vulnerability scanning
+safety>=3.0.0  # Check for known security vulnerabilities in dependencies
+pip-audit>=2.6.0  # Audit Python packages for known vulnerabilities
+bandit[toml]>=1.7.5  # Security-oriented static analyzer for Python code
+
+# Additional security tools
+semgrep>=1.45.0  # Static analysis for security patterns
+dodgy>=0.2.1  # Check for secrets in code
+
+# ===================================
+# Documentation Tools
+# ===================================
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0
+sphinx-autodoc-typehints>=1.25.0
+
+# ===================================
+# Development Utilities
+# ===================================
+pre-commit>=3.6.0  # Git hook scripts
+ipython>=8.20.0  # Enhanced Python shell
+ipdb>=0.13.13  # IPython-enabled pdb debugger
+wheel>=0.42.0  # Package building
+twine>=4.0.2  # Package upload to PyPI
+
+# ===================================
+# Performance Profiling
+# ===================================
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+py-spy>=0.3.14
+
+# ===================================
+# Type Checking Support
+# ===================================
+types-requests>=2.31.0
+types-Pillow>=10.0.0
+types-PyYAML>=6.0.0
+types-setuptools>=69.0.0

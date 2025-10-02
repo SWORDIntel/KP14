@@ -1,0 +1,160 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide as much detail as possible to help us understand your request.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What type of feature is this?
+      options:
+        - Analysis capability (new detection, format support)
+        - Performance improvement
+        - API / Integration
+        - User interface (TUI, CLI)
+        - Documentation
+        - Hardware acceleration
+        - Security enhancement
+        - Developer experience
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority / Urgency
+      description: How important is this feature to you?
+      options:
+        - Critical (blocking my use case)
+        - High (important but have workaround)
+        - Medium (would be nice to have)
+        - Low (future consideration)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        Currently, I cannot...
+        This makes it difficult to...
+        I need this because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: |
+        I would like KP14 to...
+        The feature should...
+        Example usage: python main.py --new-feature ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What alternatives have you tried or considered?
+      placeholder: |
+        I tried using...
+        Another approach would be...
+        Workaround: ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe your specific use case
+      placeholder: |
+        I am analyzing...
+        My workflow involves...
+        I need to process...
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Expected Benefits
+      description: Who benefits and how?
+      placeholder: |
+        This would help:
+        - Security researchers analyzing...
+        - Organizations that need to...
+        - Developers who want to...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Contribution Interest
+      description: Would you be willing to contribute this feature?
+      options:
+        - "Yes, I can implement this"
+        - "Yes, with guidance from maintainers"
+        - "No, but I can help test"
+        - "No, just requesting"
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical
+    attributes:
+      label: Technical Considerations
+      description: Any technical details, dependencies, or constraints?
+      placeholder: |
+        This would require:
+        - New dependency: ...
+        - Integration with: ...
+        - Performance impact: ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples / References
+      description: Links to similar features in other tools, papers, or examples
+      placeholder: |
+        Similar feature in Tool X: https://...
+        Research paper: https://...
+        Example implementation: https://...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues and discussions to avoid duplicates
+          required: true
+        - label: I have provided a clear problem statement and proposed solution
+          required: true
+        - label: This feature aligns with KP14's focus on static malware analysis
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, mockups, or information
+      placeholder: Mockups, diagrams, or additional details

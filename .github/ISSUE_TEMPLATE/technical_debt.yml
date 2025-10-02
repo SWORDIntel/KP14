@@ -1,0 +1,152 @@
+name: Technical Debt
+description: Report technical debt or code quality issues
+title: "[TECH-DEBT] "
+labels: ["technical-debt", "refactoring"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to document technical debt that should be addressed to improve code quality, maintainability, or performance.
+
+  - type: dropdown
+    id: debt-type
+    attributes:
+      label: Debt Type
+      description: What kind of technical debt is this?
+      options:
+        - Code Quality (duplication, complexity)
+        - Architecture (design limitations)
+        - Testing (missing or inadequate tests)
+        - Documentation (missing or outdated)
+        - Performance (inefficient algorithms)
+        - Security (non-critical vulnerabilities)
+        - Dependencies (outdated libraries)
+        - Scalability (single-threaded, memory limits)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this debt?
+      options:
+        - P0 - Critical (blocking, security issue)
+        - P1 - High (significant maintainability impact)
+        - P2 - Medium (code quality improvement)
+        - P3 - Low (nice-to-have refactoring)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Debt Description
+      description: What is the technical debt?
+      placeholder: |
+        Currently, the code...
+        This module has...
+        The implementation...
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Location
+      description: Where is this debt located in the codebase?
+      placeholder: |
+        File: path/to/file.py
+        Function: function_name()
+        Lines: 123-145
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: What problems does this debt cause?
+      placeholder: |
+        Maintainability: Hard to...
+        Performance: Slows down...
+        Testing: Cannot test...
+        Security: Potential...
+    validations:
+      required: true
+
+  - type: textarea
+    id: root-cause
+    attributes:
+      label: Root Cause
+      description: Why was this debt introduced?
+      placeholder: |
+        Quick implementation for MVP
+        Time constraints during sprint
+        Lack of understanding of...
+        Requirements changed since...
+    validations:
+      required: false
+
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Proposed Remediation
+      description: How should this debt be addressed?
+      placeholder: |
+        Step 1: ...
+        Step 2: ...
+        Expected outcome: ...
+    validations:
+      required: true
+
+  - type: input
+    id: effort
+    attributes:
+      label: Estimated Effort
+      description: How much time would this take? (hours)
+      placeholder: "8 hours"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Contribution Interest
+      description: Can you help fix this debt?
+      options:
+        - "Yes, I can implement the fix"
+        - "Yes, with guidance"
+        - "No, but I can review"
+        - "No, just reporting"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Code examples, metrics, or other relevant information
+      placeholder: |
+        Code snippet:
+        ```python
+        # Example of the debt
+        ```
+
+        Metrics: Complexity = 15, duplicated 3 times
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have checked if this debt is already tracked in TECHNICAL_DEBT.md
+          required: true
+        - label: I have provided enough detail for someone else to understand the issue
+          required: true
+        - label: I have suggested a viable remediation approach
+          required: true

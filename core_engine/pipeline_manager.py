@@ -1,7 +1,37 @@
+"""
+Analysis Pipeline Manager for KP14
+==================================
+
+This module manages the complete analysis pipeline, coordinating multiple
+analyzer modules and managing the flow of data through the system.
+
+Features:
+- Orchestrates PE, code, obfuscation, polyglot, and steganography analyzers
+- Memory-efficient chunked file processing
+- Caching of analysis results
+- Error handling and recovery
+- Progress tracking and reporting
+
+Author: KP14 Development Team
+Version: 2.0.0
+"""
+
 import logging
 import os
 import json
-import io # For BytesIO when dealing with in-memory data for analyzers
+import io  # For BytesIO when dealing with in-memory data for analyzers
+import time
+from typing import Any, Dict, List, Optional, Tuple, Union, TYPE_CHECKING
+
+# Import chunked file reader for memory-efficient processing
+from core_engine.chunked_file_reader import ChunkedFileReader, log_memory_usage
+
+# Import caching components
+from core_engine.cache_manager import get_cache_manager, cached
+from core_engine.file_hasher import get_file_hasher
+
+if TYPE_CHECKING:
+    from core_engine.configuration_manager import ConfigurationManager
 
 # Import actual analyzer modules
 try:
@@ -51,30 +81,51 @@ MAGIC_GIF = b'GIF8' # GIF87a or GIF89a
 
 
 class PipelineManager:
-    def __init__(self, config_manager):
-        self.config_manager = config_manager
-        self.logger = logging.getLogger(__name__)
+    """
+    Core pipeline manager for orchestrating malware analysis workflows.
+
+    This class coordinates multiple analysis stages including extraction,
+    decryption, static analysis, and recursive payload analysis.
+    """
+
+    def __init__(self, config_manager: "ConfigurationManager") -> None:
+        """
+        Initialize pipeline manager with configuration.
+
+        Args:
+            config_manager: Configuration manager instance for settings
+        """
+        self.config_manager: "ConfigurationManager" = config_manager
+        self.logger: logging.Logger = logging.getLogger(__name__)
         self._configure_logging()
 
-        # Static Analyzers
-        self.pe_analyzer_template = None # Store class, instantiate per file/data
-        self.code_analyzer_template = None
-        self.obfuscation_analyzer_template = None
+        # Initialize caching
+        self.cache_manager = get_cache_manager()
+        self.file_hasher = get_file_hasher()
+        self.cache_enabled: bool = config_manager.getboolean('cache', 'enabled', fallback=True)
+
+        # Static Analyzers - Store class, instantiate per file/data
+        self.pe_analyzer_template: Optional[type] = None
+        self.code_analyzer_template: Optional[type] = None
+        self.obfuscation_analyzer_template: Optional[type] = None
 
         # Extraction/Decryption Analyzers (instantiated once)
-        self.polyglot_analyzer = None
-        self.steganography_analyzer = None
-        self.crypto_analyzer = None
+        self.polyglot_analyzer: Optional[Any] = None
+        self.steganography_analyzer: Optional[Any] = None
+        self.crypto_analyzer: Optional[Any] = None
 
         self._load_module_templates_and_analyzers()
 
-    def _configure_logging(self):
-        log_level_str = "INFO"
+    def _configure_logging(self) -> None:
+        """Configure logging level and handlers based on configuration."""
+        log_level_str: str = "INFO"
         if self.config_manager:
             log_level_str = self.config_manager.get('general', 'log_level', fallback='INFO').upper()
 
-        try: level = getattr(logging, log_level_str)
-        except AttributeError: level = logging.INFO
+        try:
+            level: int = getattr(logging, log_level_str)
+        except AttributeError:
+            level = logging.INFO
 
         self.logger.setLevel(level)
         if not self.logger.hasHandlers():
@@ -83,7 +134,7 @@ class PipelineManager:
             ch.setFormatter(formatter)
             self.logger.addHandler(ch)
 
-    def _load_module_templates_and_analyzers(self):
+    def _load_module_templates_and_analyzers(self) -> None:
         # Load static analyzer classes/templates
         if PEAnalyzer and self.config_manager.getboolean('pe_analyzer', 'enabled', fallback=True):
             self.pe_analyzer_template = PEAnalyzer
@@ -106,16 +157,29 @@ class PipelineManager:
             try: self.crypto_analyzer = CryptoAnalyzer(self.config_manager)
             except Exception as e: self.logger.error(f"Failed to init CryptoAnalyzer: {e}")
 
-    def _get_file_type(self, file_data_or_path):
-        """Simple file type identification using magic numbers or extension."""
-        data_header = None
+    def _get_file_type(self, file_data_or_path: Union[bytes, str]) -> str:
+        """
+        Simple file type identification using magic numbers or extension.
+
+        Supports both in-memory data and file paths. Uses chunked reading
+        for file paths to avoid loading large files into memory.
+
+        Args:
+            file_data_or_path: Either raw bytes or file path string
+
+        Returns:
+            File type string (e.g., 'pe', 'jpeg', 'zip', 'unknown')
+        """
+        data_header: Optional[bytes] = None
         if isinstance(file_data_or_path, bytes):
             data_header = file_data_or_path[:16] # Read first few bytes
         elif isinstance(file_data_or_path, str) and os.path.exists(file_data_or_path):
             try:
-                with open(file_data_or_path, 'rb') as f:
-                    data_header = f.read(16)
-            except IOError:
+                # Use ChunkedFileReader to read just the header
+                with ChunkedFileReader(file_data_or_path) as reader:
+                    data_header = reader.read_range(0, min(16, reader.get_file_size()))
+            except Exception as e:
+                self.logger.debug(f"Error reading file header: {e}")
                 pass # Will fallback to extension or unknown
 
         if data_header:
@@ -131,13 +195,28 @@ class PipelineManager:
 
         return 'unknown'
 
-    def _run_static_analysis_on_pe_data(self, pe_data, source_description, original_file_path_for_codeanalyzer=None):
+    def _run_static_analysis_on_pe_data(
+        self,
+        pe_data: Optional[bytes],
+        source_description: str,
+        original_file_path_for_codeanalyzer: Optional[str] = None,
+        use_streaming: bool = False
+    ) -> Dict[str, Any]:
         """
         Helper to run the static PE analysis suite (PE, Code, Obfuscation) on given PE data.
-        `source_description` indicates where the pe_data came from (e.g., "original_file", "extracted_from_zip:member.exe").
-        `original_file_path_for_codeanalyzer` is needed if CodeAnalyzer uses r2, which needs a file path.
+
+        Args:
+            pe_data: PE file data (bytes or None if use_streaming=True)
+            source_description: Where the pe_data came from
+            original_file_path_for_codeanalyzer: File path for analyzers that need it
+            use_streaming: If True, use ChunkedFileReader for large files
+
+        Returns:
+            Analysis results dictionary containing PE info, code analysis, and obfuscation details
         """
-        self.logger.info(f"Running static PE analysis for: {source_description}")
+        self.logger.info(f"Running static PE analysis for: {source_description} (streaming={use_streaming})")
+        log_memory_usage("Before PE analysis", self.logger)
+
         static_results = {
             "source": source_description,
             "pe_info": None, "code_analysis": None, "obfuscation_details": None, "errors": []
@@ -210,23 +289,144 @@ class PipelineManager:
 
         return static_results
 
-    def run_pipeline(self, input_file_path: str, is_recursive_call=False, original_source_desc="original_file"):
+    def run_pipeline(
+        self,
+        input_file_path: str,
+        is_recursive_call: bool = False,
+        original_source_desc: str = "original_file"
+    ) -> Dict[str, Any]:
+        """
+        Main pipeline entry point - delegates to stage methods.
+
+        Args:
+            input_file_path: Path to file to analyze
+            is_recursive_call: Whether this is a recursive analysis of extracted payload
+            original_source_desc: Description of the original source file
+
+        Returns:
+            Complete analysis report dictionary
+        """
+        pipeline_start_time = time.time()
         self.logger.info(f"Pipeline run for: {input_file_path} (Source: {original_source_desc}, Recursive: {is_recursive_call})")
-        if not os.path.exists(input_file_path):
-            self.logger.error(f"Input file not found: {input_file_path}")
-            return {"error": "Input file not found.", "file_path": input_file_path, "source_description": original_source_desc}
 
-        try:
-            with open(input_file_path, 'rb') as f:
-                file_data = f.read()
-        except IOError as e:
-            self.logger.error(f"Could not read input file {input_file_path}: {e}")
-            return {"error": f"File read error: {e}", "file_path": input_file_path, "source_description": original_source_desc}
+        # Check cache if enabled and not recursive
+        if self.cache_enabled and not is_recursive_call:
+            cached_result = self._check_pipeline_cache(input_file_path)
+            if cached_result is not None:
+                pipeline_time = time.time() - pipeline_start_time
+                self.logger.info(f"Pipeline cache HIT for {input_file_path} (took {pipeline_time:.2f}s)")
+                self._log_cache_stats()
+                return cached_result
 
-        current_file_type = self._get_file_type(file_data) # Use data for type detection
+        # Initialize and validate
+        file_data, error = self._initialize_pipeline(input_file_path, original_source_desc)
+        if error:
+            return error
+
+        # Handle streaming mode for large files
+        if file_data is None and error is None:
+            self.logger.info(f"Processing {input_file_path} in streaming mode")
+            return self._run_pipeline_streaming(input_file_path, is_recursive_call, original_source_desc)
+
+        # Normal mode: file_data is loaded in memory
+        # Setup report structure
+        current_file_type = self._get_file_type(file_data)
         self.logger.info(f"Detected file type for {input_file_path}: {current_file_type}")
 
-        report = {
+        report = self._create_report_structure(input_file_path, current_file_type, original_source_desc, is_recursive_call)
+
+        # Run extraction stage
+        extracted_payloads_meta = self._run_extraction_stage(input_file_path, file_data, current_file_type, original_source_desc, report)
+
+        # Run decryption and static analysis stage
+        self._run_analysis_stage(input_file_path, file_data, original_source_desc, current_file_type, extracted_payloads_meta, report)
+
+        # Run recursive analysis stage
+        self._run_recursive_analysis_stage(extracted_payloads_meta, report)
+
+        # Cache result if enabled and not recursive
+        if self.cache_enabled and not is_recursive_call:
+            self._cache_pipeline_result(input_file_path, report)
+
+        # Log performance metrics
+        pipeline_time = time.time() - pipeline_start_time
+        self.logger.info(f"Pipeline finished for: {input_file_path} (Source: {original_source_desc}) in {pipeline_time:.2f}s")
+
+        # Log cache statistics if enabled
+        if self.cache_enabled:
+            self._log_cache_stats()
+
+        return report
+
+    def _initialize_pipeline(
+        self,
+        input_file_path: str,
+        original_source_desc: str
+    ) -> Tuple[Optional[bytes], Optional[Dict[str, Any]]]:
+        """
+        Initialize pipeline and validate input file.
+
+        Uses memory-efficient reading strategy:
+        - Files >100MB: Uses memory-mapped access via ChunkedFileReader
+        - Files <=100MB: Reads into memory for performance
+
+        Args:
+            input_file_path: Path to file to analyze
+            original_source_desc: Description of the original source
+
+        Returns:
+            Tuple of (file_data, error_dict). If both are None, use streaming mode.
+        """
+        if not os.path.exists(input_file_path):
+            self.logger.error(f"Input file not found: {input_file_path}")
+            return None, {"error": "Input file not found.", "file_path": input_file_path, "source_description": original_source_desc}
+
+        try:
+            # Check file size to determine read strategy
+            file_size = os.path.getsize(input_file_path)
+            file_size_mb = file_size / (1024 * 1024)
+
+            self.logger.debug(f"File size: {file_size_mb:.1f} MB")
+            log_memory_usage("Before loading file", self.logger)
+
+            # For large files (>100MB), use streaming approach
+            if file_size > ChunkedFileReader.MMAP_THRESHOLD:
+                self.logger.info(f"Large file detected ({file_size_mb:.1f} MB), using memory-efficient processing")
+                # Return a special marker indicating streaming mode
+                # The actual file will be processed via ChunkedFileReader in analysis methods
+                return None, None  # Signal to use streaming mode
+            else:
+                # For smaller files, read into memory for performance
+                with open(input_file_path, 'rb') as f:
+                    file_data = f.read()
+
+                log_memory_usage("After loading file", self.logger)
+                return file_data, None
+
+        except IOError as e:
+            self.logger.error(f"Could not read input file {input_file_path}: {e}")
+            return None, {"error": f"File read error: {e}", "file_path": input_file_path, "source_description": original_source_desc}
+
+    def _create_report_structure(
+        self,
+        input_file_path: str,
+        current_file_type: str,
+        original_source_desc: str,
+        is_recursive_call: bool
+    ) -> Dict[str, Any]:
+        """
+        Create initial report structure.
+
+        Args:
+            input_file_path: Path to file being analyzed
+            current_file_type: Detected file type
+            original_source_desc: Description of original source
+            is_recursive_call: Whether this is a recursive analysis
+
+        Returns:
+            Initial report dictionary structure
+        """
+        return {
             "file_path": input_file_path,
             "original_file_type": current_file_type,
             "source_description": original_source_desc,
@@ -234,132 +434,258 @@ class PipelineManager:
             "extraction_analysis": None,
             "steganography_analysis": None,
             "decryption_analysis": None,
-            "static_pe_analysis": None, # This will hold results from _run_static_analysis_on_pe_data
-            "extracted_payload_analyses": [], # For recursive results
+            "static_pe_analysis": None,
+            "extracted_payload_analyses": [],
             "errors": []
         }
 
-        data_to_analyze = file_data
-        data_source_description = original_source_desc
-        # If file is an archive/carrier, this will be updated with extracted data
+    def _run_extraction_stage(
+        self,
+        input_file_path: str,
+        file_data: bytes,
+        current_file_type: str,
+        original_source_desc: str,
+        report: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        """
+        Run extraction analyzers (polyglot and steganography).
 
-        # --- Extraction Phase ---
-        extracted_payloads_meta = [] # Store metadata of payloads that need further analysis
-        if self.polyglot_analyzer and current_file_type in ['zip', 'jpeg', 'unknown']: # 'unknown' could be anything
-            self.logger.info(f"Running PolyglotAnalyzer on {input_file_path}")
-            try:
-                poly_results = self.polyglot_analyzer.analyze_file(file_path=input_file_path, file_data=file_data)
-                report["extraction_analysis"] = {"polyglot": poly_results}
-                for p_info in poly_results:
-                    # Check if extracted payload is PE for recursive analysis
-                    if p_info['data'].startswith(MAGIC_MZ):
-                        extracted_payloads_meta.append({
-                            "data": p_info['data'],
-                            "source": f"{original_source_desc} -> polyglot:{p_info.get('carrier_type', 'unknown_carrier')}/{p_info.get('type_desc','unknown_payload')}@0x{p_info.get('offset',0):x}",
-                            "original_file_path": None # It's from memory
-                        })
-            except Exception as e: report["errors"].append(f"PolyglotAnalysis: {str(e)}")
+        Args:
+            input_file_path: Path to file being analyzed
+            file_data: Raw file bytes
+            current_file_type: Detected file type
+            original_source_desc: Description of original source
+            report: Report dictionary to update
 
-        if self.steganography_analyzer: # Add more types if StegoAnalyzer supports them
-            self.logger.info(f"Running SteganographyAnalyzer on {input_file_path}")
-            stego_results_detail = {}
-            try:
-                appended_data_info = self.steganography_analyzer.check_for_appended_data(file_path=input_file_path, file_data=file_data)
-                stego_results_detail["appended_data"] = appended_data_info
-                for s_info in appended_data_info:
-                    if s_info['data'].startswith(MAGIC_MZ):
-                         extracted_payloads_meta.append({
-                            "data": s_info['data'],
-                            "source": f"{original_source_desc} -> stego:appended_data_in_{s_info.get('eof_marker_type')}@0x{s_info.get('offset',0):x}",
-                            "original_file_path": None
-                        })
+        Returns:
+            List of extracted payload metadata dictionaries
+        """
+        extracted_payloads_meta = []
 
-                if current_file_type in self.steganography_analyzer.supported_lsb_formats:
-                    lsb_result = self.steganography_analyzer.analyze_lsb_steganography(file_path=input_file_path, file_data=file_data)
-                    stego_results_detail["lsb_analysis"] = lsb_result
-                    if lsb_result.get('status') == 'data_extracted' and lsb_result['data'].startswith(MAGIC_MZ):
-                        extracted_payloads_meta.append({
-                            "data": lsb_result['data'],
-                            "source": f"{original_source_desc} -> stego:lsb_in_{current_file_type}",
-                            "original_file_path": None
-                        })
-                report["steganography_analysis"] = stego_results_detail
-            except Exception as e: report["errors"].append(f"SteganographyAnalysis: {str(e)}")
+        # Polyglot analysis
+        if self.polyglot_analyzer and current_file_type in ['zip', 'jpeg', 'unknown']:
+            extracted_payloads_meta.extend(self._run_polyglot_analysis(input_file_path, file_data, original_source_desc, report))
 
-        # --- Decryption Phase (on primary data stream) ---
-        # This applies if the original file itself might be an encrypted PE.
-        # For extracted files, decryption would happen before they are added to extracted_payloads_meta if needed.
-        # Or, decryption is attempted before each static analysis run. Let's do it before static analysis.
+        # Steganography analysis
+        if self.steganography_analyzer:
+            extracted_payloads_meta.extend(self._run_steganography_analysis(input_file_path, file_data, current_file_type, original_source_desc, report))
 
-        # Determine the primary data stream for static analysis
-        # If no payloads extracted and file is not PE, analysis might stop or be limited.
-        # If payloads were extracted, they are handled recursively later.
-        # This part focuses on the current `data_to_analyze` (which is initially the full file).
+        return extracted_payloads_meta
 
-        data_for_current_static_analysis = data_to_analyze
-        is_pe_after_decryption = False
+    def _run_polyglot_analysis(
+        self,
+        input_file_path: str,
+        file_data: bytes,
+        original_source_desc: str,
+        report: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        """
+        Run polyglot analyzer and extract PE payloads.
 
-        if self.crypto_analyzer and data_for_current_static_analysis:
-            self.logger.info(f"Attempting decryption for {data_source_description} if chains are configured.")
-            # Try predefined chains. Heuristics for applying chains are complex and not implemented here.
-            # Assume a chain named "default_pe_chain" or similar might be configured in settings.ini
-            # For this example, let's try *all* known chains if the data isn't already a PE.
-            # This is for demonstration; real-world usage would be more targeted.
+        Args:
+            input_file_path: Path to file being analyzed
+            file_data: Raw file bytes
+            original_source_desc: Description of original source
+            report: Report dictionary to update
 
-            decryption_applied_successfully = False
-            if not data_for_current_static_analysis.startswith(MAGIC_MZ): # Only try decrypting non-PEs
-                chain_results = self.crypto_analyzer.try_known_decryption_chains(data_for_current_static_analysis)
-                report["decryption_analysis"] = {"attempted_chains": {}}
-                for chain_name, decrypted_data_or_none in chain_results.items():
-                    if decrypted_data_or_none is not None:
-                        report["decryption_analysis"]["attempted_chains"][chain_name] = {"status": "success", "output_length": len(decrypted_data_or_none)}
-                        # Check if this decrypted version is a PE file
-                        if decrypted_data_or_none.startswith(MAGIC_MZ):
-                            self.logger.info(f"Decryption chain '{chain_name}' resulted in a PE file for {data_source_description}.")
-                            data_for_current_static_analysis = decrypted_data_or_none # Analyze this
-                            report["decryption_analysis"]["applied_chain"] = chain_name
-                            report["decryption_analysis"]["status"] = "decrypted_to_pe"
-                            is_pe_after_decryption = True
-                            decryption_applied_successfully = True
-                            break # Use the first successful PE decryption
-                    else:
-                         report["decryption_analysis"]["attempted_chains"][chain_name] = {"status": "failed"}
-                if not decryption_applied_successfully:
-                    self.logger.info(f"No configured decryption chain produced a PE file for {data_source_description}.")
-                    report["decryption_analysis"]["status"] = "no_pe_after_decryption_attempts" if chain_results else "no_chains_attempted"
-            else: # Already a PE, or no crypto analyzer
-                report["decryption_analysis"] = {"status": "skipped_as_already_pe" if data_for_current_static_analysis.startswith(MAGIC_MZ) else "skipped_no_analyzer"}
+        Returns:
+            List of extracted PE payload dictionaries
+        """
+        self.logger.info(f"Running PolyglotAnalyzer on {input_file_path}")
+        extracted_payloads = []
 
+        try:
+            poly_results = self.polyglot_analyzer.analyze_file(file_path=input_file_path, file_data=file_data)
+            report["extraction_analysis"] = {"polyglot": poly_results}
 
-        # --- Static Analysis Phase (on current data stream, which might be original or decrypted) ---
-        if data_for_current_static_analysis.startswith(MAGIC_MZ) or is_pe_after_decryption:
-            # Pass input_file_path for CodeAnalyzer if r2 needs it, even if data is from memory (it will be saved to temp file)
-            # Pass data_for_current_static_analysis for actual analysis bytes
+            for p_info in poly_results:
+                if p_info['data'].startswith(MAGIC_MZ):
+                    extracted_payloads.append({
+                        "data": p_info['data'],
+                        "source": f"{original_source_desc} -> polyglot:{p_info.get('carrier_type', 'unknown_carrier')}/{p_info.get('type_desc','unknown_payload')}@0x{p_info.get('offset',0):x}",
+                        "original_file_path": None
+                    })
+        except Exception as e:
+            report["errors"].append(f"PolyglotAnalysis: {str(e)}")
+
+        return extracted_payloads
+
+    def _run_steganography_analysis(
+        self,
+        input_file_path: str,
+        file_data: bytes,
+        current_file_type: str,
+        original_source_desc: str,
+        report: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        """
+        Run steganography analyzer and extract PE payloads.
+
+        Args:
+            input_file_path: Path to file being analyzed
+            file_data: Raw file bytes
+            current_file_type: Detected file type
+            original_source_desc: Description of original source
+            report: Report dictionary to update
+
+        Returns:
+            List of extracted PE payload dictionaries
+        """
+        self.logger.info(f"Running SteganographyAnalyzer on {input_file_path}")
+        extracted_payloads = []
+        stego_results_detail = {}
+
+        try:
+            # Check for appended data
+            appended_data_info = self.steganography_analyzer.check_for_appended_data(file_path=input_file_path, file_data=file_data)
+            stego_results_detail["appended_data"] = appended_data_info
+
+            for s_info in appended_data_info:
+                if s_info['data'].startswith(MAGIC_MZ):
+                    extracted_payloads.append({
+                        "data": s_info['data'],
+                        "source": f"{original_source_desc} -> stego:appended_data_in_{s_info.get('eof_marker_type')}@0x{s_info.get('offset',0):x}",
+                        "original_file_path": None
+                    })
+
+            # Check for LSB steganography
+            if current_file_type in self.steganography_analyzer.supported_lsb_formats:
+                lsb_result = self.steganography_analyzer.analyze_lsb_steganography(file_path=input_file_path, file_data=file_data)
+                stego_results_detail["lsb_analysis"] = lsb_result
+
+                if lsb_result.get('status') == 'data_extracted' and lsb_result['data'].startswith(MAGIC_MZ):
+                    extracted_payloads.append({
+                        "data": lsb_result['data'],
+                        "source": f"{original_source_desc} -> stego:lsb_in_{current_file_type}",
+                        "original_file_path": None
+                    })
+
+            report["steganography_analysis"] = stego_results_detail
+        except Exception as e:
+            report["errors"].append(f"SteganographyAnalysis: {str(e)}")
+
+        return extracted_payloads
+
+    def _run_analysis_stage(
+        self,
+        input_file_path: str,
+        file_data: bytes,
+        data_source_description: str,
+        current_file_type: str,
+        extracted_payloads_meta: List[Dict[str, Any]],
+        report: Dict[str, Any]
+    ) -> None:
+        """
+        Run decryption and static analysis stages.
+
+        Args:
+            input_file_path: Path to file being analyzed
+            file_data: Raw file bytes
+            data_source_description: Description of data source
+            current_file_type: Detected file type
+            extracted_payloads_meta: List of extracted payload metadata
+            report: Report dictionary to update
+        """
+        # Attempt decryption
+        data_for_static_analysis, decryption_applied = self._attempt_decryption(file_data, data_source_description, report)
+
+        # Run static analysis if PE detected
+        if data_for_static_analysis.startswith(MAGIC_MZ):
+            source_desc = f"{data_source_description}{' (after decryption)' if decryption_applied else ''}"
+            original_path = input_file_path if data_for_static_analysis is file_data else None
+
             report["static_pe_analysis"] = self._run_static_analysis_on_pe_data(
-                data_for_current_static_analysis,
-                source_description=f"{data_source_description}{' (after decryption)' if decryption_applied_successfully else ''}",
-                original_file_path_for_codeanalyzer=input_file_path if data_for_current_static_analysis is file_data else None
+                data_for_static_analysis,
+                source_description=source_desc,
+                original_file_path_for_codeanalyzer=original_path
             )
-        elif not extracted_payloads_meta: # Only log if no PEs were found anywhere
-            self.logger.info(f"No PE file identified for static analysis from {input_file_path} (type: {current_file_type}).")
-            if not report["errors"] and not report["extraction_analysis"] and not report["steganography_analysis"]:
-                 report["status_message"] = "File is not a PE and no further payloads or steganographic content found."
+        elif not extracted_payloads_meta:
+            self._handle_no_pe_found(input_file_path, current_file_type, report)
 
+    def _attempt_decryption(
+        self,
+        file_data: bytes,
+        data_source_description: str,
+        report: Dict[str, Any]
+    ) -> Tuple[bytes, bool]:
+        """
+        Attempt to decrypt file data if not already a PE.
 
-        # --- Recursive Analysis of Extracted Payloads ---
+        Args:
+            file_data: Raw file bytes to decrypt
+            data_source_description: Description of data source
+            report: Report dictionary to update
+
+        Returns:
+            Tuple of (decrypted_or_original_data, decryption_applied_flag)
+        """
+        if not self.crypto_analyzer or file_data.startswith(MAGIC_MZ):
+            status = "skipped_as_already_pe" if file_data.startswith(MAGIC_MZ) else "skipped_no_analyzer"
+            report["decryption_analysis"] = {"status": status}
+            return file_data, False
+
+        self.logger.info(f"Attempting decryption for {data_source_description} if chains are configured.")
+        chain_results = self.crypto_analyzer.try_known_decryption_chains(file_data)
+        report["decryption_analysis"] = {"attempted_chains": {}}
+
+        # Try each decryption chain
+        for chain_name, decrypted_data in chain_results.items():
+            if decrypted_data is not None:
+                report["decryption_analysis"]["attempted_chains"][chain_name] = {
+                    "status": "success",
+                    "output_length": len(decrypted_data)
+                }
+
+                # Check if decryption produced a PE
+                if decrypted_data.startswith(MAGIC_MZ):
+                    self.logger.info(f"Decryption chain '{chain_name}' resulted in a PE file for {data_source_description}.")
+                    report["decryption_analysis"]["applied_chain"] = chain_name
+                    report["decryption_analysis"]["status"] = "decrypted_to_pe"
+                    return decrypted_data, True
+            else:
+                report["decryption_analysis"]["attempted_chains"][chain_name] = {"status": "failed"}
+
+        # No successful PE decryption
+        self.logger.info(f"No configured decryption chain produced a PE file for {data_source_description}.")
+        status = "no_pe_after_decryption_attempts" if chain_results else "no_chains_attempted"
+        report["decryption_analysis"]["status"] = status
+        return file_data, False
+
+    def _handle_no_pe_found(
+        self,
+        input_file_path: str,
+        current_file_type: str,
+        report: Dict[str, Any]
+    ) -> None:
+        """
+        Handle case where no PE file was identified.
+
+        Args:
+            input_file_path: Path to file being analyzed
+            current_file_type: Detected file type
+            report: Report dictionary to update
+        """
+        self.logger.info(f"No PE file identified for static analysis from {input_file_path} (type: {current_file_type}).")
+        if not report["errors"] and not report["extraction_analysis"] and not report["steganography_analysis"]:
+            report["status_message"] = "File is not a PE and no further payloads or steganographic content found."
+
+    def _run_recursive_analysis_stage(
+        self,
+        extracted_payloads_meta: List[Dict[str, Any]],
+        report: Dict[str, Any]
+    ) -> None:
+        """
+        Recursively analyze extracted payloads.
+
+        Args:
+            extracted_payloads_meta: List of extracted payload metadata
+            report: Report dictionary to update
+        """
         for payload_info in extracted_payloads_meta:
             self.logger.info(f"Recursively analyzing extracted payload from: {payload_info['source']}")
-            # Save payload to temp file to pass to pipeline (simplifies handling for now)
-            # A more direct in-memory hand-off would be better.
-            temp_dir = self.config_manager.get('general', 'output_dir', fallback='output')
-            os.makedirs(os.path.join(temp_dir, "temp_extracted_recursive"), exist_ok=True)
-            temp_payload_path = os.path.join(temp_dir, "temp_extracted_recursive", f"payload_{hash(payload_info['data'])}.bin")
+            temp_payload_path = self._save_payload_to_temp_file(payload_info['data'])
 
             try:
-                with open(temp_payload_path, 'wb') as f:
-                    f.write(payload_info['data'])
-
-                # Call run_pipeline recursively for this extracted payload
                 sub_analysis_report = self.run_pipeline(
                     input_file_path=temp_payload_path,
                     is_recursive_call=True,
@@ -373,12 +699,182 @@ class PipelineManager:
                     "error": f"Recursive analysis failed: {str(e)}"
                 })
             finally:
-                if os.path.exists(temp_payload_path):
-                    try: os.remove(temp_payload_path)
-                    except OSError: self.logger.warning(f"Could not remove temp payload file: {temp_payload_path}")
+                self._cleanup_temp_file(temp_payload_path)
 
-        self.logger.info(f"Pipeline finished for: {input_file_path} (Source: {original_source_desc})")
+    def _run_pipeline_streaming(
+        self,
+        input_file_path: str,
+        is_recursive_call: bool,
+        original_source_desc: str
+    ) -> Dict[str, Any]:
+        """
+        Memory-efficient pipeline for large files using streaming/memory-mapped access.
+
+        This method is used for files >100MB to prevent OOM errors.
+        It processes the file without loading it entirely into memory.
+
+        Args:
+            input_file_path: Path to large file to analyze
+            is_recursive_call: Whether this is a recursive analysis
+            original_source_desc: Description of original source
+
+        Returns:
+            Analysis report dictionary for large file
+        """
+        log_memory_usage("Start of streaming pipeline", self.logger)
+
+        # Detect file type using chunked reader
+        current_file_type = self._get_file_type(input_file_path)
+        self.logger.info(f"Detected file type for {input_file_path}: {current_file_type}")
+
+        report = self._create_report_structure(input_file_path, current_file_type, original_source_desc, is_recursive_call)
+
+        # For large PE files, we can only do limited analysis without full memory load
+        # Most extraction analyzers (polyglot, stego) need full data, so skip them
+        if current_file_type == 'pe':
+            self.logger.info(f"Processing large PE file in streaming mode: {input_file_path}")
+
+            # Run static PE analysis using the file path (analyzers will handle file access)
+            report["static_pe_analysis"] = self._run_static_analysis_on_pe_data(
+                pe_data=None,  # Don't load data into memory
+                source_description=original_source_desc,
+                original_file_path_for_codeanalyzer=input_file_path,
+                use_streaming=True
+            )
+
+            # Skip extraction analyzers for large files (they require full data)
+            report["extraction_analysis"] = {
+                "status": "skipped_large_file",
+                "reason": "File too large for extraction analysis (>100MB)"
+            }
+            report["steganography_analysis"] = {
+                "status": "skipped_large_file",
+                "reason": "File too large for steganography analysis (>100MB)"
+            }
+            report["decryption_analysis"] = {
+                "status": "skipped_large_file",
+                "reason": "File too large for decryption analysis (>100MB)"
+            }
+
+        else:
+            # For non-PE large files, we have limited options
+            self.logger.warning(
+                f"Large non-PE file detected ({current_file_type}). "
+                f"Most analysis features require loading file into memory."
+            )
+            report["status_message"] = (
+                f"Large {current_file_type} file (>100MB) - limited analysis available. "
+                "Only PE files support streaming analysis."
+            )
+
+        log_memory_usage("End of streaming pipeline", self.logger)
+        self.logger.info(f"Streaming pipeline finished for: {input_file_path}")
         return report
+
+    def _save_payload_to_temp_file(self, payload_data: bytes) -> str:
+        """
+        Save payload to temporary file for analysis.
+
+        Args:
+            payload_data: Raw payload bytes
+
+        Returns:
+            Path to temporary file
+        """
+        temp_dir = self.config_manager.get('general', 'output_dir', fallback='output')
+        os.makedirs(os.path.join(temp_dir, "temp_extracted_recursive"), exist_ok=True)
+        temp_payload_path = os.path.join(temp_dir, "temp_extracted_recursive", f"payload_{hash(payload_data)}.bin")
+
+        with open(temp_payload_path, 'wb') as f:
+            f.write(payload_data)
+
+        return temp_payload_path
+
+    def _cleanup_temp_file(self, file_path: str) -> None:
+        """
+        Clean up temporary file.
+
+        Args:
+            file_path: Path to temporary file to remove
+        """
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except OSError:
+                self.logger.warning(f"Could not remove temp payload file: {file_path}")
+
+    def _check_pipeline_cache(self, file_path: str) -> Optional[Dict[str, Any]]:
+        """
+        Check if pipeline result is cached.
+
+        Args:
+            file_path: Path to file being analyzed
+
+        Returns:
+            Cached report dictionary or None if not cached
+        """
+        try:
+            # Calculate file hash for cache key
+            file_hash = self.file_hasher.get_file_hash(file_path, 'sha256')
+            cache_key = f"pipeline_result:{file_hash}"
+
+            # Check persistent cache first (survives restarts)
+            if self.cache_manager.persistent_cache:
+                cached_result = self.cache_manager.persistent_cache.get(cache_key)
+                if cached_result:
+                    self.logger.debug(f"Pipeline cache hit (persistent) for {file_path}")
+                    return cached_result
+
+            return None
+
+        except Exception as e:
+            self.logger.warning(f"Error checking pipeline cache: {e}")
+            return None
+
+    def _cache_pipeline_result(self, file_path: str, report: Dict[str, Any]) -> None:
+        """
+        Cache pipeline result for future use.
+
+        Args:
+            file_path: Path to file being analyzed
+            report: Analysis report to cache
+        """
+        try:
+            # Calculate file hash for cache key
+            file_hash = self.file_hasher.get_file_hash(file_path, 'sha256')
+            cache_key = f"pipeline_result:{file_hash}"
+
+            # Store in persistent cache (survives restarts)
+            if self.cache_manager.persistent_cache:
+                self.cache_manager.persistent_cache.put(cache_key, report)
+                self.logger.debug(f"Cached pipeline result for {file_path}")
+
+        except Exception as e:
+            self.logger.warning(f"Error caching pipeline result: {e}")
+
+    def _log_cache_stats(self) -> None:
+        """Log cache performance statistics."""
+        try:
+            stats = self.cache_manager.get_aggregate_stats()
+
+            # Log summary statistics
+            if stats['total_requests'] > 0:
+                self.logger.info(
+                    f"Cache Performance: {stats['overall_hit_rate']:.1%} hit rate "
+                    f"({stats['total_hits']} hits / {stats['total_requests']} requests)"
+                )
+
+                # Log detailed statistics at debug level
+                if self.logger.isEnabledFor(logging.DEBUG):
+                    for cache_name, cache_stats in stats['individual_caches'].items():
+                        if cache_stats.get('hits', 0) + cache_stats.get('misses', 0) > 0:
+                            self.logger.debug(
+                                f"  {cache_name}: {cache_stats.get('hit_rate', 0):.1%} "
+                                f"({cache_stats.get('size', 0)} items)"
+                            )
+
+        except Exception as e:
+            self.logger.debug(f"Error logging cache stats: {e}")
 
 
 if __name__ == '__main__':
@@ -488,4 +984,3 @@ if __name__ == '__main__':
     # import shutil
     # if os.path.exists(os.path.join(project_root_dir, "test_pipeline_output")):
     # shutil.rmtree(os.path.join(project_root_dir, "test_pipeline_output"))
-```

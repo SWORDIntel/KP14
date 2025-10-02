@@ -1,18 +1,19 @@
-jpegio
+jpegio>=0.3.0
 numpy==1.26.4
-Pillow==10.0.1
+Pillow==10.4.0  # SECURITY: Updated from 10.0.1 (CVE-2024-28219, CVE-2023-50447)
 # --- From stego-analyzer/requirements.txt ---
 # Mandatory: opencv-python, numpy, pillow
 # Optional (for ML acceleration): openvino, torch, tensorflow
 
 # --- Mandatory Dependencies ---
-opencv-python==4.8.0.76
+opencv-python==4.10.0.84  # SECURITY: Updated from 4.8.0.76 (CVE-2024-32462)
 # numpy==1.26.4 # Already included
-# Pillow==10.0.1 # Already included
-pycparser==2.21
-matplotlib==3.8.0 # For visualization utilities
-capstone==5.0.1
-pefile==2023.2.7
+# Pillow==10.4.0 # Already included
+pycparser==2.22  # Updated from 2.21
+matplotlib==3.9.2  # Updated from 3.8.0 - security improvements
+capstone==5.0.3  # Updated from 5.0.1
+pefile==2024.8.26  # Updated from 2023.2.7
+cryptography>=42.0.0 # Modern cryptography library (replaces deprecated pyCrypto)
 
 # --- Optional Dependencies (for ML acceleration and advanced features) ---
 # openvino==2024.1.0

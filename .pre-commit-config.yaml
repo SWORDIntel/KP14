@@ -1,0 +1,154 @@
+# Pre-commit hooks for KP14 project
+# See https://pre-commit.com for more information
+
+repos:
+  # Black - Code formatter
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        language_version: python3.11
+        args: [--line-length=100]
+
+  # isort - Import sorter
+  - repo: https://github.com/pycqa/isort
+    rev: 6.1.0
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
+
+  # Pylint - Code linter
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.8
+    hooks:
+      - id: pylint
+        args: [--max-line-length=100, --disable=C0111,R0801]
+        additional_dependencies:
+          - numpy
+          - Pillow
+          - opencv-python
+          - pefile
+          - capstone
+          - cryptography
+
+  # Built-in hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Remove trailing whitespace
+      - id: trailing-whitespace
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+      # Check for files that would conflict on case-insensitive filesystems
+      - id: check-case-conflict
+      # Check for merge conflicts
+      - id: check-merge-conflict
+      # Check YAML syntax
+      - id: check-yaml
+        args: [--safe]
+      # Check JSON syntax
+      - id: check-json
+      # Check TOML syntax
+      - id: check-toml
+      # Check for added large files
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      # Prevent committing to main branch
+      - id: no-commit-to-branch
+        args: [--branch=main, --branch=master]
+      # Check Python syntax
+      - id: check-ast
+      # Check for debugger imports
+      - id: debug-statements
+      # Detect private keys
+      - id: detect-private-key
+      # Fix mixed line endings
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      # Pretty format JSON
+      - id: pretty-format-json
+        args: [--autofix, --indent=2]
+        files: \.(json)$
+
+  # MyPy - Type checker
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+        args:
+          - --ignore-missing-imports
+          - --check-untyped-defs
+          - --disallow-untyped-defs
+          - --disallow-incomplete-defs
+          - --warn-return-any
+          - --warn-unused-ignores
+          - --no-implicit-optional
+          - --show-error-codes
+        additional_dependencies:
+          - types-requests
+          - types-Pillow
+          - types-PyYAML
+          - types-setuptools
+
+  # Security checks
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.0
+    hooks:
+      - id: bandit
+        args: [-c, pyproject.toml]
+        additional_dependencies: ["bandit[toml]"]
+
+  # Dependency vulnerability scanning
+  - repo: local
+    hooks:
+      - id: safety-check
+        name: Safety dependency vulnerability check
+        entry: safety
+        args: [check, --save-json, safety_report.json, --continue-on-error]
+        language: system
+        pass_filenames: false
+        files: requirements.*\.txt$
+
+      - id: pip-audit
+        name: pip-audit dependency audit
+        entry: pip-audit
+        args: [--skip-editable, --format, json, --output, pip_audit_report.json]
+        language: system
+        pass_filenames: false
+        files: requirements.*\.txt$
+        # Only fail on critical/high severity
+        stages: [manual]  # Run manually with: pre-commit run pip-audit --hook-stage manual
+
+  # Secret detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: |
+          (?x)^(
+              .*\.lock$|
+              .*\.json$|
+              .*\.md$
+          )
+
+# Configuration for specific files
+exclude: |
+  (?x)^(
+      keyplug_venv/|
+      kp14_qa_venv/|
+      archive/|
+      \.git/|
+      \.eggs/|
+      \.pytest_cache/|
+      __pycache__/|
+      \.mypy_cache/|
+      build/|
+      dist/|
+      security_reports/|
+      .*_results\.json$|
+      .*_report\.json$
+  )
+
+default_language_version:
+  python: python3.11

@@ -1,0 +1,48 @@
+# Test Dependencies for KP14 Project
+# ===================================
+# This file contains all dependencies required to run the test suite.
+#
+# Install with: pip install -r requirements-test.txt
+#
+# Note: This includes all production dependencies plus test-specific packages.
+
+# Core Testing Framework
+pytest>=8.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.12.0
+pytest-timeout>=2.2.0
+
+# Production Dependencies (from requirements.txt)
+# SECURITY: Updated to match requirements.txt security fixes
+jpegio>=0.3.0
+numpy>=1.26.4
+Pillow>=10.4.0  # SECURITY: CVE-2024-28219, CVE-2023-50447
+opencv-python>=4.10.0  # SECURITY: CVE-2024-32462
+pycparser>=2.22
+matplotlib>=3.9.2
+capstone>=5.0.3
+pefile>=2024.8.26
+cryptography>=42.0.0
+
+# Additional transitive dependencies
+contourpy>=1.3.2
+cycler>=0.12.1
+fonttools>=4.58.1
+kiwisolver>=1.4.8
+packaging>=25.0
+python-dateutil>=2.9.0
+six>=1.16.0
+
+# Optional dependencies for advanced features
+# (Tests will skip if these are not available)
+# openvino>=2024.1.0  # For hardware acceleration tests
+# torch>=2.1.0  # For ML tests
+# tensorflow>=2.15.0  # For ML tests
+
+# Code quality tools (for CI/CD)
+pylint>=3.0.0
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.7.0
+bandit>=1.7.5
+flake8>=6.1.0
