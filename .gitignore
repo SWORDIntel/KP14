@@ -36,3 +36,6 @@ venv/
 # Specific directories to ignore (preserved)
 /net-commander/
 /extracted_source_code/
+
+# Legacy code directory (removed from main branch, preserved in legacy-archive branch)
+archive/
