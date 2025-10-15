@@ -118,6 +118,8 @@ class PipelineManager:
 
     def _configure_logging(self) -> None:
         """Configure logging level and handlers based on configuration."""
+        if getattr(self.logger, '_configured', False):
+            return
         log_level_str: str = "INFO"
         if self.config_manager:
             log_level_str = self.config_manager.get('general', 'log_level', fallback='INFO').upper()
@@ -133,6 +135,7 @@ class PipelineManager:
             ch = logging.StreamHandler()
             ch.setFormatter(formatter)
             self.logger.addHandler(ch)
+        self.logger._configured = True
 
     def _load_module_templates_and_analyzers(self) -> None:
         # Load static analyzer classes/templates
