@@ -5,11 +5,9 @@ import os
 
 # Add stego-analyzer root to sys.path to allow direct import of modules
 import sys
-# Assuming this test script is in stego-analyzer/tests/analysis/
-# Adjust path to go up two levels to stego-analyzer root
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-if module_path not in sys.path:
-    sys.path.insert(0, module_path)
+# Add project root to sys.path
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+sys.path.insert(0, PROJECT_ROOT)
 
 from analysis.static_analyzer import (
     extract_basic_pe_info,
