@@ -1,4 +1,4 @@
-#!/home/john/Documents/keyplug1/keyplug_venv/bin/python3
+#!/app/keyplug_venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

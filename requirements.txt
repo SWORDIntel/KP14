@@ -1,4 +1,4 @@
-jpegio>=0.3.0
+jpegio==0.2.8
 numpy==1.26.4
 Pillow==10.4.0  # SECURITY: Updated from 10.0.1 (CVE-2024-28219, CVE-2023-50447)
 # --- From stego-analyzer/requirements.txt ---

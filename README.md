@@ -4,9 +4,9 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![OpenVINO](https://img.shields.io/badge/OpenVINO-2025.3-green.svg)](https://docs.openvino.ai/)
 [![Intel NPU](https://img.shields.io/badge/Intel-NPU_Optimized-0071C5.svg)](https://www.intel.com/content/www/us/en/products/docs/processors/core-ultra/ai-pc.html)
-[![Quality](https://img.shields.io/badge/Quality-96.2%2F100_(A+)-brightgreen.svg)](./COMPLETE-CODE-REVIEW-REMEDIATION-SUMMARY.md)
-[![Security](https://img.shields.io/badge/Security-98%2F100-brightgreen.svg)](./SECURITY_VALIDATION_REPORT.md)
-[![Coverage](https://img.shields.io/badge/Coverage-82%25-brightgreen.svg)](./COVERAGE_IMPROVEMENT_REPORT.md)
+[![Quality](https://img.shields.io/badge/Quality-96.2%2F100_(A+)-brightgreen.svg)](./docs/COMPLETE-CODE-REVIEW-REMEDIATION-SUMMARY.md)
+[![Security](https://img.shields.io/badge/Security-98%2F100-brightgreen.svg)](./docs/SECURITY_VALIDATION_REPORT.md)
+[![Coverage](https://img.shields.io/badge/Coverage-82%25-brightgreen.svg)](./docs/COVERAGE_IMPROVEMENT_REPORT.md)
 
 **KP14** is an enterprise-grade steganographic analysis and malware intelligence platform designed for reverse engineering APT41's KeyPlug malware and analyzing sophisticated steganographic payloads. Built with machine learning acceleration, multi-layer analysis capabilities, and hardened security controls, KP14 provides comprehensive threat intelligence extraction from complex malware samples.
 
@@ -350,7 +350,7 @@ docker-compose logs -f kp14
 docker-compose down
 ```
 
-See [DOCKER.md](docs/DOCKER.md) for advanced container deployment.
+See [DOCKER-DEPLOYMENT.md](docs/DOCKER-DEPLOYMENT.md) for advanced container deployment.
 
 ### Native Installation
 
@@ -500,7 +500,7 @@ Tested on Intel Core Ultra 7 155H with 32GB RAM.
 
 Run `python hw-detect.py` to check your system capabilities.
 
-See [HARDWARE-ACCELERATION.md](docs/HARDWARE-ACCELERATION.md) for optimization guides.
+See [HARDWARE-OPTIMIZATION.md](docs/HARDWARE-OPTIMIZATION.md) for optimization guides.
 
 ---
 
@@ -965,7 +965,7 @@ furnished to do so, subject to the following conditions:
 ### Documentation
 - [Quick Start Guide](docs/QUICKSTART.md)
 - [Installation Guide](docs/INSTALLATION.md)
-- [Docker Deployment](docs/DOCKER.md)
+- [Docker Deployment](docs/DOCKER-DEPLOYMENT.md)
 - [TUI User Guide](docs/TUI-GUIDE.md)
 - [CLI Reference](docs/CLI-GUIDE.md)
 - [Configuration Guide](docs/CONFIGURATION.md)
