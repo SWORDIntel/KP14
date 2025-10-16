@@ -86,12 +86,12 @@ check_untyped_defs = false
 
 # Legacy analyzer modules - gradual typing
 [[tool.mypy.overrides]]
-module = "stego-analyzer.utils.*"
+module = "stego_analyzer.utils.*"
 disallow_untyped_defs = false
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = "stego-analyzer.analysis.*"
+module = "stego_analyzer.analysis.*"
 disallow_untyped_defs = false
 check_untyped_defs = true
 
@@ -133,6 +133,11 @@ exclude_lines = [
     "raise NotImplementedError",
     "if TYPE_CHECKING:",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["stego_analyzer*", "core_engine*", "exporters*", "intelligence*"]
+exclude = ["tests*"]
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
