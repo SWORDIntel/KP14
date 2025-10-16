@@ -35,13 +35,15 @@ if TYPE_CHECKING:
 
 # Import actual analyzer modules
 try:
-    from modules.static_analyzer.pe_analyzer import PEAnalyzer
+    from stego_analyzer.analysis.static_analyzer import extract_basic_pe_info as PEAnalyzer
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import PEAnalyzer: {e}. PE analysis will be skipped.")
     PEAnalyzer = None
 
 try:
-    from modules.static_analyzer.code_analyzer import CodeAnalyzer, CAPSTONE_AVAILABLE, R2PIPE_AVAILABLE
+    from stego_analyzer.analysis.static_analyzer import disassemble_entry_point as CodeAnalyzer
+    CAPSTONE_AVAILABLE = True
+    R2PIPE_AVAILABLE = False
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import CodeAnalyzer: {e}. Code analysis will be skipped.")
     CodeAnalyzer = None
@@ -49,25 +51,28 @@ except ImportError as e:
     R2PIPE_AVAILABLE = False
 
 try:
-    from modules.static_analyzer.obfuscation_analyzer import ObfuscationAnalyzer
+    # Obfuscation analyzer not found, using a placeholder
+    ObfuscationAnalyzer = None
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import ObfuscationAnalyzer: {e}. Obfuscation analysis will be skipped.")
     ObfuscationAnalyzer = None
 
 try:
-    from modules.extraction_analyzer.polyglot_analyzer import PolyglotAnalyzer
+    # Polyglot analyzer not found, using a placeholder
+    PolyglotAnalyzer = None
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import PolyglotAnalyzer: {e}. Polyglot analysis will be skipped.")
     PolyglotAnalyzer = None
 
 try:
-    from modules.extraction_analyzer.steganography_analyzer import SteganographyAnalyzer
+    from stego_analyzer.analysis.payload_extract import extract_payload as SteganographyAnalyzer
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import SteganographyAnalyzer: {e}. Steganography analysis will be skipped.")
     SteganographyAnalyzer = None
 
 try:
-    from modules.extraction_analyzer.crypto_analyzer import CryptoAnalyzer
+    # Crypto analyzer not found, using a placeholder
+    CryptoAnalyzer = None
 except ImportError as e:
     logging.getLogger(__name__).error(f"Failed to import CryptoAnalyzer: {e}. Decryption will be skipped.")
     CryptoAnalyzer = None
