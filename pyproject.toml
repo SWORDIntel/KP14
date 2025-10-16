@@ -134,11 +134,6 @@ exclude_lines = [
     "if TYPE_CHECKING:",
 ]
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["stego_analyzer*"]
-exclude = ["tests*"]
-
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"

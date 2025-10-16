@@ -1,3 +1,12 @@
 [decompiler]
-backend = ghidra
+# A comma-separated list of decompiler backends to use.
+# Supported backends: ghidra, radare2
+backends = ghidra, radare2
+
+[ghidra]
+# Path to the Ghidra installation directory (e.g., /opt/ghidra_10.1.5_PUBLIC)
 path = /path/to/ghidra
+
+[radare2]
+# Path to the radare2 executable. If not found, an auto-install will be attempted.
+path = auto
