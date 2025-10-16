@@ -6,7 +6,7 @@ class Decompiler(abc.ABC):
     """
 
     @abc.abstractmethod
-    def decompile(self, binary_path: str, output_dir: str) -> str:
+    def decompile(self, binary_path: str, output_dir: str, analysis_results: dict = None) -> str:
         """
         Decompiles the binary at the given path and returns the path to the decompiled C code.
         """
