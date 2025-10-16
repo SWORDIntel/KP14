@@ -10,3 +10,9 @@ path = /path/to/ghidra
 [radare2]
 # Path to the radare2 executable. If not found, an auto-install will be attempted.
 path = auto
+
+[recompiler]
+# Path to the C compiler to use for recompilation (e.g., /usr/bin/gcc).
+compiler = gcc
+# Flags to pass to the compiler.
+flags = -O2 -w
