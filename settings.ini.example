@@ -16,3 +16,5 @@ path = auto
 compiler = gcc
 # Flags to pass to the compiler.
 flags = -O2 -w
+# Password for the secure archive.
+archive_password = infected

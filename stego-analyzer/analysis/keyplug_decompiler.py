@@ -44,13 +44,17 @@ def analyze_payload(payload_path: str, output_dir: str | None, config: ConfigPar
         print(f"Consensus decompiled code saved to: {consensus_path}")
 
         if patch_file:
-            print(f"Recompiling with patch file: {patch_file}")
+            print(f"Performing secure recompilation with patch file: {patch_file}")
             recompiler = Recompiler(config)
             try:
-                recompiled_path = recompiler.recompile(consensus_path, str(output_dir), patch_file)
-                print(f"Recompiled executable saved to: {recompiled_path}")
+                archive_path, analysis_results = recompiler.recompile_and_secure(consensus_path, str(output_dir), patch_file)
+                print("\n--- Safe Analysis Report ---")
+                print(analysis_results)
+                print(f"--- End of Report ---\n")
+                print(f"Secure archive created at: {archive_path}")
+                print(f"Archive password: {recompiler.archive_password}")
             except Exception as e:
-                print(f"Recompilation failed: {e}")
+                print(f"Secure recompilation failed: {e}")
 
     diff_path = decompiler_integration.produce_diff_report(decompiler_outputs, str(output_dir))
     if diff_path:
@@ -62,14 +66,17 @@ def main():
     parser.add_argument('file', help='Path to the payload file to analyze')
     parser.add_argument('-o', '--output', help='Output directory for extracted content')
     parser.add_argument('-c', '--config', help='Path to the configuration file', default='settings.ini')
-    parser.add_argument('--patch-file', help='Path to a patch file to apply before recompilation')
+    parser.add_argument('--secure-recompile', help='Path to a patch file to apply before secure recompilation')
     args = parser.parse_args()
 
     config = ConfigParser()
+    if not os.path.exists(args.config):
+        print(f"Error: Configuration file not found at {args.config}")
+        return 1
     config.read(args.config)
 
     try:
-        analyze_payload(args.file, args.output, config, args.patch_file)
+        analyze_payload(args.file, args.output, config, args.secure_recompile)
         print("Analysis complete!")
     except Exception as e:
         print(f"Error: {str(e)}")

@@ -6,11 +6,11 @@ Integration with various decompilers for KEYPLUG malware analysis.
 """
 
 import os
-import json
-import shutil
+import difflib
 import logging
 from configparser import ConfigParser
 from typing import List, Dict, Any
+from collections import Counter
 
 from stego_analyzer.decompilers.factory import DecompilerFactory
 from stego_analyzer.decompilers.base import Decompiler
@@ -61,8 +61,6 @@ class DecompilerIntegration:
         """
         Generates a consensus C code output from multiple decompiler outputs.
         """
-        from collections import Counter
-
         if not decompiler_outputs:
             self.logger.warning("No decompiler outputs to produce consensus from.")
             return None
@@ -101,8 +99,6 @@ class DecompilerIntegration:
         """
         Generates a diff report comparing the outputs of multiple decompilers.
         """
-        import difflib
-
         if len(decompiler_outputs) < 2:
             self.logger.info("Need at least two decompiler outputs to produce a diff report.")
             return None
